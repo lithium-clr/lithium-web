@@ -1,0 +1,7 @@
+﻿services:
+  lithium.web:
+    image: lithium.web
+    build:
+      context: .
+      dockerfile: Web/Lithium.Web/Dockerfile
+
