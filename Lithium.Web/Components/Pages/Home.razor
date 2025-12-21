@@ -29,12 +29,12 @@ Welcome to your new app.
         Logger.LogInformation("Dashboard initialized");
     }
 
-    private void OnHeartbeat()
+    private void OnHeartbeat(object? sender, HeartbeatEventArgs args)
     {
         _ = InvokeAsync(() =>
         {
             _heartbeatCount++;
-            Logger.LogInformation("Heartbeat received: {Count}", _heartbeatCount);
+            Logger.LogInformation("Heartbeat received: {Count} with ticks {Ticks}", _heartbeatCount, args.Ticks);
             StateHasChanged();
         });
     }

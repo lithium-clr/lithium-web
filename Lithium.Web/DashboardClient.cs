@@ -7,7 +7,7 @@ public sealed class DashboardClient
 {
     private readonly HubConnection _connection;
 
-    public event Action? Heartbeat;
+    public event EventHandler<HeartbeatEventArgs>? Heartbeat;
 
     public DashboardClient(string url)
     {
@@ -21,10 +21,8 @@ public sealed class DashboardClient
 
     private void RegisterHandlers()
     {
-        _connection.On(nameof(IServerHub.Heartbeat), () =>
-        {
-            Heartbeat?.Invoke();
-        });
+        _connection.On(nameof(IServerHub.Heartbeat),
+            (long ticks) => { Heartbeat?.Invoke(this, new HeartbeatEventArgs(ticks)); });
     }
 
     public async Task ConnectAsync()
