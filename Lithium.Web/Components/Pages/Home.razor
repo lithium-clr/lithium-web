@@ -1,7 +1,48 @@
 ﻿@page "/"
+@implements IAsyncDisposable
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<span>Heartbeat: @_heartbeatCount</span>
+
+@code {
+
+    private DashboardClient _client = null!;
+    private int _heartbeatCount;
+
+    [Inject] private ILogger<Home> Logger { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Initializing dashboard..");
+
+        _client = new DashboardClient("http://localhost:5000/hub/admin");
+        _client.Heartbeat += OnHeartbeat;
+
+        await _client.ConnectAsync();
+
+        Logger.LogInformation("Dashboard initialized");
+    }
+
+    private void OnHeartbeat()
+    {
+        _ = InvokeAsync(() =>
+        {
+            _heartbeatCount++;
+            Logger.LogInformation("Heartbeat received: {Count}", _heartbeatCount);
+            StateHasChanged();
+        });
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _client.Heartbeat -= OnHeartbeat;
+        await _client.DisconnectAsync();
+    }
+
+}
