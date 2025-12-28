@@ -8,13 +8,12 @@
 }
 
 @theme {
-    --color-primary: white;
-    --color-secondary: #F8F8F8;
-    --color-highlight: #E2E2E2;
-    --color-accent: #121212;
-    --text-primary: #121212;
-    --text-secondary: #F8F8F8;
-    --text-accent: red;
-    
+    --color-primary: #1E1E2D;
+    --color-secondary: #1B1B29;
+    --color-accent: #F07A1D;
+    --text-primary: white;
+    --text-secondary: #565674;
+    --text-accent: #F07A1D;
+
     --font-satoshi: 'Satoshi', sans-serif;
 }

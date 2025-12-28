@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lithium.Web.Models;
+namespace Lithium.Web;
 
 public abstract class DbRepository<TContext, TEntity>(TContext db)
     where TContext : DbContext

@@ -11,5 +11,5 @@ public class User
     public Guid Id { get; init; } = Guid.NewGuid();
 
     [BsonElement("username"), StringLength(32)]
-    public string Username { get; init; } = null!;
+    public required string Username { get; init; }
 }
