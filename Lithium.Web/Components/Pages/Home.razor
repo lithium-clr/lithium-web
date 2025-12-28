@@ -24,8 +24,15 @@ Welcome to your new app.
         _client = new DashboardClient("http://localhost:5000/hub/admin");
         _client.Heartbeat += OnHeartbeat;
 
-        await _client.ConnectAsync();
-
+        try
+        {
+            await _client.ConnectAsync();
+        }
+        catch (Exception exception)
+        {
+            Logger.LogInformation("Ex: " + exception.Message);
+        }
+        
         Logger.LogInformation("Dashboard initialized");
     }
 
@@ -42,7 +49,15 @@ Welcome to your new app.
     public async ValueTask DisposeAsync()
     {
         _client.Heartbeat -= OnHeartbeat;
-        await _client.DisconnectAsync();
+     
+        try
+        {
+            await _client.DisconnectAsync();
+        }
+        catch
+        {
+            // ignored
+        }
     }
 
 }
