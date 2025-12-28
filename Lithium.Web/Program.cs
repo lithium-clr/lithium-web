@@ -1,13 +1,30 @@
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Lithium.Web.Components;
+using Lithium.Web.Models;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+var connectionString = builder.Configuration["Mongo:Uri"];
+ArgumentException.ThrowIfNullOrEmpty(connectionString);
+
+var client = new MongoClient(connectionString);
+builder.Services.AddMongoDB<WebDbContext>(client, "web");
+
+// builder.Services.AddDbContextFactory<WebDbContext>(options =>
+// {
+//     // var connectionString = builder.Configuration.GetConnectionString("Mongo:Uri");
+//     // ArgumentException.ThrowIfNullOrEmpty(connectionString);
+//
+//     options.UseMongoDB("mongodb://localhost:27017/", "web");
+// });
+
+builder.Services.AddScoped<UserCollection>();
 
 builder.Services.AddCascadingAuthenticationState();
 // builder.Services.AddScoped<IdentityRedirectManager>();
