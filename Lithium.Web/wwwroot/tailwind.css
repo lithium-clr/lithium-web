@@ -1,4 +1,5 @@
 /*! tailwindcss v4.1.17 | MIT License | https://tailwindcss.com */
+@layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -6,18 +7,16 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-red-300: oklch(80.8% 0.114 19.571);
-    --color-black: #000;
     --color-white: #fff;
     --spacing: 0.25rem;
-    --ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-lg: 0.5rem;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
     --color-primary: #1E1E2D;
-    --color-secondary: #1B1B29;
+    --color-secondary-highlight: #565674;
+    --color-accent: #F07A1D;
   }
 }
 @layer base {
@@ -172,8 +171,17 @@
   .visible {
     visibility: visible;
   }
+  .relative {
+    position: relative;
+  }
   .static {
     position: static;
+  }
+  .m-2 {
+    margin: calc(var(--spacing) * 2);
+  }
+  .flex {
+    display: flex;
   }
   .hidden {
     display: none;
@@ -181,14 +189,57 @@
   .table {
     display: table;
   }
-  .px-3 {
-    padding-inline: calc(var(--spacing) * 3);
+  .h-14 {
+    height: calc(var(--spacing) * 14);
+  }
+  .h-screen {
+    height: 100vh;
+  }
+  .w-screen {
+    width: 100vw;
+  }
+  .flex-col {
+    flex-direction: column;
+  }
+  .flex-row {
+    flex-direction: row;
+  }
+  .items-center {
+    align-items: center;
+  }
+  .justify-end {
+    justify-content: flex-end;
+  }
+  .gap-4 {
+    gap: calc(var(--spacing) * 4);
+  }
+  .rounded-lg {
+    border-radius: var(--radius-lg);
+  }
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+  .p-4 {
+    padding: calc(var(--spacing) * 4);
   }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
   }
-  .ps-3 {
-    padding-inline-start: calc(var(--spacing) * 3);
+  .nav-btn\! {
+    color: var(--color-secondary-highlight) !important;
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to !important;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function)) !important;
+    transition-duration: var(--tw-duration, var(--default-transition-duration)) !important;
+    --tw-duration: 100ms !important;
+    transition-duration: 100ms !important;
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-accent) !important;
+      }
+    }
+  }
+  .text-white {
+    color: var(--color-white);
   }
 }
 @font-face {
@@ -196,4 +247,15 @@
   src: url('fonts/Satoshi-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
+}
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    *, ::before, ::after, ::backdrop {
+      --tw-duration: initial;
+    }
+  }
 }
