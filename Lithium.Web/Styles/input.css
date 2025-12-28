@@ -9,11 +9,14 @@
 
 @theme {
     --color-primary: #1E1E2D;
+    --color-primary-highlight: #ffffff;
     --color-secondary: #1B1B29;
+    --color-secondary-highlight: #565674;
     --color-accent: #F07A1D;
-    --text-primary: white;
-    --text-secondary: #565674;
-    --text-accent: #F07A1D;
 
     --font-satoshi: 'Satoshi', sans-serif;
+}
+
+@utility nav-btn {
+    @apply text-secondary-highlight hover:text-accent transition-colors duration-100;
 }
