@@ -1,9 +1,9 @@
-<div class="w-full flex flex-col">
-    <div class="w-full h-full flex justify-between items-center font-googlesans text-xs text-white/60! hover:text-white/80! uppercase cursor-pointer" @onclick="OnClick">
+<div class="w-full flex flex-col gap-1">
+    <div class="w-full h-full flex justify-between items-center text-xs text-white/40! hover:text-white/60! uppercase px-2 cursor-pointer" @onclick="OnClick">
         @Text
-        <Icon class="@(Collapsed ? "text-[18px]!" : "text-[18px]! rotate-90")">chevron_right</Icon>
+        <Icon class="@(Collapsed ? "text-lg" : "text-lg rotate-90") transition-transform">chevron_right</Icon>
     </div>
-    <div class="h-full flex flex-col justify-start py-2 @(Collapsed ? "hidden" : "visible")">
+    <div class="h-full flex flex-col justify-start gap-1 @(Collapsed ? "hidden" : "visible")">
         @ChildContent
     </div>
 </div>

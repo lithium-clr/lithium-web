@@ -8,13 +8,6 @@
     font-style: normal;
 }
 
-/*@font-face {*/
-/*    font-family: 'Google Sans';*/
-/*    font-optical-sizing: auto;*/
-/*    font-style: normal;*/
-/*    font-variation-settings: "GRAD" 0;*/
-/*}*/
-
 @theme {
     --color-primary: #1E1E2D;
     --color-primary-highlight: #ffffff;
@@ -24,6 +17,12 @@
 
     --font-satoshi: 'Satoshi', sans-serif;
     --font-googlesans: 'Google Sans', sans-serif;
+}
+
+@layer base {
+    * {
+        @apply font-googlesans;
+    }
 }
 
 @utility nav-btn {

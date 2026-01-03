@@ -1,17 +1,10 @@
-<div class="group w-full px-2 py-1.5 rounded-lg bg-transparent hover:bg-white/10 hover:outline-1 outline-white/20">
-    <NavLink href="@Href" class="text-sm text-white/80! group-hover:text-white!" Match="@Match">
-        <ChildContent>
-            <div class="flex gap-2 items-center">
-                @if (!string.IsNullOrEmpty(Icon))
-                {
-                    <Icon class="text-[18px]! text-white/80!">@Icon</Icon>
-                }
-                @Text
-            </div>
-        </ChildContent>
-    </NavLink>
-</div>
-
-@code {
-
-}
+<NavLink href="@Href" class="group w-full px-2 py-1.5 rounded-md bg-transparent hover:bg-white/5 transition-colors"
+         Match="@Match">
+    <div class="flex gap-3 items-center">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <Icon class="text-[18px]! text-white/40 group-hover:text-white/80 transition-colors">@Icon</Icon>
+        }
+        <span class="text-sm text-white/60 group-hover:text-white transition-colors">@Text</span>
+    </div>
+</NavLink>
