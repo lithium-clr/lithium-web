@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="flex flex-row w-screen h-screen bg-[#0a0a0c] overflow-hidden">
-    <NavMenu @rendermode="InteractiveServer"/>
+    <NavMenu @rendermode="new InteractiveServerRenderMode(false)"/>
 
     <main class="flex-1 h-full overflow-y-auto relative">
         <div class="absolute inset-0 bg-linear-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none"></div>
