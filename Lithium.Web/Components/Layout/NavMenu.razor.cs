@@ -9,6 +9,7 @@ public partial class NavMenu : IDisposable
 
     private List<Models.Server> _servers = [];
     private Guid _activeServerId;
+    private string _activeNavigation = "overview";
     
     private Models.Server? ActiveServer => _servers.FirstOrDefault(s => s.Id == _activeServerId);
 
@@ -31,22 +32,33 @@ public partial class NavMenu : IDisposable
         UpdateActiveServer(e.Location);
         StateHasChanged();
     }
-
+    
     private void UpdateActiveServer(string url)
     {
         var uri = new Uri(url);
         var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
 
-        if (segments.Length > 1 && segments[0] is "servers" && Guid.TryParse(segments[1], out var serverId))
+        var hasServerGuid = Guid.TryParse(segments[1], out var serverId);
+        var hasNavigation = segments.Length > 2;
+        
+        if (segments.Length > 1 && segments[0] is "servers" && hasServerGuid)
         {
             _activeServerId = serverId;
+            _activeNavigation = hasNavigation ? segments[2] : "overview";
         }
         else if (_servers.Count is not 0)
         {
             // Fallback to the first server if the URL doesn't match
             _activeServerId = _servers.First().Id;
+            _activeNavigation = "overview";
+            
             NavigationManager.NavigateTo($"/servers/{_activeServerId}/overview");
         }
+    }
+    
+    private void OnNavigationChanged()
+    {
+        UpdateActiveServer(NavigationManager.Uri);
     }
 
     void IDisposable.Dispose()
