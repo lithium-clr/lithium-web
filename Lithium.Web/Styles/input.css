@@ -10,15 +10,15 @@
 
 @theme {
     --color-lithium-50: #121218;
-    --color-lithium-100: #191920;
-    --color-lithium-200: #202029;
-    --color-lithium-300: #272731;
-    --color-lithium-400: #2e2e39;
-    --color-lithium-500: #363642;
-    --color-lithium-600: #3d3d4a;
-    --color-lithium-700: #444452;
-    --color-lithium-800: #4b4b5a;
-    --color-lithium-900: #59596b;
+    --color-lithium-100: #222229;
+    --color-lithium-200: #33333b;
+    --color-lithium-300: #43434c;
+    --color-lithium-400: #54545d;
+    --color-lithium-500: #64646f;
+    --color-lithium-600: #747480;
+    --color-lithium-700: #858591;
+    --color-lithium-800: #9595a2;
+    --color-lithium-900: #b6b6c5;
 
     --font-satoshi: 'Satoshi', sans-serif;
     --font-googlesans: 'Google Sans', sans-serif;
