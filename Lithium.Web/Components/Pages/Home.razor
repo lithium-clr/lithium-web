@@ -1,4 +1,5 @@
 ﻿@page "/"
+@layout EmptyLayout
 @implements IAsyncDisposable
 @rendermode InteractiveServer
 
@@ -22,14 +23,14 @@
         _client = new DashboardClient("http://localhost:5000/hub/admin");
         _client.Heartbeat += OnHeartbeat;
 
-        try
-        {
-            await _client.ConnectAsync();
-        }
-        catch (Exception exception)
-        {
-            Logger.LogInformation("Ex: " + exception.Message);
-        }
+        // try
+        // {
+        //     await _client.ConnectAsync();
+        // }
+        // catch (Exception exception)
+        // {
+        //     Logger.LogInformation("Ex: " + exception.Message);
+        // }
         
         Logger.LogInformation("Dashboard initialized");
     }
