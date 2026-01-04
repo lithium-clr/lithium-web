@@ -21,7 +21,7 @@
 
 @layer base {
     * {
-        @apply font-googlesans;
+        @apply font-googlesans select-none;
     }
 }
 
