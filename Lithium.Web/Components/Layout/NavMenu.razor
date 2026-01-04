@@ -1,40 +1,50 @@
-﻿@implements IDisposable
+﻿@using LucideBlazor
 
-@inject NavigationManager NavigationManager
-
-<nav class="flex h-full bg-[#121218] border-r border-white/5">
+<nav class="flex h-full bg-lithium-50 border-r border-white/5">
     <div class="w-16 h-full py-6 flex flex-col gap-4 items-center border-r border-white/5 bg-[#121218]">
-        <div
-            class="relative w-10 h-10 rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20
-after:w-2 after:h-3/4 after:bg-white after:rounded-md after:drop-shadow-[0_30px_30px_rgba(255,255,255,1)]/80 after:opacity-0 hover:after:opacity-100 after:transition-all after:absolute after:-left-full hover:after:-left-1/3 after:top-[50%] after:-translate-y-[50%]">
-            <span class="text-white font-bold text-xl">L</span>
-        </div>
+        <div class="flex-1 flex flex-col gap-2 w-full items-center">
+            <a href="" 
+               class="relative w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/0 hover:shadow-indigo-500/40 transition-all">
+                <LucideIcon ClassName="stroke-white" Name="store" Size="24"/>
+            </a>
+            <a href="" 
+               class="relative w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/0 hover:shadow-indigo-500/40 transition-all">
+                <LucideIcon Name="arrow-left-to-line" Size="24"/>
+            </a>
+            
+            @foreach (var server in _servers)
+            {
+                var isActive = _activeServerId == server.Id;
 
-        <div class="flex-1 flex flex-col gap-4 w-full items-center pt-4">
-            <!-- Sidebar icons could go here -->
+                <a href="@($"/servers/{server.Id}/overview")"
+                   class="relative w-10 h-10 rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20
+after:w-2 after:h-3/4 after:bg-white after:rounded-md after:drop-shadow-[0_30px_30px_rgba(255,255,255,1)]/80 hover:after:opacity-100 after:transition-all after:absolute hover:after:-left-1/3 after:top-[50%] after:-translate-y-[50%] @(isActive ? "after:opacity-100 after:-left-1/3" : "after:opacity-0 after:-left-full")">
+                    <span class="text-white font-bold text-xl">@server.Name.FirstOrDefault()</span>
+                </a>
+            }
         </div>
     </div>
 
     <div class="w-64 h-full flex flex-col bg-[#121218]">
         <div class="p-6">
-            <h2 class="text-white font-bold text-lg tracking-tight">Dashboard</h2>
+            <h2 class="text-white font-bold text-lg tracking-tight">@(ActiveServer?.Name ?? "Dashboard")</h2>
             <p class="text-white/40 text-xs">Manage your server</p>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-4 pb-6 flex flex-col gap-6">
+        <div class="flex-1 overflow-y-auto px-4 pb-6 flex flex-col gap-4">
             <Category Text="General">
                 <ChildContent>
-                    <DashboardNavLink href="overview" Icon="gauge" Text="Overview"/>
-                    <DashboardNavLink href="statistics" Icon="chart-line" Text="Statistics"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/overview")" Icon="gauge" Text="Overview"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/statistics")" Icon="chart-line" Text="Statistics"/>
                 </ChildContent>
             </Category>
 
             <Category Text="Server Management">
                 <ChildContent>
-                    <DashboardNavLink href="console" Icon="terminal" Text="Console"/>
-                    <DashboardNavLink href="crons" Icon="calendar-check" Text="Cron Jobs"/>
-                    <DashboardNavLink href="commands" Icon="code" Text="Commands"/>
-                    <DashboardNavLink href="permissions" Icon="key-round" Text="Permissions"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/console")" Icon="terminal" Text="Console"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/crons")" Icon="calendar-check" Text="Cron Jobs"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/commands")" Icon="code" Text="Commands"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/permissions")" Icon="key-round" Text="Permissions"/>
                 </ChildContent>
             </Category>
 
@@ -59,26 +69,3 @@ after:w-2 after:h-3/4 after:bg-white after:rounded-md after:drop-shadow-[0_30px_
         </div>
     </div>
 </nav>
-
-@code {
-
-    private string? _currentUrl;
-
-    protected override void OnInitialized()
-    {
-        _currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-        NavigationManager.LocationChanged += OnLocationChanged;
-    }
-
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
-    {
-        _currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
-        StateHasChanged();
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
-    }
-
-}

@@ -9,11 +9,16 @@
 }
 
 @theme {
-    --color-primary: #1E1E2D;
-    --color-primary-highlight: #ffffff;
-    --color-secondary: #1B1B29;
-    --color-secondary-highlight: #565674;
-    --color-accent: #F07A1D;
+    --color-lithium-50: #121218;
+    --color-lithium-100: #191920;
+    --color-lithium-200: #202029;
+    --color-lithium-300: #272731;
+    --color-lithium-400: #2e2e39;
+    --color-lithium-500: #363642;
+    --color-lithium-600: #3d3d4a;
+    --color-lithium-700: #444452;
+    --color-lithium-800: #4b4b5a;
+    --color-lithium-900: #59596b;
 
     --font-satoshi: 'Satoshi', sans-serif;
     --font-googlesans: 'Google Sans', sans-serif;
@@ -23,8 +28,4 @@
     * {
         @apply font-googlesans select-none;
     }
-}
-
-@utility nav-btn {
-    @apply text-secondary-highlight hover:text-accent transition-colors duration-100;
 }
