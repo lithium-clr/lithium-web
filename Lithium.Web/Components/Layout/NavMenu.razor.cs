@@ -13,21 +13,12 @@ public partial class NavMenu : IDisposable
     private List<Models.Server> _servers = [];
     private SnowflakeId _activeServerId;
     private string _activeNavigation = "overview";
-    
+
     private Models.Server? ActiveServer => _servers.FirstOrDefault(s => s.Id == _activeServerId);
 
     protected override void OnInitialized()
     {
         // Simulate fetching servers from a service
-
-        long id1 = IdGenerator.CreateId();
-        long id2 = IdGenerator.CreateId();
-        long id3 = IdGenerator.CreateId();
-        
-        Console.WriteLine("Id1: " + id1);
-        Console.WriteLine("Id2: " + id2);
-        Console.WriteLine("Id3: " + id3);
-        
         _servers =
         [
             new Models.Server { Id = new SnowflakeId(1384530019614720), Name = "Main" },
@@ -44,30 +35,27 @@ public partial class NavMenu : IDisposable
         UpdateActiveServer(e.Location);
         StateHasChanged();
     }
-    
+
     private void UpdateActiveServer(string url)
     {
         var uri = new Uri(url);
         var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
 
-        var hasServerId = long.TryParse(segments[1], out var serverId);
-        var hasNavigation = segments.Length > 2;
-        
-        if (segments.Length > 1 && segments[0] is "servers" && hasServerId)
+        if (_servers.Count is 0) return;
+
+        switch (segments)
         {
-            _activeServerId = new SnowflakeId(serverId);
-            _activeNavigation = hasNavigation ? segments[2] : "overview";
-        }
-        else if (_servers.Count is not 0)
-        {
-            // Fallback to the first server if the URL doesn't match
-            _activeServerId = _servers.First().Id;
-            _activeNavigation = "overview";
-            
-            NavigationManager.NavigateTo($"/servers/{_activeServerId}/overview");
+            case ["servers", var serverIdString, var navigationId]:
+                _activeServerId = new SnowflakeId(long.Parse(serverIdString));
+                _activeNavigation = navigationId;
+                break;
+            case ["servers", var serverIdString2, ..]:
+                _activeServerId = new SnowflakeId(long.Parse(serverIdString2));
+                _activeNavigation = "overview";
+                break;
         }
     }
-    
+
     private void OnNavigationChanged()
     {
         UpdateActiveServer(NavigationManager.Uri);
