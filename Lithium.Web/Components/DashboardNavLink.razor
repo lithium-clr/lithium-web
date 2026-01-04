@@ -1,10 +1,9 @@
+@using LucideBlazor
 <NavLink href="@Href" class="group w-full px-2 py-1.5 rounded-md bg-transparent hover:bg-white/5 transition-colors"
          Match="@Match">
     <div class="flex gap-3 items-center">
         @if (!string.IsNullOrEmpty(Icon))
-        {
-            <Icon class="text-[18px]! text-white/40 group-hover:text-white/80 transition-colors">@Icon</Icon>
-        }
+            <LucideIcon ClassName="stroke-white/40 group-hover:stroke-white/80 transition-colors" Name="@Icon" Size="18"></LucideIcon>
         <span class="text-sm text-white/60 group-hover:text-white transition-colors">@Text</span>
     </div>
 </NavLink>

@@ -1,7 +1,8 @@
+@using LucideBlazor
 <div class="w-full flex flex-col gap-1">
     <div class="w-full h-full flex justify-between items-center text-xs text-white/40! hover:text-white/60! uppercase px-2 cursor-pointer" @onclick="OnClick">
         @Text
-        <Icon class="@(Collapsed ? "text-lg transition-transform" : "text-lg rotate-90 transition-transform")">chevron_right</Icon>
+        <ChevronRightIcon class="@(Collapsed ? "text-lg transition-transform" : "text-lg rotate-90 transition-transform")" Size="18"></ChevronRightIcon>
     </div>
     <div class="h-full flex flex-col justify-start gap-1 @(Collapsed ? "hidden" : "visible")">
         @ChildContent

@@ -4,15 +4,16 @@
 
 <nav class="flex h-full bg-[#121218] border-r border-white/5">
     <div class="w-16 h-full py-6 flex flex-col gap-4 items-center border-r border-white/5 bg-[#121218]">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <div
+            class="w-10 h-10 rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
             <span class="text-white font-bold text-xl">L</span>
         </div>
-        
+
         <div class="flex-1 flex flex-col gap-4 w-full items-center pt-4">
-             <!-- Sidebar icons could go here -->
+            <!-- Sidebar icons could go here -->
         </div>
     </div>
-    
+
     <div class="w-64 h-full flex flex-col bg-[#121218]">
         <div class="p-6">
             <h2 class="text-white font-bold text-lg tracking-tight">Dashboard</h2>
@@ -22,28 +23,28 @@
         <div class="flex-1 overflow-y-auto px-4 pb-6 flex flex-col gap-6">
             <Category Text="General">
                 <ChildContent>
-                    <DashboardNavLink href="overview" Icon="dashboard" Text="Overview"/>
-                    <DashboardNavLink href="statistics" Icon="bar_chart" Text="Statistics"/>
+                    <DashboardNavLink href="overview" Icon="gauge" Text="Overview"/>
+                    <DashboardNavLink href="statistics" Icon="chart-line" Text="Statistics"/>
                 </ChildContent>
             </Category>
-        
+
             <Category Text="Server Management">
                 <ChildContent>
                     <DashboardNavLink href="console" Icon="terminal" Text="Console"/>
-                    <DashboardNavLink href="crons" Icon="schedule" Text="Cron Jobs"/>
+                    <DashboardNavLink href="crons" Icon="calendar-check" Text="Cron Jobs"/>
                     <DashboardNavLink href="commands" Icon="code" Text="Commands"/>
-                    <DashboardNavLink href="permissions" Icon="security" Text="Permissions"/>
+                    <DashboardNavLink href="permissions" Icon="key-round" Text="Permissions"/>
                 </ChildContent>
             </Category>
-        
+
             <Category Text="Resources">
                 <ChildContent>
-                    <DashboardNavLink href="docs" Icon="import_contacts" Text="Documentation"/>
-                    <DashboardNavLink href="support" Icon="help_outline" Text="Support"/>
+                    <DashboardNavLink href="docs" Icon="book" Text="Documentation"/>
+                    <DashboardNavLink href="support" Icon="toolbox" Text="Support"/>
                 </ChildContent>
             </Category>
         </div>
-        
+
         <div class="p-4 border-t border-white/5">
             <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-colors">
                 <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">

@@ -1,12 +1,15 @@
 @page "/overview"
+@using LucideBlazor
 
 <div class="flex flex-col gap-8">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard Title="Servers" Value="4" Icon="dns" />
-        <StatCard Title="Total Players" Value="1,234" Icon="people" />
+        <StatCard Title="Servers" Value="4" Icon="server" />
+        <StatCard Title="Total Players" Value="1,234" Icon="users" />
         <StatCard Title="Uptime" Value="99.9%" Icon="timer" />
-        <StatCard Title="CPU Load" Value="15%" Icon="memory" />
+        <StatCard Title="CPU Load" Value="15%" Icon="cpu" />
     </div>
+    
+    <CherryIcon Stroke="red" />
     
     <div>
         <h3 class="text-white text-lg font-semibold mb-4">Server Status</h3>

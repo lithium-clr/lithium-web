@@ -22,8 +22,9 @@
             <Link>.dockerignore</Link>
         </Content>
     </ItemGroup>
-  
+
     <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Documents\GitHub\LucideBlazor\LucideBlazor\LucideBlazor.csproj"/>
         <ProjectReference Include="..\..\Game\Lithium.Server.Dashboard\Lithium.Server.Dashboard.csproj"/>
     </ItemGroup>
 
