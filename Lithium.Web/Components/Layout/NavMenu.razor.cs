@@ -1,3 +1,5 @@
+using Lithium.Snowflake;
+using Lithium.Snowflake.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 
@@ -6,9 +8,10 @@ namespace Lithium.Web.Components.Layout;
 public partial class NavMenu : IDisposable
 {
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+    [Inject] private IIdGenerator IdGenerator { get; set; } = null!;
 
     private List<Models.Server> _servers = [];
-    private Guid _activeServerId;
+    private SnowflakeId _activeServerId;
     private string _activeNavigation = "overview";
     
     private Models.Server? ActiveServer => _servers.FirstOrDefault(s => s.Id == _activeServerId);
@@ -16,11 +19,20 @@ public partial class NavMenu : IDisposable
     protected override void OnInitialized()
     {
         // Simulate fetching servers from a service
+
+        long id1 = IdGenerator.CreateId();
+        long id2 = IdGenerator.CreateId();
+        long id3 = IdGenerator.CreateId();
+        
+        Console.WriteLine("Id1: " + id1);
+        Console.WriteLine("Id2: " + id2);
+        Console.WriteLine("Id3: " + id3);
+        
         _servers =
         [
-            new Models.Server { Id = Guid.Parse("891deb1e-9362-475a-a34f-2a7e61a68624"), Name = "Main" },
-            new Models.Server { Id = Guid.Parse("007c9312-fe68-4c63-9f98-0e6b6c63b605"), Name = "Dev" },
-            new Models.Server { Id = Guid.Parse("06fb2bdf-d2d8-47bb-8246-9b745b9bcd05"), Name = "Test" }
+            new Models.Server { Id = new SnowflakeId(1384530019614720), Name = "Main" },
+            new Models.Server { Id = new SnowflakeId(1384530019614721), Name = "Dev" },
+            new Models.Server { Id = new SnowflakeId(1384530019614722), Name = "Test" }
         ];
 
         NavigationManager.LocationChanged += OnLocationChanged;
@@ -38,12 +50,12 @@ public partial class NavMenu : IDisposable
         var uri = new Uri(url);
         var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
 
-        var hasServerGuid = Guid.TryParse(segments[1], out var serverId);
+        var hasServerId = long.TryParse(segments[1], out var serverId);
         var hasNavigation = segments.Length > 2;
         
-        if (segments.Length > 1 && segments[0] is "servers" && hasServerGuid)
+        if (segments.Length > 1 && segments[0] is "servers" && hasServerId)
         {
-            _activeServerId = serverId;
+            _activeServerId = new SnowflakeId(serverId);
             _activeNavigation = hasNavigation ? segments[2] : "overview";
         }
         else if (_servers.Count is not 0)

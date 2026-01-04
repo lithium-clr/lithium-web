@@ -1,3 +1,4 @@
+using Lithium.Snowflake;
 using Lithium.Web.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -15,15 +16,15 @@ public partial class Overview : ComponentBase
     protected override void OnInitialized()
     {
         // Simulate fetching server data based on ServerId
-        if (Guid.TryParse(ServerId, out var serverGuid))
+        if (long.TryParse(ServerId, out var serverId))
         {
             // In a real app, you would fetch this from a service
             _server = new Models.Server
             {
-                Id = serverGuid,
-                Name = $"Server {serverGuid.ToString().Substring(0, 4)}",
-                Status = ServerStatus.Running,
-                Icon = "server"
+                Id = new SnowflakeId(serverId),
+                Name = $"Server {serverId.ToString()}",
+                Icon = "server",
+                Status = ServerStatus.Running
             };
         }
 
