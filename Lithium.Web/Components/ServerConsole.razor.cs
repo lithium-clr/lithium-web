@@ -103,16 +103,14 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
 
     private string GetFilterButtonClass(LogLevel level)
     {
-        if (_activeFilter != level) return "opacity-50 hover:opacity-100";
-        
-        return "opacity-100";
+        return _activeFilter != level ? "opacity-50 hover:opacity-100" : "opacity-100";
     }
 
     private async Task HandleInput(ChangeEventArgs e)
     {
         _commandInput = e.Value?.ToString() ?? "";
         
-        if (_commandInput.StartsWith("/"))
+        if (_commandInput.StartsWith('/'))
         {
             if (_hubConnection is not null && _hubConnection.State == HubConnectionState.Connected)
             {

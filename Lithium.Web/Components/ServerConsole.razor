@@ -7,10 +7,35 @@
             @foreach (LogLevel level in Enum.GetValues(typeof(LogLevel)))
             {
                 if (level is LogLevel.None) continue;
+                
+                var bgColor = level switch
+                {
+                    LogLevel.Debug or LogLevel.Trace or LogLevel.Information => "bg-transparent hover:bg-white/5",
+                    LogLevel.Warning => "bg-yellow-500/10 hover:bg-yellow-500/20",
+                    LogLevel.Error or LogLevel.Critical => "bg-red-500/10 hover:bg-red-500/20",
+                    _ => ""
+                };
+                
+                var borderColor = level switch
+                {
+                    LogLevel.Debug or LogLevel.Trace => "border-white/10 hover:border-white/5",
+                    LogLevel.Information => "border-white/20 hover:border-white/40",
+                    LogLevel.Warning => "border-yellow-500/20 hover:border-yellow-500/40",
+                    LogLevel.Error or LogLevel.Critical => "border-red-500/20 hover:border-red-500/40",
+                    _ => ""
+                };
+                
+                var textColor = level switch
+                {
+                    LogLevel.Debug or LogLevel.Trace => "text-white/30 hover:text-white/40",
+                    LogLevel.Information => "text-white/60 hover:text-white/80",
+                    LogLevel.Warning => "text-yellow-500/60 hover:text-yellow-500/80",
+                    LogLevel.Error or LogLevel.Critical => "text-red-500/60 hover:text-red-500/80",
+                    _ => ""
+                };
 
                 <button @onclick="() => SetFilter(level)"
-                        class="px-2 py-1 text-xs font-bold rounded-md transition-all @GetFilterButtonClass(level)"
-                        style="color: @(level.ToColor()); border: 1px solid @(level.ToColor() + "40"); background-color: @(level.ToColor() + "1A");">
+                        class="px-2 py-1 text-xs font-bold rounded-md transition-all @bgColor border @borderColor @textColor @GetFilterButtonClass(level)">
                     @level.ToShortName()
                 </button>
             }
@@ -24,17 +49,41 @@
         @foreach (var (timestamp, level, message) in FilteredLogs.TakeLast(100).Reverse())
         {
             var logLevel = (LogLevel)level;
-            var logLevelColor = logLevel.ToColor();
-
-            <li class="group flex items-center w-full text-white cursor-pointer hover:bg-white/5 rounded-md transition-colors shrink-0">
+            
+            var bgColor = logLevel switch
+            {
+                LogLevel.Debug or LogLevel.Trace or LogLevel.Information => "bg-transparent hover:bg-white/5",
+                LogLevel.Warning => "bg-yellow-500/5 hover:bg-yellow-500/10",
+                LogLevel.Error or LogLevel.Critical => "bg-red-500/5 hover:bg-red-500/10",
+                _ => ""
+            };
+            
+            var levelTextColor = logLevel switch
+            {
+                LogLevel.Debug or LogLevel.Trace => "text-white/30",
+                LogLevel.Information => "text-white/80",
+                LogLevel.Warning => "text-yellow-500/80",
+                LogLevel.Error or LogLevel.Critical => "text-red-500/80",
+                _ => ""
+            };
+            
+            var messageTextColor = logLevel switch
+            {
+                LogLevel.Debug or LogLevel.Trace => "text-white",
+                LogLevel.Information => "text-white",
+                LogLevel.Warning => "text-yellow-500",
+                LogLevel.Error or LogLevel.Critical => "text-red-500",
+                _ => ""
+            };
+            
+            <li class="group flex items-center w-full text-white cursor-pointer @(bgColor) rounded-md transition-colors shrink-0">
                 <p class="flex justify-between items-center pl-2 w-full h-full py-1">
                     <span>
                         <span
                             class="text-white/40 text-xs mr-2 tabular-nums slashed-zero">@timestamp.ToString("HH:mm:ss")</span>
-                        <span class="text-xs font-bold mr-2"
-                              style="color: @logLevelColor;">@logLevel.ToShortName()</span>
+                        <span class="text-xs font-bold mr-2 @levelTextColor">@logLevel.ToShortName()</span>
                         <span
-                            class="text-sm font-mono whitespace-pre-wrap break-all">@message.ToFormattedMarkup()</span>
+                            class="text-sm font-mono whitespace-pre-wrap break-all @messageTextColor">@message.ToFormattedMarkup()</span>
                     </span>
                 </p>
             </li>
