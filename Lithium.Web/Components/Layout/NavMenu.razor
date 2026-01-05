@@ -51,6 +51,10 @@ after:w-2 after:h-3/4 after:bg-white after:rounded-md after:drop-shadow-[0_30px_
                                       @onclick="OnNavigationChanged"/>
                     <DashboardNavLink href="@($"/servers/{_activeServerId}/permissions")" Icon="key-round"
                                       Text="Permissions" @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/backups")" Icon="database"
+                                      Text="Backups" @onclick="OnNavigationChanged"/>
+                    <DashboardNavLink href="@($"/servers/{_activeServerId}/players")" Icon="users"
+                                      Text="Players" @onclick="OnNavigationChanged"/>
                 </ChildContent>
             </Category>
 

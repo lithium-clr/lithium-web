@@ -9,6 +9,8 @@
     <span class="text-white">Heartbeat: @_heartbeatCount</span>
 </div>
 
+<ServerConsole Client="_client"/>
+
 @code {
 
     private DashboardClient _client = null!;
@@ -20,18 +22,18 @@
     {
         Logger.LogInformation("Initializing dashboard..");
 
-        _client = new DashboardClient("http://localhost:5000/hub/admin");
+        _client = new DashboardClient("http://localhost:7144/hub/admin");
         _client.Heartbeat += OnHeartbeat;
 
-        // try
-        // {
-        //     await _client.ConnectAsync();
-        // }
-        // catch (Exception exception)
-        // {
-        //     Logger.LogInformation("Ex: " + exception.Message);
-        // }
-        
+        try
+        {
+            await _client.ConnectAsync();
+        }
+        catch (Exception exception)
+        {
+            Logger.LogInformation("Ex: " + exception.Message);
+        }
+
         Logger.LogInformation("Dashboard initialized");
     }
 
@@ -48,7 +50,7 @@
     public async ValueTask DisposeAsync()
     {
         _client.Heartbeat -= OnHeartbeat;
-     
+
         try
         {
             await _client.DisconnectAsync();
