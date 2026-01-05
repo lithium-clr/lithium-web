@@ -36,8 +36,7 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         _logs.Add((DateTime.Now, 2, "This is an information log."));
         _logs.Add((DateTime.Now, 3, "This is a warning."));
         _logs.Add((DateTime.Now, 4, "This is an error!"));
-
-
+        
         _hubConnection.On<DateTimeOffset, int, string>("ReceiveLog", (timestamp, level, message) =>
         {
             InvokeAsync(() =>
