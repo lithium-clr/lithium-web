@@ -19,6 +19,13 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
     private bool _showSuggestions = false;
     private bool _preventKeyDefault = false;
 
+    // Filtering
+    private LogLevel? _activeFilter = null;
+    private IEnumerable<(DateTimeOffset, int, string)> FilteredLogs => 
+        _activeFilter.HasValue 
+            ? _logs.Where(l => l.Item2 == (int)_activeFilter.Value) 
+            : _logs;
+
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
@@ -26,8 +33,10 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
             .WithAutomaticReconnect()
             .Build();
 
-        _logs.Add((DateTime.Now, 0, "My \"apple\" is big"));
-        _logs.Add((DateTime.Now, 1, "Click on https://youtube.com/ to open the link"));
+        _logs.Add((DateTime.Now, 2, "This is an information log."));
+        _logs.Add((DateTime.Now, 3, "This is a warning."));
+        _logs.Add((DateTime.Now, 4, "This is an error!"));
+
 
         _hubConnection.On<DateTimeOffset, int, string>("ReceiveLog", (timestamp, level, message) =>
         {
@@ -78,6 +87,25 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         {
             _connectionStatus = $"Connection failed: {ex.Message}";
         }
+    }
+
+    private void SetFilter(LogLevel? level)
+    {
+        if (_activeFilter == level)
+        {
+            _activeFilter = null; // Toggle off if same filter is clicked
+        }
+        else
+        {
+            _activeFilter = level;
+        }
+    }
+
+    private string GetFilterButtonClass(LogLevel level)
+    {
+        if (_activeFilter != level) return "opacity-50 hover:opacity-100";
+        
+        return "opacity-100";
     }
 
     private async Task HandleInput(ChangeEventArgs e)
@@ -152,7 +180,8 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         {
             try
             {
-                await _hubConnection.SendAsync("ExecuteCommand", _commandInput);
+                var cmdToSend = _commandInput.StartsWith("/") ? _commandInput[1..] : _commandInput;
+                await _hubConnection.SendAsync("ExecuteCommand", cmdToSend);
             }
             catch (Exception ex)
             {

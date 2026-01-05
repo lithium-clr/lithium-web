@@ -1,28 +1,4 @@
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Components;
-
 namespace Lithium.Web;
-
-public static partial class StringExtensions
-{
-    public static MarkupString ToFormattedMarkup(this string str)
-    {
-        var result = MyRegex2().Replace(str, "<b>$1</b>");
-
-        // 2. url -> <a href="url">url</a>
-        result = MyRegex1().Replace(result,
-            m => $"<a href=\"{m.Value}\" target=\"_blank\" rel=\"noopener noreferrer\">{m.Value}</a>"
-        );
-
-        return new MarkupString(result);
-    }
-
-    [GeneratedRegex(@"https?:\/\/[^\s""<>]+")]
-    private static partial Regex MyRegex1();
-
-    [GeneratedRegex("\"([^\"]*)\"")]
-    private static partial Regex MyRegex2();
-}
 
 public static class LogLevelExtensions
 {
@@ -30,7 +6,7 @@ public static class LogLevelExtensions
     {
         LogLevel.Debug or LogLevel.Trace => "#71717a",
         LogLevel.Information => "#FFFFFF",
-        LogLevel.Warning => "#FF1200",
+        LogLevel.Warning => "#FF9900",
         LogLevel.Error or LogLevel.Critical => "#FF0000",
         _ => ""
     };
