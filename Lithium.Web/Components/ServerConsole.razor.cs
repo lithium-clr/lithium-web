@@ -152,9 +152,7 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         {
             try
             {
-                // Remove leading slash if present before sending, or handle on server
-                var cmdToSend = _commandInput.StartsWith('/') ? _commandInput[1..] : _commandInput;
-                await _hubConnection.SendAsync("ExecuteCommand", cmdToSend);
+                await _hubConnection.SendAsync("ExecuteCommand", _commandInput);
             }
             catch (Exception ex)
             {
