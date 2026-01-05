@@ -1,13 +1,32 @@
 @page "/servers/{ServerId:long}/console"
 @rendermode InteractiveServer
 
-<h1 class="text-2xl font-bold text-white mb-4">Server Console</h1>
+<div class="flex flex-col h-full">
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-white">Server Console</h1>
+            <p class="text-white/60 text-sm mt-1">Monitor and control your server instance.</p>
+        </div>
+        <div class="flex gap-2">
+            <button class="flex items-center gap-2 px-4 py-2 bg-lithium-100 hover:bg-lithium-200 text-white text-sm font-medium rounded-lg transition-colors">
+                <MaterialIcon>restart_alt</MaterialIcon>
+                Restart
+            </button>
+            <button class="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 text-sm font-medium rounded-lg transition-colors border border-red-500/20">
+                <MaterialIcon>stop</MaterialIcon>
+                Stop
+            </button>
+        </div>
+    </div>
 
-<ServerConsole />
+    <div class="grow">
+        <ServerConsole />
+    </div>
+</div>
 
 @code {
     
     [Inject] private ILogger<Console> Logger { get; set; } = null!;
     [Parameter] public long ServerId { get; set; }
 
-} 
+}

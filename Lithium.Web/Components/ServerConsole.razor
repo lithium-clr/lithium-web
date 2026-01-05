@@ -1,27 +1,32 @@
-@implements IAsyncDisposable
-
 <div class="flex flex-col gap-2 p-2 h-96 bg-lithium-50 border border-white/5 rounded-lg">
     <div class="shrink-0 mb-2 flex justify-between items-center">
         <p class="text-xs text-white/40">Status: @_connectionStatus</p>
     </div>
-    <ul class="w-full h-full overflow-y-auto">
-        @foreach (var (timestamp, level, message) in _logs.TakeLast(100))
+    <ul class="w-full h-full overflow-y-auto flex flex-col-reverse">
+        @foreach (var (timestamp, level, message) in _logs.TakeLast(100).Reverse())
         {
             var logLevel = (LogLevel)level;
             var logLevelColor = logLevel.ToColor();
 
-            <li class="group flex items-center w-full text-white cursor-pointer">
-                <p class="flex justify-between items-center pl-2 w-full h-full">
-                    <span>[<span class="text-sm">@timestamp.ToString("T")</span>
-                        <span class="text-sm" style="color: @(logLevel.ToColor());">@logLevel.ToShortName()</span>] <span>@message.ToFormattedMarkup()</span>
+            <li class="group flex items-center w-full text-white cursor-pointer hover:bg-white/5 rounded-md transition-colors shrink-0">
+                <p class="flex justify-between items-center pl-2 w-full h-full py-1">
+                    <span>
+                        <span class="text-white/40 text-xs mr-2 tabular-nums slashed-zero">@timestamp.ToString("HH:mm:ss")</span>
+                        <span class="text-xs font-bold mr-2" style="color: @logLevelColor;">@logLevel.ToShortName()</span>
+                        <span class="text-sm font-mono whitespace-pre-wrap break-all">@message.ToFormattedMarkup()</span>
                     </span>
                 </p>
             </li>
         }
     </ul>
-    <div class="w-full h-12 flex items-center">
-        <div class="w-full h-full flex items-center px-2 text-white text-sm bg-lithium-100 rounded-md">
-            <input class="outline-none" type="text" placeholder="Type text..">
+    <div class="w-full h-12 flex items-center shrink-0">
+        <div class="w-full h-full flex items-center px-2 text-white text-sm bg-lithium-100 rounded-md border border-transparent focus-within:border-lithium-200 transition-colors">
+            <input class="w-full h-full bg-transparent outline-none placeholder:text-white/20" 
+                   type="text" 
+                   placeholder="Type command..." 
+                   @bind="_commandInput" 
+                   @bind:event="oninput"
+                   @onkeydown="HandleKeyDown">
         </div>
     </div>
 </div>
