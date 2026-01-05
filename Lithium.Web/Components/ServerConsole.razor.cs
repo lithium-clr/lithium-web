@@ -13,6 +13,12 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
     private string _connectionStatus = "Connecting...";
     private string _commandInput = "";
 
+    // Suggestions
+    private List<string> _suggestions = [];
+    private int _selectedSuggestionIndex = -1;
+    private bool _showSuggestions = false;
+    private bool _preventKeyDefault = false;
+
     protected override async Task OnInitializedAsync()
     {
         _hubConnection = new HubConnectionBuilder()
@@ -28,6 +34,17 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
             InvokeAsync(() =>
             {
                 _logs.Add((timestamp, level, message));
+                StateHasChanged();
+            });
+        });
+
+        _hubConnection.On<List<string>>("ReceiveCommandSuggestions", (suggestions) =>
+        {
+            InvokeAsync(() =>
+            {
+                _suggestions = suggestions;
+                _selectedSuggestionIndex = -1;
+                _showSuggestions = _suggestions.Count > 0;
                 StateHasChanged();
             });
         });
@@ -63,12 +80,70 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         }
     }
 
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        _commandInput = e.Value?.ToString() ?? "";
+        
+        if (_commandInput.StartsWith("/"))
+        {
+            if (_hubConnection is not null && _hubConnection.State == HubConnectionState.Connected)
+            {
+                await _hubConnection.SendAsync("RequestCommandSuggestions", _commandInput);
+            }
+        }
+        else
+        {
+            _showSuggestions = false;
+        }
+    }
+
     private async Task HandleKeyDown(KeyboardEventArgs e)
     {
-        if (e.Key is "Enter" && !string.IsNullOrWhiteSpace(_commandInput))
+        _preventKeyDefault = false;
+
+        if (_showSuggestions && _suggestions.Count > 0)
+        {
+            if (e.Key == "ArrowUp")
+            {
+                _preventKeyDefault = true;
+                _selectedSuggestionIndex--;
+                if (_selectedSuggestionIndex < 0) _selectedSuggestionIndex = _suggestions.Count - 1;
+                return;
+            }
+            else if (e.Key == "ArrowDown")
+            {
+                _preventKeyDefault = true;
+                _selectedSuggestionIndex++;
+                if (_selectedSuggestionIndex >= _suggestions.Count) _selectedSuggestionIndex = 0;
+                return;
+            }
+            else if (e.Key == "Enter" || e.Key == "Tab")
+            {
+                if (_selectedSuggestionIndex >= 0 && _selectedSuggestionIndex < _suggestions.Count)
+                {
+                    _preventKeyDefault = true;
+                    SelectSuggestion(_suggestions[_selectedSuggestionIndex]);
+                    return;
+                }
+            }
+            else if (e.Key == "Escape")
+            {
+                _showSuggestions = false;
+                return;
+            }
+        }
+
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_commandInput))
         {
             await SendCommand();
         }
+    }
+
+    private void SelectSuggestion(string suggestion)
+    {
+        _commandInput = "/" + suggestion + " ";
+        _showSuggestions = false;
+        _selectedSuggestionIndex = -1;
     }
 
     private async Task SendCommand()
@@ -77,7 +152,9 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         {
             try
             {
-                await _hubConnection.SendAsync("ExecuteCommand", _commandInput);
+                // Remove leading slash if present before sending, or handle on server
+                var cmdToSend = _commandInput.StartsWith('/') ? _commandInput[1..] : _commandInput;
+                await _hubConnection.SendAsync("ExecuteCommand", cmdToSend);
             }
             catch (Exception ex)
             {
@@ -85,6 +162,7 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
             }
 
             _commandInput = "";
+            _showSuggestions = false;
         }
     }
 

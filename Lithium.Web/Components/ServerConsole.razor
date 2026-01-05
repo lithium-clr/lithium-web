@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-2 p-2 h-96 bg-lithium-50 border border-white/5 rounded-lg">
+<div class="flex flex-col gap-2 p-2 h-96 bg-lithium-50 border border-white/5 rounded-lg relative">
     <div class="shrink-0 mb-2 flex justify-between items-center">
         <p class="text-xs text-white/40">Status: @_connectionStatus</p>
     </div>
@@ -19,14 +19,34 @@
             </li>
         }
     </ul>
-    <div class="w-full h-12 flex items-center shrink-0">
-        <div class="w-full h-full flex items-center px-2 text-white text-sm bg-lithium-100 rounded-md border border-transparent focus-within:border-lithium-200 transition-colors">
+    
+    <div class="w-full relative shrink-0">
+        @if (_showSuggestions && _suggestions.Count > 0)
+        {
+            <div class="absolute bottom-full left-0 w-full mb-2 bg-lithium-100 border border-white/5 rounded-md shadow-lg overflow-hidden z-10">
+                <ul class="py-1">
+                    @for (var i = 0; i < _suggestions.Count; i++)
+                    {
+                        var suggestion = _suggestions[i];
+                        var isSelected = i == _selectedSuggestionIndex;
+                        <li class="px-3 py-2 text-sm text-white cursor-pointer hover:bg-white/5 @(isSelected ? "bg-white/10" : "")"
+                            @onclick="() => SelectSuggestion(suggestion)">
+                            /@suggestion
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        
+        <div class="w-full h-12 flex items-center px-2 text-white text-sm bg-lithium-100 rounded-md border border-transparent focus-within:border-lithium-200 transition-colors">
             <input class="w-full h-full bg-transparent outline-none placeholder:text-white/20" 
                    type="text" 
                    placeholder="Type command..." 
                    @bind="_commandInput" 
-                   @bind:event="oninput"
-                   @onkeydown="HandleKeyDown">
+                   @oninput="HandleInput"
+                   @onkeydown="HandleKeyDown"
+                   @onkeydown:preventDefault="_preventKeyDefault"
+                   >
         </div>
     </div>
 </div>
