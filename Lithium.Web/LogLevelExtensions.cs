@@ -8,7 +8,8 @@ public static class LogLevelExtensions
         LogLevel.Trace => "TRA",
         LogLevel.Information => "INF",
         LogLevel.Warning => "WRN",
-        LogLevel.Error or LogLevel.Critical => "ERR",
+        LogLevel.Error => "ERR",
+        LogLevel.Critical => "CRT",
         _ => ""
     };
 }
