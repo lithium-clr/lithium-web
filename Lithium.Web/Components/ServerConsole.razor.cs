@@ -71,7 +71,7 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         {
             InvokeAsync(() =>
             {
-                _connectionStatus = "Connected.";
+                _connectionStatus = "Connected";
                 StateHasChanged();
             });
             return Task.CompletedTask;
@@ -80,7 +80,7 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         try
         {
             await _hubConnection.StartAsync();
-            _connectionStatus = "Connected.";
+            _connectionStatus = "Connected";
         }
         catch (Exception ex)
         {

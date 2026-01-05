@@ -1,6 +1,20 @@
+@using Microsoft.AspNetCore.SignalR.Client
 <div class="flex flex-col gap-2 p-2 h-96 bg-lithium-50 border border-white/5 rounded-lg relative">
     <div class="shrink-0 mb-2 flex justify-between items-center">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5">
+            @{
+                var status = _hubConnection?.State ?? HubConnectionState.Disconnected;
+                
+                var statusColor = status switch
+                {
+                    HubConnectionState.Disconnected => "bg-white/20",
+                    HubConnectionState.Connected => "bg-lime-500",
+                    HubConnectionState.Connecting => "bg-blue-400",
+                    HubConnectionState.Reconnecting => "bg-orange-500",
+                    _ => "bg-white/20"
+                };
+            }
+            <div class="w-2 h-2 @statusColor rounded-full"></div>
             <p class="text-xs text-white/40">Status: @_connectionStatus</p>
         </div>
         <div class="flex items-center gap-1">
