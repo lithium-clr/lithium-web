@@ -94,12 +94,13 @@
         @if (_showSuggestions && _suggestions.Count > 0)
         {
             <div
-                class="absolute bottom-full left-0 w-full mb-2 bg-lithium-100 border border-white/5 rounded-md shadow-lg overflow-hidden z-10">
+                class="absolute bottom-full left-0 w-full mb-2 bg-lithium-100/50 backdrop-blur-lg border border-white/5 rounded-md shadow-lg overflow-hidden z-10">
                 <ul class="py-1">
                     @for (var i = 0; i < _suggestions.Count; i++)
                     {
                         var suggestion = _suggestions[i];
                         var isSelected = i == _selectedSuggestionIndex;
+                        
                         <li class="px-3 py-2 text-sm text-white cursor-pointer hover:bg-white/5 @(isSelected ? "bg-white/10" : "")"
                             @onclick="() => SelectSuggestion(suggestion)">
                             /@suggestion
