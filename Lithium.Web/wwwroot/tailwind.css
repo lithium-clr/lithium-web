@@ -1264,6 +1264,21 @@
       outline-style: none;
     }
   }
+  .disabled\:opacity-10 {
+    &:disabled {
+      opacity: 10%;
+    }
+  }
+  .disabled\:opacity-25 {
+    &:disabled {
+      opacity: 25%;
+    }
+  }
+  .disabled\:opacity-25\! {
+    &:disabled {
+      opacity: 25% !important;
+    }
+  }
   .aria-\[current\=page\]\:border-lithium-200 {
     &[aria-current="page"] {
       border-color: var(--color-lithium-200);
