@@ -1,6 +1,0 @@
-namespace Lithium.Web;
-
-public sealed class HeartbeatEventArgs(long ticks) : EventArgs
-{
-    public readonly long Ticks = ticks;
-}
