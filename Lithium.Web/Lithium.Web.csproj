@@ -25,7 +25,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\Documents\GitHub\LucideBlazor\LucideBlazor\LucideBlazor.csproj"/>
-        <ProjectReference Include="..\..\Game\Lithium.Server.Dashboard\Lithium.Server.Dashboard.csproj"/>
         <ProjectReference Include="..\..\Lithium.Snowflake\Lithium.Snowflake.csproj" />
     </ItemGroup>
 
