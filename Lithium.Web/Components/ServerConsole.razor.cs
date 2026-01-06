@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.JSInterop;
 
 namespace Lithium.Web.Components;
 
@@ -16,11 +17,12 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
     // Suggestions
     private List<string> _suggestions = [];
     private int _selectedSuggestionIndex = -1;
-    private bool _showSuggestions = false;
-    private bool _preventKeyDefault = false;
+    private bool _showSuggestions;
+    private bool _preventKeyDefault;
 
     // Filtering
-    private LogLevel? _activeFilter = null;
+    private LogLevel? _activeFilter;
+    
     private IEnumerable<(DateTimeOffset, int, string)> FilteredLogs => 
         _activeFilter.HasValue 
             ? _logs.Where(l => l.Item2 == (int)_activeFilter.Value) 
@@ -37,9 +39,9 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         _logs.Add((DateTime.Now, 3, "This is a warning."));
         _logs.Add((DateTime.Now, 4, "This is an error!"));
         
-        _hubConnection.On<DateTimeOffset, int, string>("ReceiveLog", (timestamp, level, message) =>
+        _hubConnection.On<DateTimeOffset, int, string>("ReceiveLog", async (timestamp, level, message) =>
         {
-            InvokeAsync(() =>
+            await InvokeAsync( () =>
             {
                 _logs.Add((timestamp, level, message));
                 StateHasChanged();
@@ -86,6 +88,11 @@ public partial class ServerConsole : ComponentBase, IAsyncDisposable
         {
             _connectionStatus = $"Connection failed: {ex.Message}";
         }
+    }
+
+    private void ClearLogs()
+    {
+        _logs.Clear();
     }
 
     private void SetFilter(LogLevel? level)
