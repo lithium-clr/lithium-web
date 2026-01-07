@@ -29,8 +29,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            export TLS_CERT_BASE64='${{ secrets.TLS_CERT_BASE64 }}'
-            export TLS_CERT_PASSWORD='${{ secrets.TLS_CERT_PASSWORD }}'
             cd /opt/site
             docker compose pull
             docker compose up -d
