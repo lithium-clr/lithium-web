@@ -1,10 +1,10 @@
 using Lithium.Web;
 using Lithium.Web.Collections;
-using Lithium.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Lithium.Web.Components;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,12 @@ var client = new MongoClient(connectionString);
 builder.Services.AddMongoDB<WebDbContext>(client, "web");
 builder.Services.AddScoped<UserCollection>();
 
+// Data Protection - IMPORTANT pour Cloudflare
+var dataProtectionPath = Path.Combine("/home/app/.aspnet/DataProtection-Keys");
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionPath))
+    .SetApplicationName("LithiumWeb");
+
 // Auth
 builder.Services.AddCascadingAuthenticationState();
 
@@ -36,9 +42,9 @@ builder.Services.AddAuthentication(options =>
 // Configuration pour proxy inverse (Cloudflare)
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
-    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | 
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                ForwardedHeaders.XForwardedProto;
-    options.KnownNetworks.Clear();
+    options.KnownIPNetworks.Clear();
     options.KnownProxies.Clear();
 });
 
