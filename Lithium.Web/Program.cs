@@ -12,6 +12,7 @@ builder.Services.AddRazorComponents()
 
 var connectionString = builder.Configuration["Mongo:Uri"] 
                        ?? Environment.GetEnvironmentVariable("MONGO_URI");
+//
 
 ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
