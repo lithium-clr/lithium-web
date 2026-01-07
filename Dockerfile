@@ -22,4 +22,10 @@ RUN dotnet publish "./Lithium.Web.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Lithium.Web.dll"]
+# ENTRYPOINT ["dotnet", "Lithium.Web.dll"]
+
+# Créer un script d'entrypoint pour corriger les permissions au démarrage
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
