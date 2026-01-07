@@ -10,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var connectionString = builder.Configuration["Mongo:Uri"];
+var connectionString = builder.Configuration["Mongo:Uri"] 
+                       ?? Environment.GetEnvironmentVariable("MONGO_URI");
+
 ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
 var client = new MongoClient(connectionString);
