@@ -4,6 +4,7 @@ using Lithium.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Lithium.Web.Components;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,16 +33,19 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-// ⚠️ PAS de HTTPS redirection
-// Cloudflare gère TLS, l'app reste en HTTP
+// Configuration pour proxy inverse (Cloudflare)
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | 
+                               ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 var app = builder.Build();
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor 
-                       | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
-});
+// IMPORTANT : Forwarded headers AVANT tout le reste
+app.UseForwardedHeaders();
 
 // Pipeline
 if (app.Environment.IsDevelopment())
@@ -51,7 +55,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // ❌ pas de HSTS (inutile sans HTTPS local)
 }
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
