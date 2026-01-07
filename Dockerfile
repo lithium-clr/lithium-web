@@ -1,8 +1,8 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+# EXPOSE 80
+# EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -22,9 +22,4 @@ RUN dotnet publish "./Lithium.Web.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-# ENTRYPOINT ["dotnet", "Lithium.Web.dll"]
-
-# Créer un script d'entrypoint pour corriger les permissions au démarrage
-COPY entrypoint.sh /app/entrypoint.sh
-
-ENTRYPOINT ["sh", "/app/entrypoint.sh"]
+ENTRYPOINT ["dotnet", "Lithium.Web.dll"]
