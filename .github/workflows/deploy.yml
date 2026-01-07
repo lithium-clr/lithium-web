@@ -14,7 +14,7 @@ jobs:
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: lithium-clr
+          username: bub-bl
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build and Push Docker image
