@@ -1,5 +1,6 @@
 using Lithium.Web;
 using Lithium.Web.Collections;
+using Lithium.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Lithium.Web.Components;
 using MongoDB.Driver;
@@ -12,7 +13,6 @@ builder.Services.AddRazorComponents()
 
 var connectionString = builder.Configuration["Mongo:Uri"] 
                        ?? Environment.GetEnvironmentVariable("MONGO_URI");
-//
 
 ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
@@ -74,5 +74,19 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 // app.MapAdditionalIdentityEndpoints();
+
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var userCollection = scope.ServiceProvider.GetRequiredService<UserCollection>();
+    
+    if (!await userCollection.ExistsAsync(u => u.Username == "admin"))
+    {
+        await userCollection.InsertAsync(new User
+        {
+            Username = "admin"
+        });
+    }
+}
 
 app.Run();
