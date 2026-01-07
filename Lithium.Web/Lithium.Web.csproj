@@ -18,7 +18,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\Documents\GitHub\LucideBlazor\LucideBlazor\LucideBlazor.csproj"/>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\LucideBlazor\LucideBlazor.csproj"/>
     </ItemGroup>
 
 </Project>
