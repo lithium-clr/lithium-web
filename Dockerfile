@@ -7,12 +7,12 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Web/Lithium.Web/Lithium.Web.csproj", "Web/Lithium.Web/"]
-COPY ["../../Documents/GitHub/LucideBlazor/LucideBlazor/LucideBlazor.csproj", "../../Documents/GitHub/LucideBlazor/LucideBlazor/"]
-COPY ["../../Documents/GitHub/LucideBlazor/LucideBlazor.Generator/LucideBlazor.Generator.csproj", "../../Documents/GitHub/LucideBlazor/LucideBlazor.Generator/"]
-RUN dotnet restore "Web/Lithium.Web/Lithium.Web.csproj"
+COPY ["Lithium.Web/Lithium.Web.csproj", "Lithium.Web/"]
+COPY ["LucideBlazor/LucideBlazor.csproj", "LucideBlazor/"]
+COPY ["LucideBlazor.Generator/LucideBlazor.Generator.csproj", "LucideBlazor.Generator/"]
+RUN dotnet restore "Lithium.Web/Lithium.Web.csproj"
 COPY . .
-WORKDIR "/src/Web/Lithium.Web"
+WORKDIR "/src/Lithium.Web"
 RUN dotnet build "./Lithium.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
