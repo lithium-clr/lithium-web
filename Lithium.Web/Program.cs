@@ -1,3 +1,4 @@
+using System.Net;
 using Lithium.Web;
 using Lithium.Web.Collections;
 using Lithium.Web.Models;
@@ -64,7 +65,20 @@ else
 }
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = builder.Environment.IsDevelopment()
+        ? (int)HttpStatusCode.TemporaryRedirect
+        : (int)HttpStatusCode.PermanentRedirect;
+
+    if (builder.Environment.IsProduction() &&
+        int.TryParse(Environment.GetEnvironmentVariable("HTTPS_PORT"), out var httsPort))
+    {
+        options.HttpsPort = httsPort;
+    }
+});
 
 app.UseAntiforgery();
 
@@ -79,9 +93,9 @@ if (app.Environment.IsProduction())
 {
     var httpPort = Environment.GetEnvironmentVariable("HTTP_PORT");
     var httpsPort = Environment.GetEnvironmentVariable("HTTPS_PORT");
-    
-    app.Urls.Add("http://*:" + httpPort);
-    app.Urls.Add("https://*:" + httpsPort);
+
+    app.Urls.Add("http://+:" + httpPort);
+    app.Urls.Add("https://+:" + httpsPort);
 }
 
 app.Run();
