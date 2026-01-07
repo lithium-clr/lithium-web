@@ -75,18 +75,4 @@ app.MapRazorComponents<App>()
 // Add additional endpoints required by the Identity /Account Razor components.
 // app.MapAdditionalIdentityEndpoints();
 
-// Seed data
-using (var scope = app.Services.CreateScope())
-{
-    var userCollection = scope.ServiceProvider.GetRequiredService<UserCollection>();
-    
-    if (!await userCollection.ExistsAsync(u => u.Username == "admin"))
-    {
-        await userCollection.InsertAsync(new User
-        {
-            Username = "admin"
-        });
-    }
-}
-
 app.Run();
