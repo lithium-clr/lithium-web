@@ -4,8 +4,8 @@ set -e
 CERT_PATH=/home/app/certs/lithium.pfx
 DATA_KEYS=/home/app/.aspnet/DataProtection-Keys
 
-# Créer les dossiers si absent
-mkdir -p "$CERT_PATH" "$(dirname "$CERT_PATH")"
+# Créer les dossiers si absents
+mkdir -p "$(dirname "$CERT_PATH")"
 mkdir -p "$DATA_KEYS"
 
 # Générer certificat self-signed si absent
