@@ -1,4 +1,3 @@
-using System.Net;
 using Lithium.Web;
 using Lithium.Web.Collections;
 using Lithium.Web.Models;
@@ -8,23 +7,23 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Razor / Blazor
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var connectionString = builder.Configuration["Mongo:Uri"]
-                       ?? Environment.GetEnvironmentVariable("MONGO_URI");
+// MongoDB
+var connectionString =
+    builder.Configuration["Mongo:Uri"] ??
+    Environment.GetEnvironmentVariable("MONGO_URI");
 
 ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
 var client = new MongoClient(connectionString);
 builder.Services.AddMongoDB<WebDbContext>(client, "web");
-
 builder.Services.AddScoped<UserCollection>();
 
+// Auth
 builder.Services.AddCascadingAuthenticationState();
-// builder.Services.AddScoped<IdentityRedirectManager>();
-// builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -33,39 +32,12 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-builder.Services.AddHttpsRedirection(options =>
-{
-    options.RedirectStatusCode = builder.Environment.IsDevelopment()
-        ? (int)HttpStatusCode.TemporaryRedirect
-        : (int)HttpStatusCode.PermanentRedirect;
-
-    if (builder.Environment.IsProduction() &&
-        int.TryParse(Environment.GetEnvironmentVariable("HTTPS_PORT"), out var httsPort))
-    {
-        options.HttpsPort = httsPort;
-    }
-});
-
-// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-//                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-// builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//     options.UseSqlite(connectionString));
-// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-//
-// builder.Services.AddIdentityCore<ApplicationUser>(options =>
-//     {
-//         options.SignIn.RequireConfirmedAccount = true;
-//         options.Stores.SchemaVersion = IdentitySchemaVersions.Version3;
-//     })
-//     .AddEntityFrameworkStores<ApplicationDbContext>()
-//     .AddSignInManager()
-//     .AddDefaultTokenProviders();
-
-// builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+// ⚠️ PAS de HTTPS redirection
+// Cloudflare gère TLS, l'app reste en HTTP
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -73,12 +45,10 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    // ❌ pas de HSTS (inutile sans HTTPS local)
 }
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
-app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
@@ -86,16 +56,8 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-// Add additional endpoints required by the Identity /Account Razor components.
-// app.MapAdditionalIdentityEndpoints();
-
-if (app.Environment.IsProduction())
-{
-    var httpPort = Environment.GetEnvironmentVariable("HTTP_PORT");
-    var httpsPort = Environment.GetEnvironmentVariable("HTTPS_PORT");
-
-    app.Urls.Add("http://+:" + httpPort);
-    app.Urls.Add("https://+:" + httpsPort);
-}
+// Binding ports (HTTP uniquement)
+var httpPort = Environment.GetEnvironmentVariable("HTTP_PORT") ?? "8080";
+app.Urls.Add($"http://+:{httpPort}");
 
 app.Run();
