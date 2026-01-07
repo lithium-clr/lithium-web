@@ -33,6 +33,19 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = builder.Environment.IsDevelopment()
+        ? (int)HttpStatusCode.TemporaryRedirect
+        : (int)HttpStatusCode.PermanentRedirect;
+
+    if (builder.Environment.IsProduction() &&
+        int.TryParse(Environment.GetEnvironmentVariable("HTTPS_PORT"), out var httsPort))
+    {
+        options.HttpsPort = httsPort;
+    }
+});
+
 // var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
 //                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 // builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -65,20 +78,7 @@ else
 }
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
-// app.UseHttpsRedirection();
-
-builder.Services.AddHttpsRedirection(options =>
-{
-    options.RedirectStatusCode = builder.Environment.IsDevelopment()
-        ? (int)HttpStatusCode.TemporaryRedirect
-        : (int)HttpStatusCode.PermanentRedirect;
-
-    if (builder.Environment.IsProduction() &&
-        int.TryParse(Environment.GetEnvironmentVariable("HTTPS_PORT"), out var httsPort))
-    {
-        options.HttpsPort = httsPort;
-    }
-});
+app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
