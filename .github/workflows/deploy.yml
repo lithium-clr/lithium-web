@@ -1,7 +1,7 @@
 name: Deploy Lithium Site
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
