@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-var connectionString = builder.Configuration["Mongo:Uri"] 
+var connectionString = builder.Configuration["Mongo:Uri"]
                        ?? Environment.GetEnvironmentVariable("MONGO_URI");
 
 ArgumentException.ThrowIfNullOrEmpty(connectionString);
@@ -74,5 +74,14 @@ app.MapRazorComponents<App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 // app.MapAdditionalIdentityEndpoints();
+
+if (app.Environment.IsProduction())
+{
+    var httpPort = Environment.GetEnvironmentVariable("HTTP_PORT");
+    var httpsPort = Environment.GetEnvironmentVariable("HTTPS_PORT");
+    
+    app.Urls.Add("http://*:" + httpPort);
+    app.Urls.Add("https://*:" + httpsPort);
+}
 
 app.Run();
