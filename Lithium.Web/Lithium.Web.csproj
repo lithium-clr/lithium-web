@@ -18,14 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\..\..\Documents\GitHub\LucideBlazor\LucideBlazor\LucideBlazor.csproj"/>
-        <ProjectReference Include="..\..\Lithium.Snowflake\Lithium.Snowflake.csproj" />
     </ItemGroup>
 
 </Project>

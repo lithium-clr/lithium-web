@@ -1,4 +1,3 @@
-using Lithium.Snowflake.Extensions;
 using Lithium.Web;
 using Lithium.Web.Collections;
 using Microsoft.AspNetCore.Identity;
@@ -18,8 +17,6 @@ var client = new MongoClient(connectionString);
 builder.Services.AddMongoDB<WebDbContext>(client, "web");
 
 builder.Services.AddScoped<UserCollection>();
-
-builder.Services.AddIdGen();
 
 builder.Services.AddCascadingAuthenticationState();
 // builder.Services.AddScoped<IdentityRedirectManager>();
