@@ -56,8 +56,4 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-// Binding ports (HTTP uniquement)
-var httpPort = Environment.GetEnvironmentVariable("HTTP_PORT") ?? "8080";
-app.Urls.Add($"http://+:{httpPort}");
-
 app.Run();
