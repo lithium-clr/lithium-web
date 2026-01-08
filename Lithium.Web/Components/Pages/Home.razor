@@ -6,15 +6,38 @@
 
 <PageTitle>Lithium - Hytale Server</PageTitle>
 
+<style>
+    .hero-bg {
+        background-color: var(--color-lithium-0);
+        background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 42%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 97% 21%, hsla(135, 98%, 42%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 52% 99%, hsla(355, 98%, 42%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 10% 29%, hsla(256, 96%, 41%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.1) 0px, transparent 50%);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        opacity: .2;
+    }
+</style>
+
 <!-- Navigation Bar -->
 <nav class="fixed top-0 left-0 right-0 z-50 bg-lithium-0/80 backdrop-blur-md border-b border-lithium-100">
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div class="flex items-center gap-8">
             <a href="/" class="text-xl font-bold text-lithium-900! hover:text-white! transition-colors">Lithium</a>
             <div class="hidden md:flex items-center gap-6">
-                <a href="/docs" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Documentation"]</a>
-                <a href="https://status.lithium.run/" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Status"]</a>
-                <a href="/roadmap" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Roadmap"]</a>
+                <a href="/docs"
+                   class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Documentation"]</a>
+                <a href="https://status.lithium.run/"
+                   class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Status"]</a>
+                <a href="/roadmap"
+                   class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Roadmap"]</a>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -41,20 +64,20 @@
     </div>
 </nav>
 
-<div class="relative flex flex-col items-center justify-center min-h-screen text-lithium-900 pt-16">
-
+<div class="relative flex flex-col items-center justify-center min-h-screen text-lithium-900 pt-16 overflow-hidden">
+    <div class="hero-bg"></div>
     <!-- Hero Section -->
-    <div class="z-10 text-center max-w-4xl px-6">
-        <h1 class="text-7xl font-bold mb-6 text-white tracking-tight">
+    <div class="z-10 text-center max-w-4xl px-6 py-12">
+        <h1 class="text-7xl font-bold mb-4 text-white tracking-tight">
             @Localizer["HeroTitle"]
         </h1>
-        <p class="text-2xl mb-10 text-lithium-600 font-light">
+        <p class="text-xl mb-6 text-lithium-600 font-light">
             @Localizer["HeroSubtitle"]
             <br/>
             <span class="text-lg text-lithium-500">@Localizer["HeroDescription"]</span>
         </p>
 
-        <div class="flex flex-row gap-4 justify-center mb-16">
+        <div class="flex flex-row gap-4 justify-center mb-8">
             <a href="/docs"
                class="px-8 py-3 bg-lithium-100 text-white! hover:bg-lithium-200 rounded-lg font-semibold transition-colors duration-200 border border-lithium-200">
                 @Localizer["GetStarted"]
@@ -67,19 +90,42 @@
     </div>
 
     <!-- Features Grid -->
-    <div class="z-10 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl px-6 mt-8 w-full">
+    <div class="z-10 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl px-6 w-full">
         <div
-            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-colors">
+            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-all duration-300 transform hover:-translate-y-1">
+            <div
+                class="flex items-center justify-center h-12 w-12 rounded-full bg-lithium-100 border border-lithium-200 mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
             <h3 class="text-xl font-bold mb-3 text-white">@Localizer["PerformanceTitle"]</h3>
             <p class="text-lithium-600 leading-relaxed">@Localizer["PerformanceDescription"]</p>
         </div>
         <div
-            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-colors">
+            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-all duration-300 transform hover:-translate-y-1">
+            <div
+                class="flex items-center justify-center h-12 w-12 rounded-full bg-lithium-100 border border-lithium-200 mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"></path>
+                </svg>
+            </div>
             <h3 class="text-xl font-bold mb-3 text-white">@Localizer["ModularityTitle"]</h3>
             <p class="text-lithium-600 leading-relaxed">@Localizer["ModularityDescription"]</p>
         </div>
         <div
-            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-colors">
+            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-all duration-300 transform hover:-translate-y-1">
+            <div
+                class="flex items-center justify-center h-12 w-12 rounded-full bg-lithium-100 border border-lithium-200 mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                </svg>
+            </div>
             <h3 class="text-xl font-bold mb-3 text-white">@Localizer["OpenSourceTitle"]</h3>
             <p class="text-lithium-600 leading-relaxed">@Localizer["OpenSourceDescription"]</p>
         </div>
@@ -87,7 +133,7 @@
 
     <!-- Footer -->
     <div
-        class="z-10 mt-24 pb-8 w-full max-w-6xl px-6 flex flex-col md:flex-row justify-between items-center text-lithium-500 text-sm border-t border-lithium-100 pt-8">
+        class="z-10 mt-12 pb-8 w-full max-w-6xl px-6 flex flex-col md:flex-row justify-between items-center text-lithium-500 text-sm border-t border-lithium-100 pt-8">
         <p>&copy; @DateTime.Now.Year Lithium Project. @Localizer["AllRightsReserved"]</p>
         <div class="flex items-center gap-4 mt-4 md:mt-0">
             <span class="flex items-center gap-2">
@@ -112,7 +158,7 @@
                 </span>
             </a>
             <span class="w-1 h-1 bg-lithium-300 rounded-full"></span>
-            <CultureSelector />
+            <CultureSelector/>
             <span class="w-1 h-1 bg-lithium-300 rounded-full"></span>
             <a href="https://github.com/lithium-clr/lithium-web/tree/main" target="_blank"
                class="text-lithium-900! hover:text-white! transition-colors font-mono">
