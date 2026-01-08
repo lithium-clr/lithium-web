@@ -1,6 +1,8 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Localization
 @layout EmptyLayout
 @rendermode InteractiveServer
+@inject IStringLocalizer<Home> Localizer
 
 <PageTitle>Lithium - Hytale Server</PageTitle>
 
@@ -10,9 +12,9 @@
         <div class="flex items-center gap-8">
             <a href="/" class="text-xl font-bold text-lithium-900! hover:text-white! transition-colors">Lithium</a>
             <div class="hidden md:flex items-center gap-6">
-                <a href="/docs" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">Documentation</a>
-                <a href="https://status.lithium.run/" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">Status</a>
-                <a href="/roadmap" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">Roadmap</a>
+                <a href="/docs" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Documentation"]</a>
+                <a href="https://status.lithium.run/" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Status"]</a>
+                <a href="/roadmap" class="text-lithium-600! hover:text-white! transition-colors text-sm font-medium">@Localizer["Roadmap"]</a>
             </div>
         </div>
         <div class="flex items-center gap-4">
@@ -33,7 +35,7 @@
             </a>
             <button
                 class="ml-4 px-4 py-2 bg-lithium-100 hover:bg-lithium-200 text-white rounded-md text-sm font-medium transition-colors border border-lithium-200">
-                Login
+                @Localizer["Login"]
             </button>
         </div>
     </div>
@@ -44,18 +46,18 @@
     <!-- Hero Section -->
     <div class="z-10 text-center max-w-4xl px-6">
         <h1 class="text-7xl font-bold mb-6 text-white tracking-tight">
-            Lithium
+            @Localizer["HeroTitle"]
         </h1>
         <p class="text-2xl mb-10 text-lithium-600 font-light">
-            A modern C# alternative to Hytale Java servers.
+            @Localizer["HeroSubtitle"]
             <br/>
-            <span class="text-lg text-lithium-500">Fast. Flexible. Open Source.</span>
+            <span class="text-lg text-lithium-500">@Localizer["HeroDescription"]</span>
         </p>
 
         <div class="flex flex-row gap-4 justify-center mb-16">
             <a href="/docs"
                class="px-8 py-3 bg-lithium-100 text-white! hover:bg-lithium-200 rounded-lg font-semibold transition-colors duration-200 border border-lithium-200">
-                Get Started
+                @Localizer["GetStarted"]
             </a>
             <a href="https://github.com/lithium-clr" target="_blank"
                class="px-8 py-3 bg-transparent hover:bg-lithium-50 text-lithium-600! hover:text-white rounded-lg font-semibold transition-colors duration-200 border border-lithium-200">
@@ -68,31 +70,32 @@
     <div class="z-10 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl px-6 mt-8 w-full">
         <div
             class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-colors">
-            <h3 class="text-xl font-bold mb-3 text-white">Performance</h3>
-            <p class="text-lithium-600 leading-relaxed">Optimized ECS architecture for minimal latency and maximum scalability.</p>
+            <h3 class="text-xl font-bold mb-3 text-white">@Localizer["PerformanceTitle"]</h3>
+            <p class="text-lithium-600 leading-relaxed">@Localizer["PerformanceDescription"]</p>
         </div>
         <div
             class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-colors">
-            <h3 class="text-xl font-bold mb-3 text-white">Modularity</h3>
-            <p class="text-lithium-600 leading-relaxed">Flexible plugin system allowing you to extend functionality as needed.</p>
+            <h3 class="text-xl font-bold mb-3 text-white">@Localizer["ModularityTitle"]</h3>
+            <p class="text-lithium-600 leading-relaxed">@Localizer["ModularityDescription"]</p>
         </div>
         <div
             class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-colors">
-            <h3 class="text-xl font-bold mb-3 text-white">Open Source</h3>
-            <p class="text-lithium-600 leading-relaxed">Developed by the community, for the community. Transparent and free.</p>
+            <h3 class="text-xl font-bold mb-3 text-white">@Localizer["OpenSourceTitle"]</h3>
+            <p class="text-lithium-600 leading-relaxed">@Localizer["OpenSourceDescription"]</p>
         </div>
     </div>
 
     <!-- Footer -->
     <div
         class="z-10 mt-24 pb-8 w-full max-w-6xl px-6 flex flex-col md:flex-row justify-between items-center text-lithium-500 text-sm border-t border-lithium-100 pt-8">
-        <p>&copy; @DateTime.Now.Year Lithium Project. All rights reserved.</p>
+        <p>&copy; @DateTime.Now.Year Lithium Project. @Localizer["AllRightsReserved"]</p>
         <div class="flex items-center gap-4 mt-4 md:mt-0">
             <span class="flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round"
-                                                                                                 stroke-linejoin="round"
-                                                                                                 stroke-width="2"
-                                                                                                 d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 v0.1.0-alpha
             </span>
             <span class="w-1 h-1 bg-lithium-300 rounded-full"></span>
@@ -102,12 +105,14 @@
                          stroke="currentColor"
                          stroke-width="2"
                          stroke-linecap="round"
-                         stroke-linejoin="round"
-                    ><path
+                         stroke-linejoin="round">
+                        <path
                             d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>
                     uptime
                 </span>
             </a>
+            <span class="w-1 h-1 bg-lithium-300 rounded-full"></span>
+            <CultureSelector />
             <span class="w-1 h-1 bg-lithium-300 rounded-full"></span>
             <a href="https://github.com/lithium-clr/lithium-web/tree/main" target="_blank"
                class="text-lithium-900! hover:text-white! transition-colors font-mono">
