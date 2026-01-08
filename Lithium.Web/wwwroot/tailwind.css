@@ -490,6 +490,9 @@
   .bg-clip-text {
     background-clip: text;
   }
+  .fill-lithium-600\! {
+    fill: var(--color-lithium-600) !important;
+  }
   .p-6 {
     padding: calc(var(--spacing) * 6);
   }
@@ -589,14 +592,26 @@
   .text-green-400 {
     color: var(--color-green-400);
   }
+  .text-lithium-100\! {
+    color: var(--color-lithium-100) !important;
+  }
   .text-lithium-500 {
     color: var(--color-lithium-500);
+  }
+  .text-lithium-500\! {
+    color: var(--color-lithium-500) !important;
   }
   .text-lithium-600 {
     color: var(--color-lithium-600);
   }
+  .text-lithium-600\! {
+    color: var(--color-lithium-600) !important;
+  }
   .text-lithium-900 {
     color: var(--color-lithium-900);
+  }
+  .text-lithium-900\! {
+    color: var(--color-lithium-900) !important;
   }
   .text-purple-400 {
     color: var(--color-purple-400);
@@ -606,6 +621,9 @@
   }
   .text-white {
     color: var(--color-white);
+  }
+  .text-white\! {
+    color: var(--color-white) !important;
   }
   .backdrop-blur-md {
     --tw-backdrop-blur: blur(var(--blur-md));
@@ -675,10 +693,24 @@
       }
     }
   }
+  .hover\:text-lithium-900\! {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-lithium-900) !important;
+      }
+    }
+  }
   .hover\:text-white {
     &:hover {
       @media (hover: hover) {
         color: var(--color-white);
+      }
+    }
+  }
+  .hover\:text-white\! {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-white) !important;
       }
     }
   }
