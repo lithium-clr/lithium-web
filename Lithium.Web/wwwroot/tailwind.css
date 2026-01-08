@@ -1,5 +1,5 @@
 /*! tailwindcss v4.1.17 | MIT License | https://tailwindcss.com */
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -12,7 +12,6 @@
     --color-blue-400: oklch(70.7% 0.165 254.624);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-700: oklch(48.8% 0.243 264.376);
-    --color-indigo-500: oklch(58.5% 0.233 277.117);
     --color-purple-400: oklch(71.4% 0.203 305.504);
     --color-purple-600: oklch(55.8% 0.288 302.321);
     --color-gray-300: oklch(87.2% 0.01 258.338);
@@ -26,8 +25,6 @@
     --container-4xl: 56rem;
     --container-6xl: 72rem;
     --container-7xl: 80rem;
-    --text-xs: 0.75rem;
-    --text-xs--line-height: calc(1 / 0.75);
     --text-sm: 0.875rem;
     --text-sm--line-height: calc(1.25 / 0.875);
     --text-lg: 1.125rem;
@@ -60,12 +57,11 @@
     --color-lithium-100: #222229;
     --color-lithium-200: #33333b;
     --color-lithium-300: #43434c;
-    --color-lithium-400: #54545d;
     --color-lithium-500: #64646f;
     --color-lithium-600: #747480;
     --color-lithium-700: #858591;
     --color-lithium-900: #b6b6c5;
-    --font-googlesans: 'Google Sans', sans-serif;
+    --font-inter: 'Inter', sans-serif;
   }
 }
 @layer base {
@@ -262,9 +258,6 @@
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
   }
-  .mt-12 {
-    margin-top: calc(var(--spacing) * 12);
-  }
   .mt-24 {
     margin-top: calc(var(--spacing) * 24);
   }
@@ -274,14 +267,8 @@
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
   }
-  .mb-8 {
-    margin-bottom: calc(var(--spacing) * 8);
-  }
   .mb-10 {
     margin-bottom: calc(var(--spacing) * 10);
-  }
-  .mb-12 {
-    margin-bottom: calc(var(--spacing) * 12);
   }
   .mb-16 {
     margin-bottom: calc(var(--spacing) * 16);
@@ -409,26 +396,11 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
-  .border-gray-700 {
-    border-color: var(--color-gray-700);
-  }
   .border-lithium-100 {
     border-color: var(--color-lithium-100);
   }
   .border-lithium-200 {
     border-color: var(--color-lithium-200);
-  }
-  .bg-blue-600 {
-    background-color: var(--color-blue-600);
-  }
-  .bg-gray-700 {
-    background-color: var(--color-gray-700);
-  }
-  .bg-gray-800\/50 {
-    background-color: color-mix(in srgb, oklch(27.8% 0.033 256.848) 50%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
-    }
   }
   .bg-lithium-0 {
     background-color: var(--color-lithium-0);
@@ -461,16 +433,8 @@
     }
     background-image: linear-gradient(var(--tw-gradient-stops));
   }
-  .bg-gradient-to-r {
-    --tw-gradient-position: to right in oklab;
-    background-image: linear-gradient(var(--tw-gradient-stops));
-  }
   .bg-\[radial-gradient\(circle_at_1rem_1rem\,\#222229_1px\,transparent_0\)\] {
     background-image: radial-gradient(circle at 1rem 1rem,#222229 1px,transparent 0);
-  }
-  .from-blue-400 {
-    --tw-gradient-from: var(--color-blue-400);
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .from-lithium-50 {
     --tw-gradient-from: var(--color-lithium-50);
@@ -480,21 +444,8 @@
     --tw-gradient-to: var(--color-lithium-100);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
-  .to-purple-600 {
-    --tw-gradient-to: var(--color-purple-600);
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
   .bg-size-\[2rem_2rem\] {
     background-size: 2rem 2rem;
-  }
-  .bg-clip-text {
-    background-clip: text;
-  }
-  .fill-lithium-600\! {
-    fill: var(--color-lithium-600) !important;
-  }
-  .p-6 {
-    padding: calc(var(--spacing) * 6);
   }
   .p-8 {
     padding: calc(var(--spacing) * 8);
@@ -532,10 +483,6 @@
   .text-2xl {
     font-size: var(--text-2xl);
     line-height: var(--tw-leading, var(--text-2xl--line-height));
-  }
-  .text-6xl {
-    font-size: var(--text-6xl);
-    line-height: var(--tw-leading, var(--text-6xl--line-height));
   }
   .text-7xl {
     font-size: var(--text-7xl);
@@ -577,29 +524,8 @@
     --tw-tracking: var(--tracking-tight);
     letter-spacing: var(--tracking-tight);
   }
-  .text-blue-400 {
-    color: var(--color-blue-400);
-  }
-  .text-gray-300 {
-    color: var(--color-gray-300);
-  }
-  .text-gray-400 {
-    color: var(--color-gray-400);
-  }
-  .text-gray-500 {
-    color: var(--color-gray-500);
-  }
-  .text-green-400 {
-    color: var(--color-green-400);
-  }
-  .text-lithium-100\! {
-    color: var(--color-lithium-100) !important;
-  }
   .text-lithium-500 {
     color: var(--color-lithium-500);
-  }
-  .text-lithium-500\! {
-    color: var(--color-lithium-500) !important;
   }
   .text-lithium-600 {
     color: var(--color-lithium-600);
@@ -612,12 +538,6 @@
   }
   .text-lithium-900\! {
     color: var(--color-lithium-900) !important;
-  }
-  .text-purple-400 {
-    color: var(--color-purple-400);
-  }
-  .text-transparent {
-    color: transparent;
   }
   .text-white {
     color: var(--color-white);
@@ -651,20 +571,6 @@
       }
     }
   }
-  .hover\:bg-blue-700 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-blue-700);
-      }
-    }
-  }
-  .hover\:bg-gray-600 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-gray-600);
-      }
-    }
-  }
   .hover\:bg-lithium-50 {
     &:hover {
       @media (hover: hover) {
@@ -676,27 +582,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-lithium-200);
-      }
-    }
-  }
-  .hover\:text-lithium-700 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-lithium-700);
-      }
-    }
-  }
-  .hover\:text-lithium-900 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-lithium-900);
-      }
-    }
-  }
-  .hover\:text-lithium-900\! {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-lithium-900) !important;
       }
     }
   }
@@ -743,7 +628,7 @@
 }
 @layer base {
   * {
-    font-family: var(--font-googlesans);
+    font-family: var(--font-inter);
     -webkit-user-select: none;
     user-select: none;
   }
