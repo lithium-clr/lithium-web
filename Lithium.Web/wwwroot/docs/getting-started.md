@@ -8,88 +8,164 @@ icon: 🚀
 
 Welcome to the getting started guide! This document provides a comprehensive overview of how to use this documentation and demonstrates various Markdown features.
 
-## Introduction
+:::tip
+This is a note
+:::
 
-This guide will walk you through the essential features and functionalities. Whether you're a new user or just need a refresher, you'll find everything you need to know right here.
+## Text Formatting & Emojis
 
-### Prerequisites
+This section showcases various text formatting options available in Markdown.
 
-Before you begin, make sure you have the following:
+- **Bold text**: **This is bold text**
+- *Italic text*: *This is italic text*
+- ~~Strikethrough~~: ~~This text is struck through~~
+- <u>Underlined text</u>: <u>This text is underlined</u>
+- <mark>Highlighted text</mark>: <mark>This text is highlighted</mark>
+- <abbr title="HyperText Markup Language">HTML</abbr>: Hover over this text.
+- Keyboard input: Use <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+- Emojis: :rocket: :tada: :warning:
+- Subscript: H~2~O
+- Superscript: x^2^
+- ++Inserted text++
+- ==Marked text==
 
-- A modern web browser (e.g., Chrome, Firefox, Edge)
-- A stable internet connection
-- A sense of adventure!
+## Alerts
 
-## Markdown Examples
+Use alerts to draw attention to important information.
 
-This documentation is built using Markdown, a lightweight markup language with plain-text-formatting syntax. Here are some examples of what you can do.
+::: note
+This is a note alert.
+:::
 
-### Text Formatting
+::: tip
+This is a tip alert.
+:::
 
-You can easily format text to be **bold**, *italic*, or even ***bold and italic***. You can also use `inline code` for short snippets.
+::: warning
+This is a warning alert.
+:::
 
-### Lists
+::: danger
+This is a danger alert.
+:::
 
-Create ordered or unordered lists to organize information.
+## Diagrams (Mermaid)
 
-**Unordered List:**
+Create diagrams using Mermaid syntax.
+
+### Flowchart
+
+```mermaid
+graph TD;
+    A[Start] --> B{Is it working?};
+    B -- Yes --> C[Great!];
+    B -- No --> D[Fix it!];
+    D --> B;
+```
+
+### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>John: Hello John, how are you?
+    loop Healthcheck
+        John->>John: Fight against hypochondria
+    end
+    Note right of John: Rational thoughts<br/>prevail...
+    John-->>Alice: Great!
+    John->>Bob: How about you?
+    Bob-->>John: Jolly good!
+```
+
+^^ This is a footer
+^^ multi-line
+
+## Mathematical Formulas (KaTeX)
+
+You can write mathematical formulas using LaTeX syntax.
+
+- Inline formula: $E = mc^2$
+- Display formula: $$ \int_a^b f(x) \, dx = F(b) - F(a) $$
+
+## Custom Containers
+
+Use custom containers to draw attention to important information.
+
+::: tip
+This is a tip. It's a great way to provide helpful advice.
+:::
+
+::: warning
+This is a warning. Use it to indicate something that requires caution.
+:::
+
+## Collapsible Sections
+
+<details>
+  <summary>Click to expand</summary>
+  
+  This is the content that was hidden.
+  
+</details>
+
+## Embedded Media
+
+[//]: # (![youtube]&#40;https://www.youtube.com/watch?v=dQw4w9WgXcQ&#41;)
+
+## Figures & Images
+
+[//]: # (![Placeholder Image]&#40;https://via.placeholder.com/600x200 "This is a caption for the image above."&#41;)
+
+## Blockquotes
+
+> This is a simple blockquote.
+
+## Lists
 
 - Item 1
 - Item 2
-  - Sub-item 2.1
-  - Sub-item 2.2
-- Item 3
+- [ ] Task list item
+- [x] Completed task list item
 
-**Ordered List:**
-
-1. First item
-2. Second item
-3. Third item
-
-### Links
-
-Create hyperlinks to navigate to other pages or external websites.
-
-- [Go to Google](https://www.google.com)
-- [Go to another page](./another-page)
-
-### Code Blocks
-
-Display code blocks with syntax highlighting for various languages.
+## Code Blocks
 
 ```csharp
-public class HelloWorld
-{
-    public static void Main(string[] args)
-    {
-        Console.WriteLine("Hello, World!");
-    }
-}
+// C# Example
+public class HelloWorld { }
 ```
 
-```javascript
-function greet(name) {
-  return `Hello, ${name}!`;
-}
-```
+## Advanced Tables
 
-### Tables
+| Column 1 | Column 2 |
+|:---------|:----------:|
+| Left     |   Center   |
 
-Organize data in tables for easy comparison.
+## Definition Lists
 
-| Feature         | Status      | Notes                               |
-|-----------------|-------------|-------------------------------------|
-| Scroll Spying   | ✅ Complete | Highlights the current section.     |
-| Content Search  | ✅ Complete | Searches titles and content.        |
-| Code Snippets   | ✅ Complete | Includes a copy-to-clipboard button.|
-| Dark Mode       | 🚧 In Progress | Coming soon!                        |
+Term 1
+: Definition 1
 
-### Blockquotes
+Term 2
+: Definition 2
 
-Use blockquotes to highlight important information or quotes.
+## Citations
 
-> This is a blockquote. It's a great way to draw attention to a specific piece of text.
+This is a citation. [@markdownguide]
 
-## Conclusion
+## Footnotes
 
-You should now have a good understanding of the features available in this documentation. If you have any questions, feel free to explore the other sections or reach out for support.
+Footnotes are useful for adding extra information.[^1]
+
+[^1]: This is the footnote content.
+[@markdownguide]: https://www.markdownguide.org
+
+---
+Footer content can be added here.
+---
+
+## Links
+
+- [Internal Link](./another-page)
+- [External Link to Google](https://www.google.com)

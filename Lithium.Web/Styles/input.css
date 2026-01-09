@@ -29,137 +29,207 @@
     * {
         @apply font-inter select-none;
     }
+}
 
-    /*.markdown-body {*/
-    /*    @apply prose prose-lg prose-blue max-w-none;*/
-    /*}*/
+@utility alert {
+    @apply px-4 bg-lithium-400/20 rounded-lg border border-lithium-400 text-lithium-800;
 }
 
 @utility prose {
-    /* Lists */
-    ol,
-    ul {
-        @apply my-4;
-
-        ol,
-        ul {
-            @apply my-1;
-        }
-
-        li {
-            @apply my-1 ml-6;
-
-            h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6,
-            p {
-                @apply my-1;
-            }
-        }
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-satoshi text-white;
     }
 
-    ol {
-        @apply list-decimal;
+    h1 {
+        @apply text-4xl font-bold mt-8 mb-4 border-b border-lithium-100 pb-2;
+    }
 
-        ol {
-            @apply list-[lower-alpha];
+    h2 {
+        @apply text-3xl font-semibold mt-6 mb-3 border-b border-lithium-100 pb-2;
+    }
 
-            ol {
-                @apply list-[lower-roman];
-            }
-        }
+    h3 {
+        @apply text-2xl font-semibold mt-5 mb-2;
+    }
+
+    p {
+        @apply my-4 leading-relaxed;
+    }
+
+    a {
+        @apply text-blue-400! hover:text-blue-300! transition-colors;
+    }
+
+    a[href^="http"]::after {
+        content: '↗';
+        @apply inline-block ml-1 text-xs;
+    }
+    
+    .note {
+        @apply alert bg-lithium-400/20 border-lithium-400 text-lithium-800;
+    }
+    
+    .tip {
+        @apply alert bg-blue-900/20 border-blue-400 text-blue-300;
+    }
+
+    .warning {
+        @apply alert bg-yellow-900/20 border-yellow-500 text-yellow-300;
+    }
+
+    .danger {
+        @apply alert bg-red-900/20 border-red-500 text-red-300;
+    }
+
+    ul:not([class*="list-"]), ol:not([class*="list-"]) {
+        @apply pl-5;
     }
 
     ul {
         @apply list-disc;
     }
 
-    /* Tables */
+    ol {
+        @apply list-decimal;
+    }
+
+    li {
+        @apply my-2;
+    }
+
+    ul[class*="contains-task-list"] {
+        @apply list-none p-0;
+    }
+
+    blockquote {
+        @apply border-l-4 border-lithium-300 pl-4 italic my-4 text-lithium-500;
+    }
+
+    hr {
+        @apply border-lithium-200 my-8;
+    }
+
+    pre {
+        @apply bg-lithium-50 p-4 rounded-lg my-4 overflow-x-auto;
+    }
+
+    code {
+        @apply font-mono text-sm bg-lithium-100 text-white px-1 py-0.5 rounded;
+    }
+
+    pre code {
+        @apply bg-transparent p-0;
+    }
+
     table {
-        @apply my-4 w-full table-auto border-collapse text-left text-sm/6;
-
-        caption {
-            @apply mt-2 caption-bottom text-left text-sm/6;
-        }
-
-        thead {
-            @apply border-b border-neutral-200;
-        }
-
-        tfoot {
-            @apply border-t border-neutral-200;
-        }
-
-        tr {
-            @apply border-y border-neutral-200 first:border-t-0 last:border-b-0;
-        }
-
-        th {
-            @apply align-bottom font-semibold;
-        }
-
-        td,
-        th {
-            @apply p-2 first:pl-0 last:pr-0;
-
-            h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6,
-            p {
-                @apply my-2 first:mt-0 last:mb-0;
-            }
-        }
+        @apply my-6 w-full border-collapse shadow-lg;
     }
 
-    /* Typography */
-    del {
-        @apply line-through opacity-60;
+    th {
+        @apply border border-lithium-200 bg-lithium-50 px-4 py-3 text-left font-semibold text-white;
     }
 
-    h1 {
-        @apply text-4xl;
+    td {
+        @apply border border-lithium-200 px-4 py-3;
     }
 
-    h2 {
-        @apply text-3xl;
+    tr:nth-child(even) {
+        @apply bg-lithium-100;
     }
 
-    h3 {
-        @apply text-2xl;
+    /* Custom Containers */
+    .custom-container {
+        @apply my-4 px-4 py-3 rounded-lg border;
     }
 
-    h4 {
-        @apply text-xl;
+    .custom-container.tip {
+        @apply bg-blue-900/20 border-blue-500 text-blue-300;
     }
 
-    h5 {
-        @apply text-lg;
+    .custom-container.warning {
+        @apply bg-yellow-900/20 border-yellow-500 text-yellow-300;
     }
 
-    h6 {
-        @apply text-base;
+    .custom-container.info {
+        @apply bg-gray-900/20 border-gray-500 text-gray-300;
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply my-4 font-medium empty:hidden;
+    /* Details/Summary */
+    details {
+        @apply my-4 p-4 bg-lithium-50 rounded-lg;
     }
 
-    a {
-        @apply my-4 text-lithium-500! hover:text-white! empty:hidden;
+    summary {
+        @apply font-semibold text-white cursor-pointer;
     }
-    
-    p {
-        @apply my-4 text-lithium-900 empty:hidden;
+
+    /* Additional text styles */
+    abbr[title] {
+        @apply cursor-help underline decoration-dotted;
+    }
+
+    kbd {
+        @apply bg-lithium-100 border border-lithium-200 rounded-md px-2 py-1 text-sm font-mono;
+    }
+
+    mark {
+        @apply bg-yellow-400 text-black px-1 rounded;
+    }
+
+    /* Figures */
+    figure {
+        @apply my-6;
+    }
+
+    figure img {
+        @apply rounded-lg shadow-md;
+    }
+
+    figcaption {
+        @apply text-center text-sm text-lithium-500 mt-2;
+    }
+
+    /* Footnotes */
+    .footnotes {
+        @apply mt-8 pt-4 border-t border-lithium-200;
+    }
+
+    .footnote-ref {
+        @apply text-blue-400;
+    }
+
+    /* Definition Lists */
+    dl {
+        @apply my-4;
+    }
+
+    dt {
+        @apply font-semibold text-white;
+    }
+
+    dd {
+        @apply pl-5 mb-2;
+    }
+
+    /* Embedded Media */
+    .media-container {
+        @apply my-6 relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+    }
+
+    .media-container iframe {
+        @apply absolute top-0 left-0 w-full h-full;
+    }
+
+    /* Mermaid Diagrams */
+    .mermaid {
+        @apply my-6 flex justify-center;
+    }
+
+    /* KaTeX Formulas */
+    .katex-display {
+        @apply my-6 overflow-x-auto;
     }
 }

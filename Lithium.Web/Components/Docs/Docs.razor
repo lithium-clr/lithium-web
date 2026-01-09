@@ -3,11 +3,41 @@
 @using System.Text.RegularExpressions
 @using Markdig
 @using Markdig.Extensions.AutoIdentifiers
+@using Markdig.Extensions.Alerts
+@using Markdig.Extensions.Abbreviations
+@using Markdig.Extensions.Citations
+@using Markdig.Extensions.CustomContainers
+@using Markdig.Extensions.DefinitionLists
+@using Markdig.Extensions.EmphasisExtras
+@using Markdig.Extensions.Figures
+@using Markdig.Extensions.Footers
+@using Markdig.Extensions.Footnotes
+@using Markdig.Extensions.Mathematics
+@using Markdig.Extensions.MediaLinks
+@using Markdig.Extensions.ListExtras
+@using Markdig.Extensions.TaskLists
+@using Markdig.Extensions.Diagrams
+@using Markdig.Extensions.AutoLinks
+@using Markdig.Extensions.Emoji
+@using Markdig.Extensions.GenericAttributes
 @using Markdig.Syntax
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Env
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.css" integrity="sha384-Pu5+C18nP5dwykLJOhd2U4Xen7rjScHN/qusop27hdd2drI+lL5KvX7YntvT8yew" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/katex.min.js" integrity="sha384-2B8pfmZZ6JlVoScJm/5hQfNS2TI/6hPqDZInzzPc8oHpN5SgeNOf4LzREO6p5YtZ" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.27/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
+            onload="renderMathInElement(document.body);"></script>
+</head>
 
 <div class="w-full h-screen flex">
     <!-- Navbar -->
@@ -17,10 +47,12 @@
                 <span>Lithium</span>
             </div>
             <div class="relative my-4">
-                <input @bind="_searchQuery" @bind:event="oninput" class="w-full bg-lithium-50 border border-lithium-100 rounded-md px-3 py-2 text-white text-sm" placeholder="Search..." />
+                <input @bind="_searchQuery" @bind:event="oninput"
+                       class="w-full bg-lithium-50 border border-lithium-100 rounded-md px-3 py-2 text-white text-sm"
+                       placeholder="Search..."/>
             </div>
             <nav>
-                @foreach (var group in FilteredDocs.GroupBy(x => x.Category,  StringComparer.InvariantCultureIgnoreCase))
+                @foreach (var group in FilteredDocs.GroupBy(x => x.Category, StringComparer.InvariantCultureIgnoreCase))
                 {
                     <div class="flex flex-col px-3 py-2 gap-2">
                         <span class="text-sm text-white">@group.Key</span>
@@ -36,7 +68,7 @@
                         </div>
                     </div>
                 }
-                 @if (!FilteredDocs.Any())
+                @if (!FilteredDocs.Any())
                 {
                     <div class="text-center text-lithium-500 text-sm">No results found.</div>
                 }
@@ -52,7 +84,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Table of Contents -->
     <div class="w-md h-full flex justify-start overflow-y-auto">
         <div class="w-72 p-4">
@@ -81,7 +113,7 @@
     * {
         scroll-behavior: smooth;
     }
-    
+
     .prose pre {
         position: relative;
     }
@@ -90,7 +122,7 @@
 <script>
     window.lithiumDocs = {
         scrollHandler: null,
-        initScrollSpy: function() {
+        initScrollSpy: function () {
             const scrollContainer = document.getElementById('docs-content');
             if (!scrollContainer) return;
 
@@ -102,11 +134,11 @@
             const onScroll = () => {
                 let activeId = null;
                 const cutoff = 150; // px from top
-                
+
                 for (let i = 0; i < headings.length; i++) {
                     const heading = headings[i];
                     const rect = heading.getBoundingClientRect();
-                    
+
                     if (rect.top <= cutoff) {
                         activeId = heading.id;
                     } else {
@@ -114,7 +146,7 @@
                         break;
                     }
                 }
-                
+
                 if (!activeId && headings.length > 0) activeId = headings[0].id;
 
                 tocLinks.forEach(link => {
@@ -133,9 +165,23 @@
             }
             this.scrollHandler = onScroll;
             scrollContainer.addEventListener('scroll', onScroll);
-            
+
             // Initial check
             onScroll();
+        },
+        renderMarkdownFeatures: function () {
+            // Render KaTeX
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body);
+            }
+
+            // Render Mermaid
+            if (window.mermaid) {
+                mermaid.initialize({startOnLoad: false, theme: 'dark'});
+                mermaid.run({
+                    nodes: document.querySelectorAll('.mermaid')
+                });
+            }
         }
     };
 </script>
@@ -150,7 +196,7 @@
         public string Category { get; init; } = null!;
         public string FilePath { get; init; } = null!;
     }
-    
+
     private class Heading
     {
         public string Text { get; init; } = null!;
@@ -172,7 +218,7 @@
         {
             if (string.IsNullOrWhiteSpace(_searchQuery))
                 return _docs;
-            
+
             return _docs.Where(d =>
                 d.Title.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase) ||
                 File.ReadAllText(d.FilePath).Contains(_searchQuery, StringComparison.OrdinalIgnoreCase));
@@ -209,7 +255,7 @@
         if (string.IsNullOrEmpty(Slug))
         {
             var firstDoc = _docs.FirstOrDefault();
-            
+
             if (firstDoc is not null)
                 NavigationManager.NavigateTo($"/docs/{firstDoc.Slug}");
 
@@ -221,24 +267,36 @@
         if (doc is not null)
         {
             var markdown = await File.ReadAllTextAsync(doc.FilePath);
-            
+
             // Delete YAML front matter before rendering
             markdown = Regex.Replace(markdown, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline);
-            
+
             var pipeline = new MarkdownPipelineBuilder()
-                .UsePipeTables()
-                .UseEmphasisExtras()
-                .UseAutoLinks()
-                .UseGenericAttributes()
+                .UseAdvancedExtensions()
+                .UseAbbreviations()
+                .UseAutoIdentifiers()
+                .UseCitations()
+                .UseCustomContainers()
                 .UseDefinitionLists()
+                .UseEmphasisExtras()
+                .UseFigures()
+                .UseFooters()
                 .UseFootnotes()
+                .UseGridTables()
+                .UseMathematics()
+                .UseMediaLinks()
+                .UsePipeTables()
+                .UseListExtras()
                 .UseTaskLists()
-                .UseSmartyPants()
-                .UseAutoIdentifiers(AutoIdentifierOptions.GitHub)
+                .UseDiagrams()
+                .UseAutoLinks()
+                .UseEmojiAndSmiley()
+                .UseAlertBlocks()
+                .UseGenericAttributes()
                 .Build();
 
             var document = Markdown.Parse(markdown, pipeline);
-            
+
             _headings = document.Descendants<HeadingBlock>()
                 .Select(h => new Heading
                 {
@@ -255,12 +313,13 @@
             _htmlContent = "<p>Page not found.</p>";
         }
     }
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JsRuntime.InvokeVoidAsync("lithiumDocs.initScrollSpy");
+        await JSRuntime.InvokeVoidAsync("lithiumDocs.initScrollSpy");
+        await JSRuntime.InvokeVoidAsync("lithiumDocs.renderMarkdownFeatures");
     }
-    
+
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
     {
         var dict = new Dictionary<string, string>();
@@ -286,7 +345,8 @@
         var slug = text.ToLowerInvariant();
         slug = Regex.Replace(slug, @"\s+", "-");
         slug = Regex.Replace(slug, @"[^a-z0-9-]", "");
-        
+
         return slug;
     }
+
 }
