@@ -56,8 +56,9 @@ pre[class*="language-"] {
     font-style: italic;
 }
 
+.token.operator,
 .token.punctuation {
-    color: #747480; /* lithium-600 */
+    color: #BDBDBD;
 }
 
 .token.namespace {
@@ -83,7 +84,6 @@ pre[class*="language-"] {
     color: #a5d6a7; /* green */
 }
 
-.token.operator,
 .token.entity,
 .token.url,
 .language-css .token.string,
