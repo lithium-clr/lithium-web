@@ -132,8 +132,21 @@ This is a warning. Use it to indicate something that requires caution.
 ## Code Blocks
 
 ```csharp
-// C# Example
-public class HelloWorld { }
+using Foo.Bar.Baz;
+
+namespace Foo.Api;
+
+public interface FooService
+{
+    /// <summary>
+    ///     Gets a new Foo!
+    /// </summary>
+    /// <returns>A new Foo</returns>
+    public void GetFoo() 
+    {
+        return new Foo();
+    }
+}
 ```
 
 ## Advanced Tables

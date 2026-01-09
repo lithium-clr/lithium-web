@@ -65,6 +65,14 @@
         @apply inline-block ml-1 text-xs;
     }
     
+    pre, code {
+        @apply bg-transparent!;
+    }
+    
+    code {
+        @apply font-mono! text-white px-1 py-0.5 rounded;
+    }
+    
     .note {
         @apply alert bg-lithium-400/20 border-lithium-400 text-lithium-800;
     }
