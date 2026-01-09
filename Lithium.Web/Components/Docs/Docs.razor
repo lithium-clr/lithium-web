@@ -1,0 +1,130 @@
+@page "/docs/{Slug}"
+@using System.Text.RegularExpressions
+@using Markdig
+@inject NavigationManager NavigationManager
+@inject IWebHostEnvironment Env
+@rendermode InteractiveServer
+
+<div class="w-full h-full flex overflow-y-auto relative">
+    <!-- Navbar -->
+    <div class="w-md h-full flex justify-end bg-lithium-50 border-r border-lithium-100">
+        <div class="w-72 h-full p-4">
+            <div class="flex text-white my-2">
+                <span>Lithium</span>
+            </div>
+            <nav>
+                @foreach (var group in _docs.GroupBy(x => x.Category,  StringComparer.InvariantCultureIgnoreCase))
+                {
+                    <div class="flex flex-col px-3 py-2 gap-2">
+                        <span class="text-sm text-white">@group.Key</span>
+                        <div class="flex flex-col">
+                            @foreach (var doc in group)
+                            {
+                                <div
+                                    class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-100 flex items-center gap-2 text-sm text-lithium-900 hover:text-white"
+                                    @onclick="@(() => GoToSlug(doc.Slug))">
+                                    <span>@doc.Icon</span>
+                                    <span>@doc.Title</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </nav>
+        </div>
+    </div>
+
+    <!-- Contenu -->
+    <div class="flex-1 h-full">
+        <div class="w-full h-full p-8 text-white">
+            <div class="prose">
+                @((MarkupString)_htmlContent)
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private class DocMeta
+    {
+        public string Slug { get; init; } = null!;
+        public string Title { get; init; } = null!;
+        public string Icon { get; init; } = "📄";
+        public string Category { get; init; } = null!;
+        public string FilePath { get; init; } = null!;
+    }
+
+    private readonly List<DocMeta> _docs = [];
+    private string _htmlContent = null!;
+
+    [Parameter] public string Slug { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        var docsPath = Path.Combine(Env.WebRootPath, "docs");
+        var files = Directory.GetFiles(docsPath, "*.md", SearchOption.AllDirectories);
+
+        foreach (var file in files)
+        {
+            var markdown = File.ReadAllText(file);
+            var meta = ParseYamlFrontMatter(markdown);
+            var slug = Path.GetFileNameWithoutExtension(file);
+
+            _docs.Add(new DocMeta
+            {
+                Slug = slug,
+                Title = meta.GetValueOrDefault("title", slug),
+                Icon = meta.GetValueOrDefault("icon", "📄"),
+                Category = meta.GetValueOrDefault("category", "General"),
+                FilePath = file
+            });
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var doc = _docs.FirstOrDefault(d => d.Slug == Slug);
+
+        if (doc is not null)
+        {
+            var markdown = await File.ReadAllTextAsync(doc.FilePath);
+            // Supprimer YAML front matter avant de rendre
+            markdown = Regex.Replace(markdown, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline);
+
+            _htmlContent = Markdown.ToHtml(markdown, new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .Build());
+        }
+        else
+        {
+            _htmlContent = "<p>Page non trouvée.</p>";
+        }
+    }
+
+    private void GoToSlug(string slug)
+    {
+        NavigationManager.NavigateTo($"/docs/{slug}");
+    }
+
+    private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
+    {
+        var dict = new Dictionary<string, string>();
+
+        var match = Regex.Match(markdown, @"^---\s*(.+?)\s*---", RegexOptions.Singleline);
+        if (!match.Success) return dict;
+
+        var yaml = match.Groups[1].Value;
+
+        foreach (var line in yaml.Split('\n'))
+        {
+            var parts = line.Split(':', 2);
+
+            if (parts.Length is 2)
+                dict[parts[0].Trim()] = parts[1].Trim().Trim('"');
+        }
+
+        return dict;
+    }
+
+}

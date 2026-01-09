@@ -1,0 +1,8 @@
+.prose {
+    /* Add any additional prose styles here if needed */
+}
+
+/* Remove old styles */
+.docs-container, .docs-nav, .docs-nav-header, .docs-nav-body, .docs-nav-item, .docs-content {
+    all: unset;
+}
