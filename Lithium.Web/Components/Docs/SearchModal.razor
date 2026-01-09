@@ -134,7 +134,7 @@
             }
 
             var content = File.ReadAllText(doc.FilePath);
-            var matches = Regex.Matches(content, $".*?{Regex.Escape(_searchQuery)}.*?", RegexOptions.IgnoreCase);
+            var matches = Regex.Matches(content, $".*?{Regex.Escape(_searchQuery)}.*", RegexOptions.IgnoreCase);
 
             foreach (Match match in matches)
             {
