@@ -97,6 +97,7 @@
     private string _searchQuery = "";
     private ElementReference _searchInput;
     private List<SearchResult> _searchResults = [];
+    private bool _wasOpen;
 
     [Parameter] public bool IsOpen { get; set; }
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
@@ -104,8 +105,12 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (IsOpen && firstRender)
+        if (IsOpen && !_wasOpen)
+        {
             await _searchInput.FocusAsync();
+        }
+
+        _wasOpen = IsOpen;
     }
 
     private void UpdateSearchResults(ChangeEventArgs e)
