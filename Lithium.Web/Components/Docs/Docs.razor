@@ -7,7 +7,7 @@
 
 <div class="w-full h-full flex overflow-y-auto relative">
     <!-- Navbar -->
-    <div class="w-md h-full flex justify-end bg-lithium-50 border-r border-lithium-100">
+    <div class="w-md h-full flex justify-end bg-lithium-0 border-r border-lithium-100">
         <div class="w-72 h-full p-4">
             <div class="flex text-white my-2">
                 <span>Lithium</span>
@@ -20,12 +20,18 @@
                         <div class="flex flex-col">
                             @foreach (var doc in group)
                             {
-                                <div
-                                    class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-100 flex items-center gap-2 text-sm text-lithium-900 hover:text-white"
-                                    @onclick="@(() => GoToSlug(doc.Slug))">
+                                <NavLink href="@("/docs/" + doc.Slug)"
+                                         class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-50 aria-[current=page]:bg-lithium-100 flex items-center gap-2 text-sm text-lithium-500! hover:text-white! aria-[current=page]:text-white!">
                                     <span>@doc.Icon</span>
                                     <span>@doc.Title</span>
-                                </div>
+                                </NavLink>
+                                
+                                @* <a href="/docs/@doc.Slug" *@
+                                @*     class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-100 flex items-center gap-2 text-sm text-lithium-500! hover:text-white! aria-[current=page]:bg-lithium-100" *@
+                                @*     aria-current="@(doc.Slug == Slug ? "page" : null)"> *@
+                                @*     <span>@doc.Icon</span> *@
+                                @*     <span>@doc.Title</span> *@
+                                @* </a> *@
                             }
                         </div>
                     </div>
@@ -36,10 +42,16 @@
 
     <!-- Contenu -->
     <div class="flex-1 h-full">
-        <div class="w-full h-full p-8 text-white">
+        <div class="w-full h-full px-24 py-16 text-white">
             <div class="prose">
                 @((MarkupString)_htmlContent)
             </div>
+        </div>
+    </div>
+    
+    <div class="w-md h-full flex justify-start">
+        <div class="w-72 h-full p-4">
+            
         </div>
     </div>
 </div>
@@ -89,7 +101,8 @@
         if (doc is not null)
         {
             var markdown = await File.ReadAllTextAsync(doc.FilePath);
-            // Supprimer YAML front matter avant de rendre
+            
+            // Delete YAML front matter before rendering
             markdown = Regex.Replace(markdown, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline);
 
             _htmlContent = Markdown.ToHtml(markdown, new MarkdownPipelineBuilder()
@@ -98,13 +111,8 @@
         }
         else
         {
-            _htmlContent = "<p>Page non trouvée.</p>";
+            _htmlContent = "<p>Page not found.</p>";
         }
-    }
-
-    private void GoToSlug(string slug)
-    {
-        NavigationManager.NavigateTo($"/docs/{slug}");
     }
 
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
