@@ -995,6 +995,12 @@
   .bg-size-\[2rem_2rem\] {
     background-size: 2rem 2rem;
   }
+  .stroke-lithium-500\! {
+    stroke: var(--color-lithium-500) !important;
+  }
+  .stroke-red-500\! {
+    stroke: var(--color-red-500) !important;
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -1009,6 +1015,9 @@
   }
   .px-1\.5 {
     padding-inline: calc(var(--spacing) * 1.5);
+  }
+  .px-2 {
+    padding-inline: calc(var(--spacing) * 2);
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
@@ -1121,6 +1130,9 @@
   .text-lime-400 {
     color: var(--color-lime-400);
   }
+  .text-lithium-400\! {
+    color: var(--color-lithium-400) !important;
+  }
   .text-lithium-500 {
     color: var(--color-lithium-500);
   }
@@ -1144,6 +1156,12 @@
   }
   .text-lithium-900\! {
     color: var(--color-lithium-900) !important;
+  }
+  .text-red-500 {
+    color: var(--color-red-500);
+  }
+  .text-red-500\! {
+    color: var(--color-red-500) !important;
   }
   .text-white {
     color: var(--color-white);

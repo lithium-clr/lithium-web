@@ -1,15 +1,17 @@
 @using Microsoft.AspNetCore.Components.Web
 @using System.Text.RegularExpressions
 @using Lithium.Web.Components.Docs
+@using LucideBlazor
 @inject NavigationManager NavigationManager
 
 <div @onclick="Close"
-     class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all @(IsOpen ? "opacity-100": "opacity-0")">
+     class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all @(IsOpen ? "opacity-100 pointer-events-all": "opacity-0 pointer-events-none")">
     <div @onclick:stopPropagation
          class="w-full max-w-2xl bg-lithium-100/80 border border-lithium-200 rounded-lg shadow-xl"
          role="dialog" aria-modal="true">
 
-        <div class="p-4 border-b border-lithium-200">
+        <div class="flex p-4 gap-2 border-b border-lithium-200">
+            <SearchIcon ClassName="stroke-lithium-500!"/>
             <input @bind="_searchQuery" @oninput="UpdateSearchResults" @ref="_searchInput"
                    class="w-full bg-transparent text-white placeholder-lithium-500 focus:outline-none"
                    placeholder="Search documentation..."
