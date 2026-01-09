@@ -155,7 +155,11 @@
         @apply my-4 font-medium empty:hidden;
     }
 
+    a {
+        @apply my-4 text-lithium-500! hover:text-white! empty:hidden;
+    }
+    
     p {
-        @apply my-4 empty:hidden;
+        @apply my-4 text-lithium-900 empty:hidden;
     }
 }

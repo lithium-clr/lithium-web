@@ -1,19 +1,25 @@
+@page "/docs"
 @page "/docs/{Slug}"
 @using System.Text.RegularExpressions
 @using Markdig
+@using Markdig.Extensions.AutoIdentifiers
+@using Markdig.Syntax
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Env
 @rendermode InteractiveServer
 
-<div class="w-full h-full flex overflow-y-auto relative">
+<div class="w-full h-screen flex">
     <!-- Navbar -->
-    <div class="w-md h-full flex justify-end bg-lithium-0 border-r border-lithium-100">
-        <div class="w-72 h-full p-4">
+    <div class="w-md h-full flex justify-end bg-lithium-0 border-r border-lithium-100 overflow-y-auto">
+        <div class="w-72 p-4">
             <div class="flex text-white my-2">
                 <span>Lithium</span>
             </div>
+            <div class="relative my-4">
+                <input @bind="_searchQuery" @bind:event="oninput" class="w-full bg-lithium-50 border border-lithium-100 rounded-md px-3 py-2 text-white text-sm" placeholder="Search..." />
+            </div>
             <nav>
-                @foreach (var group in _docs.GroupBy(x => x.Category,  StringComparer.InvariantCultureIgnoreCase))
+                @foreach (var group in FilteredDocs.GroupBy(x => x.Category,  StringComparer.InvariantCultureIgnoreCase))
                 {
                     <div class="flex flex-col px-3 py-2 gap-2">
                         <span class="text-sm text-white">@group.Key</span>
@@ -25,36 +31,60 @@
                                     <span>@doc.Icon</span>
                                     <span>@doc.Title</span>
                                 </NavLink>
-                                
-                                @* <a href="/docs/@doc.Slug" *@
-                                @*     class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-100 flex items-center gap-2 text-sm text-lithium-500! hover:text-white! aria-[current=page]:bg-lithium-100" *@
-                                @*     aria-current="@(doc.Slug == Slug ? "page" : null)"> *@
-                                @*     <span>@doc.Icon</span> *@
-                                @*     <span>@doc.Title</span> *@
-                                @* </a> *@
                             }
                         </div>
                     </div>
+                }
+                 @if (!FilteredDocs.Any())
+                {
+                    <div class="text-center text-lithium-500 text-sm">No results found.</div>
                 }
             </nav>
         </div>
     </div>
 
     <!-- Contenu -->
-    <div class="flex-1 h-full">
-        <div class="w-full h-full px-24 py-16 text-white">
+    <div class="flex-1 overflow-y-auto">
+        <div class="w-full px-24 py-16 text-white">
             <div class="prose">
                 @((MarkupString)_htmlContent)
             </div>
         </div>
     </div>
     
-    <div class="w-md h-full flex justify-start">
-        <div class="w-72 h-full p-4">
-            
+    <!-- Table of Contents -->
+    <div class="w-md h-full flex justify-start overflow-y-auto">
+        <div class="w-72 p-4">
+            <h3 class="text-white text-sm font-semibold mb-4">On this page</h3>
+            <ul class="space-y-2 border-l border-lithium-100">
+                @foreach (var heading in _headings)
+                {
+                    var slugUri = $"/docs/{Slug}/#{heading.Slug}";
+                    var padding = 1 + Math.Max(0, heading.Level - 1);
+                    var style = $"padding-left: {padding}rem;";
+
+                    <li>
+                        <a href="@slugUri"
+                           class="toc-link -ml-px block border-l-2 border-transparent text-sm text-lithium-500! transition-colors duration-200 hover:border-white hover:text-white!"
+                           style="@style">
+                            @heading.Text
+                        </a>
+                    </li>
+                }
+            </ul>
         </div>
     </div>
 </div>
+
+<style>
+    * {
+        scroll-behavior: smooth;
+    }
+    
+    .prose pre {
+        position: relative;
+    }
+</style>
 
 @code {
 
@@ -66,11 +96,34 @@
         public string Category { get; init; } = null!;
         public string FilePath { get; init; } = null!;
     }
+    
+    private class Heading
+    {
+        public string Text { get; init; } = null!;
+        public string Slug { get; init; } = null!;
+        public int Level { get; init; }
+    }
 
     private readonly List<DocMeta> _docs = [];
     private string _htmlContent = null!;
+    private string _searchQuery = "";
+    private List<Heading> _headings = [];
+    private string? _currentSlug;
 
-    [Parameter] public string Slug { get; set; } = null!;
+    [Parameter] public string? Slug { get; set; }
+
+    private IEnumerable<DocMeta> FilteredDocs
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_searchQuery))
+                return _docs;
+            
+            return _docs.Where(d =>
+                d.Title.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                File.ReadAllText(d.FilePath).Contains(_searchQuery, StringComparison.OrdinalIgnoreCase));
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -96,6 +149,19 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        if (Slug == _currentSlug) return;
+        _currentSlug = Slug;
+
+        if (string.IsNullOrEmpty(Slug))
+        {
+            var firstDoc = _docs.FirstOrDefault();
+            
+            if (firstDoc is not null)
+                NavigationManager.NavigateTo($"/docs/{firstDoc.Slug}");
+
+            return;
+        }
+
         var doc = _docs.FirstOrDefault(d => d.Slug == Slug);
 
         if (doc is not null)
@@ -104,17 +170,38 @@
             
             // Delete YAML front matter before rendering
             markdown = Regex.Replace(markdown, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline);
+            
+            var pipeline = new MarkdownPipelineBuilder()
+                .UsePipeTables()
+                .UseEmphasisExtras()
+                .UseAutoLinks()
+                .UseGenericAttributes()
+                .UseDefinitionLists()
+                .UseFootnotes()
+                .UseTaskLists()
+                .UseSmartyPants()
+                .UseAutoIdentifiers(AutoIdentifierOptions.GitHub)
+                .Build();
 
-            _htmlContent = Markdown.ToHtml(markdown, new MarkdownPipelineBuilder()
-                .UseAdvancedExtensions()
-                .Build());
+            var document = Markdown.Parse(markdown, pipeline);
+            
+            _headings = document.Descendants<HeadingBlock>()
+                .Select(h => new Heading
+                {
+                    Text = h.Inline.FirstChild.ToString(),
+                    Slug = GenerateSlug(h.Inline.FirstChild.ToString() ?? ""),
+                    Level = h.Level
+                })
+                .ToList();
+
+            _htmlContent = document.ToHtml(pipeline);
         }
         else
         {
             _htmlContent = "<p>Page not found.</p>";
         }
     }
-
+    
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
     {
         var dict = new Dictionary<string, string>();
@@ -135,4 +222,12 @@
         return dict;
     }
 
+    private static string GenerateSlug(string text)
+    {
+        var slug = text.ToLowerInvariant();
+        slug = Regex.Replace(slug, @"\s+", "-");
+        slug = Regex.Replace(slug, @"[^a-z0-9-]", "");
+        
+        return slug;
+    }
 }
