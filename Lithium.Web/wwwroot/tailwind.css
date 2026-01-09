@@ -323,6 +323,12 @@
   .h-screen {
     height: 100vh;
   }
+  .max-h-96 {
+    max-height: calc(var(--spacing) * 96);
+  }
+  .max-h-128 {
+    max-height: calc(var(--spacing) * 128);
+  }
   .min-h-screen {
     min-height: 100vh;
   }

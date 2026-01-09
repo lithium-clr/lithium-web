@@ -9,7 +9,7 @@
 
     @if (_isDropdownOpen)
     {
-        <div class="absolute right-0 mt-2 w-40 bg-lithium-100 border border-white/10 rounded-lg shadow-lg">
+        <div class="absolute right-0 mt-2 w-40 max-h-96 overflow-y-auto bg-lithium-100 border border-white/10 rounded-lg shadow-lg">
             <ul class="py-1">
                 <li>
                     <button @onclick="@(() => ChangeCulture("af"))"
