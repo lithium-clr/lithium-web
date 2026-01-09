@@ -68,39 +68,39 @@
     <value>Roadmap</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Connexion</value>
+    <value>Login</value>
   </data>
   <data name="HeroTitle" xml:space="preserve">
     <value>Lithium</value>
   </data>
   <data name="HeroSubtitle" xml:space="preserve">
-    <value>Une alternative moderne en C# aux serveurs Hytale Java.</value>
+    <value>A modern C# alternative to Hytale Java servers.</value>
   </data>
   <data name="HeroDescription" xml:space="preserve">
-    <value>Rapide, Flexible, Open Source.</value>
+    <value>Fast. Flexible. Open Source.</value>
   </data>
   <data name="GetStarted" xml:space="preserve">
-    <value>Commencer</value>
+    <value>Get Started</value>
   </data>
   <data name="PerformanceTitle" xml:space="preserve">
     <value>Performance</value>
   </data>
   <data name="PerformanceDescription" xml:space="preserve">
-    <value>Architecture ECS optimisée pour une latence minimale et une scalabilité maximale.</value>
+    <value>Optimized ECS architecture for minimal latency and maximum scalability.</value>
   </data>
   <data name="ModularityTitle" xml:space="preserve">
-    <value>Modularité</value>
+    <value>Modularity</value>
   </data>
   <data name="ModularityDescription" xml:space="preserve">
-    <value>Un système de plugin flexible qui vous permet détendre les fonctionnalités selon vos besoins.</value>
+    <value>Flexible plugin system allowing you to extend functionality as needed.</value>
   </data>
   <data name="OpenSourceTitle" xml:space="preserve">
     <value>Open Source</value>
   </data>
   <data name="OpenSourceDescription" xml:space="preserve">
-    <value>Développé par la communauté, pour la communauté. Transparent et libre.</value>
+    <value>Developed by the community, for the community. Transparent and free.</value>
   </data>
   <data name="AllRightsReserved" xml:space="preserve">
-    <value>Tout droits réservés.</value>
+    <value>All rights reserved.</value>
   </data>
 </root>
