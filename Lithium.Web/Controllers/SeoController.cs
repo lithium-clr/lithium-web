@@ -36,6 +36,8 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
         foreach (var page in pages)
         {
             var routes = page.GetCustomAttributes<Microsoft.AspNetCore.Components.RouteAttribute>().ToList();
+            var priorityAttr = page.GetCustomAttribute<SitemapPriorityAttribute>();
+            var priority = priorityAttr?.Priority ?? 0.5; // Default priority
 
             foreach (var route in routes)
             {
@@ -43,7 +45,8 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
                 if (pageUrl.Contains('{')) continue;
 
                 var url = new XElement(xmlns + "url",
-                    new XElement(xmlns + "loc", $"{webSiteUrl}{pageUrl}")
+                    new XElement(xmlns + "loc", $"{webSiteUrl}{pageUrl}"),
+                    new XElement(xmlns + "priority", priority.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))
                 );
 
                 if (routes.Count > 1)

@@ -1,8 +1,10 @@
 ﻿@page "/"
 @using Microsoft.Extensions.Localization
+@using Lithium.Web
 @layout EmptyLayout
 @rendermode InteractiveServer
 @inject IStringLocalizer<Home> Localizer
+@attribute [SitemapPriority(1.0)]
 
 <PageTitle>Lithium - C# Hytale Server</PageTitle>
 
