@@ -21,10 +21,15 @@
 @using Markdig.Extensions.Emoji
 @using Markdig.Extensions.GenericAttributes
 @using Markdig.Syntax
+@using Microsoft.AspNetCore.Components.Web
+@using Lithium.Web.Components.Docs
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Env
 @inject IJSRuntime JsRuntime
 @rendermode InteractiveServer
+@implements IDisposable
+
+<SearchModal @bind-IsOpen="_isSearchModalOpen" AllDocs="_docs"/>
 
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
@@ -75,12 +80,14 @@
                 <span>Lithium</span>
             </div>
             <div class="relative my-4">
-                <input @bind="_searchQuery" @bind:event="oninput"
-                       class="w-full bg-lithium-50 border border-lithium-100 rounded-md px-3 py-2 text-white text-sm"
-                       placeholder="Search..."/>
+                <button @onclick="OpenSearchModal"
+                        class="w-full bg-lithium-50 border border-lithium-100 rounded-md px-3 py-2 text-left text-lithium-500 text-sm flex items-center justify-between">
+                    <span>Search...</span>
+                    <span class="text-xs border border-lithium-200 rounded-md px-1.5 py-0.5">Ctrl+K</span>
+                </button>
             </div>
             <nav>
-                @foreach (var group in FilteredDocs.GroupBy(x => x.Category, StringComparer.InvariantCultureIgnoreCase))
+                @foreach (var group in _docs.GroupBy(x => x.Category, StringComparer.InvariantCultureIgnoreCase))
                 {
                     <div class="flex flex-col px-3 py-2 gap-2">
                         <span class="text-sm text-white">@group.Key</span>
@@ -95,10 +102,6 @@
                             }
                         </div>
                     </div>
-                }
-                @if (!FilteredDocs.Any())
-                {
-                    <div class="text-center text-lithium-500 text-sm">No results found.</div>
                 }
             </nav>
         </div>
@@ -154,6 +157,20 @@
 
 <script>
     window.lithiumDocs = {
+        dotNetHelper: null,
+        init: function (dotNetHelper) {
+            this.dotNetHelper = dotNetHelper;
+            document.addEventListener('keydown', this.handleKeyDown.bind(this));
+        },
+        handleKeyDown: function (e) {
+            if (e.ctrlKey && e.key === 'k') {
+                e.preventDefault();
+                this.dotNetHelper.invokeMethodAsync('OpenSearchModal');
+            }
+        },
+        dispose: function () {
+            document.removeEventListener('keydown', this.handleKeyDown.bind(this));
+        },
         scrollHandler: null,
         initScrollSpy: function () {
             const scrollContainer = document.getElementById('docs-content');
@@ -220,16 +237,6 @@
 </script>
 
 @code {
-
-    private class DocMeta
-    {
-        public string Slug { get; init; } = null!;
-        public string Title { get; init; } = null!;
-        public string Icon { get; init; } = "📄";
-        public string Category { get; init; } = null!;
-        public string FilePath { get; init; } = null!;
-    }
-
     private class Heading
     {
         public string Text { get; init; } = null!;
@@ -239,27 +246,21 @@
 
     private readonly List<DocMeta> _docs = [];
     private string _htmlContent = null!;
-    private string _searchQuery = "";
     private List<Heading> _headings = [];
     private string? _currentSlug;
     private bool _isNavOpen = false;
     private bool _isTocOpen = false;
+    private bool _isSearchModalOpen = false;
 
     [Parameter] public string? Slug { get; set; }
 
-    private IEnumerable<DocMeta> FilteredDocs
+    [JSInvokable]
+    public void OpenSearchModal()
     {
-        get
-        {
-            if (string.IsNullOrWhiteSpace(_searchQuery))
-                return _docs;
-
-            return _docs.Where(d =>
-                d.Title.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase) ||
-                File.ReadAllText(d.FilePath).Contains(_searchQuery, StringComparison.OrdinalIgnoreCase));
-        }
+        _isSearchModalOpen = true;
+        StateHasChanged();
     }
-    
+
     private void ToggleNav()
     {
         _isNavOpen = !_isNavOpen;
@@ -369,8 +370,17 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("lithiumDocs.init", DotNetObjectReference.Create(this));
+        }
         await JsRuntime.InvokeVoidAsync("lithiumDocs.initScrollSpy");
         await JsRuntime.InvokeVoidAsync("lithiumDocs.renderMarkdownFeatures");
+    }
+    
+    public void Dispose()
+    {
+        JsRuntime.InvokeVoidAsync("lithiumDocs.dispose");
     }
 
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
@@ -401,5 +411,4 @@
 
         return slug;
     }
-
 }
