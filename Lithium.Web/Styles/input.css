@@ -23,6 +23,7 @@
 
     --font-satoshi: 'Satoshi', sans-serif;
     --font-inter: 'Inter', sans-serif;
+    --font-space: 'Space Mono', sans-serif;
 }
 
 @layer base {
@@ -64,15 +65,17 @@
         content: '↗';
         @apply inline-block ml-1 text-xs;
     }
-    
-    pre, code {
-        @apply bg-transparent!;
+
+    pre {
+        @apply leading-tight!;
+
+        code {
+            span {
+                @apply text-sm! font-space!;
+            }
+        }
     }
-    
-    code {
-        @apply font-mono! text-white px-1 py-0.5 rounded;
-    }
-    
+  
     .note {
         @apply alert bg-lithium-400/20 border-lithium-400 text-lithium-800;
     }

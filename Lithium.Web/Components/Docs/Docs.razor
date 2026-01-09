@@ -23,8 +23,7 @@
 @using Markdig.Syntax
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Env
-@inject IJSRuntime JSRuntime
-@rendermode InteractiveServer
+@inject IJSRuntime JsRuntime
 
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
@@ -50,7 +49,7 @@
 <script src="prism.js"></script>
 </body>
 
-<div class="w-full h-screen flex">
+<div class="fixed w-full h-screen flex">
     <!-- Navbar -->
     <div class="w-md h-full flex justify-end bg-lithium-0 border-r border-lithium-100 overflow-y-auto">
         <div class="w-72 p-4">
@@ -327,8 +326,8 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await JSRuntime.InvokeVoidAsync("lithiumDocs.initScrollSpy");
-        await JSRuntime.InvokeVoidAsync("lithiumDocs.renderMarkdownFeatures");
+        await JsRuntime.InvokeVoidAsync("lithiumDocs.initScrollSpy");
+        await JsRuntime.InvokeVoidAsync("lithiumDocs.renderMarkdownFeatures");
     }
 
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
