@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -62,10 +62,10 @@
     <value>Documentation</value>
   </data>
   <data name="Status" xml:space="preserve">
-    <value>Statut</value>
+    <value>Status</value>
   </data>
   <data name="Roadmap" xml:space="preserve">
-    <value>Feuille de route</value>
+    <value>Roadmap</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Connexion</value>
@@ -74,10 +74,10 @@
     <value>Lithium</value>
   </data>
   <data name="HeroSubtitle" xml:space="preserve">
-    <value>Le moteur de serveur de jeu nouvelle génération.</value>
+    <value>Une alternative moderne en C# aux serveurs Hytale Java.</value>
   </data>
   <data name="HeroDescription" xml:space="preserve">
-    <value>Performant. Modulaire. Open Source.</value>
+    <value>Rapide, Flexible, Open Source.</value>
   </data>
   <data name="GetStarted" xml:space="preserve">
     <value>Commencer</value>
@@ -92,15 +92,15 @@
     <value>Modularité</value>
   </data>
   <data name="ModularityDescription" xml:space="preserve">
-    <value>Système de plugins flexible permettant d'étendre les fonctionnalités selon vos besoins.</value>
+    <value>Un système de plugin flexible qui vous permet détendre les fonctionnalités selon vos besoins.</value>
   </data>
   <data name="OpenSourceTitle" xml:space="preserve">
     <value>Open Source</value>
   </data>
   <data name="OpenSourceDescription" xml:space="preserve">
-    <value>Développé par la communauté, pour la communauté. Transparent et gratuit.</value>
+    <value>Développé par la communauté, pour la communauté. Transparent et libre.</value>
   </data>
   <data name="AllRightsReserved" xml:space="preserve">
-    <value>Tous droits réservés.</value>
+    <value>Tout droits réservés.</value>
   </data>
 </root>
