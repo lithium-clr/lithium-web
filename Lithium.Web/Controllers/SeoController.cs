@@ -36,8 +36,15 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
         foreach (var page in pages)
         {
             var routes = page.GetCustomAttributes<Microsoft.AspNetCore.Components.RouteAttribute>().ToList();
-            var priorityAttr = page.GetCustomAttribute<SitemapPriorityAttribute>();
+            
+            var priorityAttr = page.GetCustomAttribute<Sitemap.PriorityAttribute>();
             var priority = priorityAttr?.Priority ?? 0.5; // Default priority
+
+            var changeFreqAttr = page.GetCustomAttribute<Sitemap.ChangeFreqAttribute>();
+            var changeFreq = changeFreqAttr?.ChangeFreq.ToString().ToLowerInvariant();
+
+            var lastModAttr = page.GetCustomAttribute<Sitemap.LastModAttribute>();
+            var lastMod = lastModAttr?.ToString();
 
             foreach (var route in routes)
             {
@@ -48,6 +55,16 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
                     new XElement(xmlns + "loc", $"{webSiteUrl}{pageUrl}"),
                     new XElement(xmlns + "priority", priority.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))
                 );
+
+                if (!string.IsNullOrEmpty(changeFreq))
+                {
+                    url.Add(new XElement(xmlns + "changefreq", changeFreq));
+                }
+
+                if (!string.IsNullOrEmpty(lastMod))
+                {
+                    url.Add(new XElement(xmlns + "lastmod", lastMod));
+                }
 
                 if (routes.Count > 1)
                 {
