@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\LucideBlazor\LucideBlazor.csproj"/>
+      <ProjectReference Include="..\Lucide\LucideBlazor\LucideBlazor.csproj" />
     </ItemGroup>
 
 </Project>
