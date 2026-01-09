@@ -25,35 +25,10 @@
                 {
                     @foreach (var group in _searchResults.GroupBy(r => r.Doc.Category))
                     {
-                        @* <li class="px-3 py-2 text-xs bg-white font-semibold text-lithium-500">@group.Key</li> *@
-                        @* @foreach (var result in group) *@
-                        @* { *@
-                        @*     <li> *@
-                        @*         <a @onclick="() => NavigateTo(result.Doc.Slug)" *@
-                        @*            class="block p-3 text-sm text-white! rounded-md hover:bg-lithium-200 cursor-pointer"> *@
-                        @*             <div class="flex items-center gap-3 font-semibold"> *@
-                        @*                 <span class="opacity-75">@result.Doc.Icon</span> *@
-                        @*                 <span>@((MarkupString)result.HighlightedTitle)</span> *@
-                        @*             </div> *@
-                        @*             @if (!string.IsNullOrEmpty(result.Snippet)) *@
-                        @*             { *@
-                        @*                 <p class="mt-1 text-xs text-lithium-800"> *@
-                        @*                     @((MarkupString)result.Snippet) *@
-                        @*                 </p> *@
-                        @*             } *@
-                        @*         </a> *@
-                        @*     </li> *@
-                        @* } *@
-                        
-                        @* <li class="px-3 py-2 text-xs bg-white/10 rounded-md font-semibold text-lithium-900">@group.Key</li> *@
                         @foreach (var results in group.GroupBy(x => (x.Doc.Icon, x.Doc.Title)))
                         {
                             <div class="flex flex-col bg-lithium-200 p-2 gap-1 rounded-md">
                                 <span class="text-xs text-lithium-700">@group.Key</span>
-                                @* <div class="flex items-center gap-1 font-semibold text-white text-sm"> *@
-                                @*     <span class="opacity-75">@results.Key.Icon</span> *@
-                                @*     <span>@((MarkupString)results.Key.Title)</span> *@
-                                @* </div> *@
                             </div>  
                            @foreach (var result in results)
                            {
@@ -106,9 +81,7 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (IsOpen && !_wasOpen)
-        {
             await _searchInput.FocusAsync();
-        }
 
         _wasOpen = IsOpen;
     }
