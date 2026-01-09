@@ -27,9 +27,8 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
         var root = new XElement(xmlns + "urlset", new XAttribute(XNamespace.Xmlns + "xhtml", xhtml));
 
         var pages = typeof(SeoController).Assembly.ExportedTypes
-            .Where(p => p.IsSubclassOf(typeof(Microsoft.AspNetCore.Components.ComponentBase)) &&
-                        p.Namespace != null &&
-                        p.Namespace.StartsWith("Lithium.Web.Components.Pages"))
+            .Where(p => p.IsDefined(typeof(Microsoft.AspNetCore.Components.RouteAttribute), false) &&
+                        p.IsSubclassOf(typeof(Microsoft.AspNetCore.Components.ComponentBase)))
             .ToList();
 
         var webSiteUrl = $"{Request.Scheme}://{Request.Host}";
