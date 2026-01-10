@@ -6,8 +6,8 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Lithium.Web/Lithium.Web.csproj", "Lithium.Web/"]
-COPY ["LucideBlazor/LucideBlazor.csproj", "LucideBlazor/"]
-COPY ["LucideBlazor.Generator/LucideBlazor.Generator.csproj", "LucideBlazor.Generator/"]
+COPY ["Lucide/LucideBlazor/LucideBlazor.csproj", "Lucide/LucideBlazor/"]
+COPY ["Lucide/LucideBlazor.Generator/LucideBlazor.Generator.csproj", "Lucide/LucideBlazor.Generator/"]
 RUN dotnet restore "Lithium.Web/Lithium.Web.csproj"
 COPY . .
 WORKDIR "/src/Lithium.Web"

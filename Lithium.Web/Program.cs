@@ -23,6 +23,8 @@ var client = new MongoClient(connectionString);
 builder.Services.AddMongoDB<WebDbContext>(client, "web");
 builder.Services.AddScoped<UserCollection>();
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
 // Data Protection - IMPORTANT pour Cloudflare
 var dataProtectionPath = Path.Combine("/home/app/.aspnet/DataProtection-Keys");
 builder.Services.AddDataProtection()
@@ -48,6 +50,8 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownProxies.Clear();
 });
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 // IMPORTANT : Forwarded headers AVANT tout le reste
@@ -61,14 +65,29 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
+// app.UseStaticFiles();
 app.UseAntiforgery();
 
+var supportedCultures = new[] { "en-US", "fr-FR" };
+
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
+
 app.MapStaticAssets();
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapControllers();
 
 app.Run();

@@ -1,0 +1,137 @@
+/* Lithium Prism Theme */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: #b6b6c5; /* lithium-900 */
+    /*background: none;*/
+    /*font-fam#ED94C0ily: 'Monaspace Neon', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;*/
+    font-size: 1em;
+    /*text-align: left;*/
+    /*white-space: pre;*/
+    /*word-spacing: normal;*/
+    /*word-break: normal;*/
+    /*word-wrap: normal;*/
+    /*line-height: 1.6;*/
+    /*-moz-tab-size: 4;*/
+    /*-o-tab-size: 4;*/
+    /*tab-size: 4;*/
+    /*-webkit-hyphens: none;*/
+    /*-moz-hyphens: none;*/
+    /*-ms-hyphens: none;*/
+    /*hyphens: none;*/
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1.5em;
+    margin: .5em 0;
+    overflow: auto;
+    border-radius: 0.5rem; /* rounded-lg */
+    background: #121218; /* lithium-50 */
+    border: 1px solid #222229; /* lithium-100 */
+
+    :not(span) {
+        color: #41bbcb;
+    }
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #121218; /* lithium-50 */
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .2em .4em;
+    border-radius: .3em;
+    white-space: normal;
+    color: #4dd0e1;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #64646f; /* lithium-500 */
+    font-style: italic;
+}
+
+.token.operator,
+.token.punctuation {
+    color: #BDBDBD;
+}
+
+.token.namespace {
+    opacity: 1;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #f06292; /* pink */
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #a5d6a7; /* green */
+}
+
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #747480; /* lithium-600 */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword,
+.token.boolean {
+    color: #6991C7;
+}
+
+.token.function {
+    color: #39CC9B;
+}
+
+.token.string {
+    color: #B9A165;
+}
+
+.token.class-name,
+.token.namespace {
+    color: #BF8DE0;
+}
+
+.token.attribute-arguments {
+    color: #E1BFFF;
+}
+
+.token.regex,
+.token.important,
+.token.variable,
+.token.number,
+.token.format-string {
+    color: #ED94C0;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}

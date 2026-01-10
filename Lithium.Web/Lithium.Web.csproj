@@ -10,11 +10,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Markdig" Version="0.44.0" />
+        <PackageReference Include="Markdown.ColorCode" Version="3.0.1" />
+        <PackageReference Include="Markdown.ColorCode.CSharpToColoredHtml" Version="3.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.11"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.11"/>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.11"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.11"/>
         <PackageReference Include="MongoDB.EntityFrameworkCore" Version="9.0.3"/>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.1" />
+        <PackageReference Include="WebStoating.Markdig.Prism" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\LucideBlazor\LucideBlazor.csproj"/>
+      <ProjectReference Include="..\Lucide\LucideBlazor\LucideBlazor.csproj" />
     </ItemGroup>
 
 </Project>
