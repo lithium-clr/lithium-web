@@ -11,5 +11,14 @@ public class User
     public Guid Id { get; init; } = Guid.NewGuid();
 
     [BsonElement("username"), StringLength(32)]
-    public required string Username { get; init; }
+    public required string Username { get; set; }
+
+    [BsonElement("email")]
+    public string? Email { get; set; }
+
+    [BsonElement("discord_id")]
+    public required string DiscordId { get; init; }
+
+    [BsonElement("avatar_url")]
+    public string? AvatarUrl { get; set; }
 }
