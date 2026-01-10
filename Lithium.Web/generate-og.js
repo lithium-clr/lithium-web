@@ -27,7 +27,7 @@ const path = require('path');
         // Small delay to allow fonts and blur effects to load properly
         await new Promise(r => setTimeout(r, 1000));
 
-        const outputPath = path.join(__dirname, 'wwwroot', 'images/og-image.png');
+        const outputPath = path.join(__dirname, 'wwwroot', 'images/og.png');
 
         await page.screenshot({
             path: outputPath,
