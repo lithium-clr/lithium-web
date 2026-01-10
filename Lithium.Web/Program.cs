@@ -5,6 +5,8 @@ using Lithium.Web.Components;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,10 +38,24 @@ builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = "Discord";
     })
-    .AddIdentityCookies();
+    .AddCookie()
+    .AddCookie("External")
+    .AddDiscord(options =>
+    {
+        options.SignInScheme = "External";
+        options.ClientId = builder.Configuration["Discord:ClientId"] ?? Environment.GetEnvironmentVariable("DISCORD_CLIENT_ID")!;
+        options.ClientSecret = builder.Configuration["Discord:ClientSecret"] ?? Environment.GetEnvironmentVariable("DISCORD_CLIENT_SECRET")!;
+        options.Scope.Add("identify");
+        options.Scope.Add("email");
+        options.SaveTokens = true;
+        
+        // Map claims to ensure we get the avatar
+        options.ClaimActions.MapJsonKey("urn:discord:avatar:url", "avatar");
+    });
 
 // Configuration pour proxy inverse (Cloudflare)
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
@@ -72,6 +88,8 @@ else
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
 // app.UseStaticFiles();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
 
 var supportedCultures = new[] { "en-US", "fr-FR" };
