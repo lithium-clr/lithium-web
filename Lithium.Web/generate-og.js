@@ -11,7 +11,7 @@ const path = require('path');
     const page = await browser.newPage();
 
     // Standard Open Graph size
-    await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 2 }); // Scale factor 2 for high definition (Retina)
+    await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 }); // Scale factor 2 for high definition (Retina)
 
     // Local app URL (based on launchSettings.json)
     const url = 'https://localhost:7344/og-image';
@@ -27,11 +27,11 @@ const path = require('path');
         // Small delay to allow fonts and blur effects to load properly
         await new Promise(r => setTimeout(r, 1000));
 
-        const outputPath = path.join(__dirname, 'wwwroot', 'og-image.png');
+        const outputPath = path.join(__dirname, 'wwwroot', 'images/og-image.png');
 
         await page.screenshot({
             path: outputPath,
-            omitBackground: true
+            omitBackground: false
         });
 
         console.log(`✅ Image successfully generated: ${outputPath}`);
