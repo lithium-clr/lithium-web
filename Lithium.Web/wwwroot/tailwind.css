@@ -1139,8 +1139,17 @@
   .bg-clip-text {
     background-clip: text;
   }
+  .fill-lithium-900 {
+    fill: var(--color-lithium-900);
+  }
+  .fill-lithium-900\! {
+    fill: var(--color-lithium-900) !important;
+  }
   .stroke-lithium-500\! {
     stroke: var(--color-lithium-500) !important;
+  }
+  .stroke-lithium-900\! {
+    stroke: var(--color-lithium-900) !important;
   }
   .p-1 {
     padding: calc(var(--spacing) * 1);
@@ -1548,6 +1557,13 @@
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--color-red-500) 10%, transparent);
         }
+      }
+    }
+  }
+  .hover\:fill-white {
+    &:hover {
+      @media (hover: hover) {
+        fill: var(--color-white);
       }
     }
   }
