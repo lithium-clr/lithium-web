@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Lithium.Web.Components.Pages
+@using Microsoft.Extensions.Localization
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Home> Localizer
 
 <div class="flex flex-row w-screen h-screen bg-lithium-0 overflow-hidden">
     <div
@@ -6,8 +10,23 @@
 
     <main class="flex-1 h-full overflow-y-auto relative">
         @* <div class="absolute inset-0 bg-linear-to-br from-lithium-50 to-lithium-100 pointer-events-none"></div> *@
+        <NavBar @rendermode="InteractiveServer"/>
         @Body
     </main>
 </div>
 
 <ErrorModal/>
+
+@code {
+
+    private void Login()
+    {
+        NavigationManager.NavigateTo($"auth/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", forceLoad: true);
+    }
+
+    private void Logout()
+    {
+        NavigationManager.NavigateTo("auth/logout", forceLoad: true);
+    }
+
+}
