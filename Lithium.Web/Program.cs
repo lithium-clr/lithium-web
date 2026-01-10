@@ -47,12 +47,19 @@ builder.Services.AddAuthentication(options =>
     .AddDiscord(options =>
     {
         options.SignInScheme = "External";
-        options.ClientId = builder.Configuration["Discord:ClientId"] ?? Environment.GetEnvironmentVariable("DISCORD_CLIENT_ID")!;
-        options.ClientSecret = builder.Configuration["Discord:ClientSecret"] ?? Environment.GetEnvironmentVariable("DISCORD_CLIENT_SECRET")!;
+
+        options.ClientId = builder.Environment.IsDevelopment()
+            ? builder.Configuration["Discord:ClientId"]!
+            : Environment.GetEnvironmentVariable("DISCORD_CLIENT_ID")!;
+
+        options.ClientSecret = builder.Environment.IsDevelopment() 
+            ? builder.Configuration["Discord:ClientSecret"]! 
+            : Environment.GetEnvironmentVariable("DISCORD_CLIENT_SECRET")!;
+        
         options.Scope.Add("identify");
         options.Scope.Add("email");
         options.SaveTokens = true;
-        
+
         // Map claims to ensure we get the avatar
         options.ClaimActions.MapJsonKey("urn:discord:avatar:url", "avatar");
     });
