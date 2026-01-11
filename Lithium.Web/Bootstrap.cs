@@ -9,7 +9,8 @@ public static partial class Bootstrap
     {
         public void SetupBootstrap()
         {
-            builder.Services.AddRazorComponents()
+            builder.Services.AddRazorComponents(options => 
+                options.DetailedErrors = builder.Environment.IsDevelopment())
                 .AddInteractiveServerComponents();
             
             var dataProtectionPath = Path.Combine("/home/app/.aspnet/DataProtection-Keys");
