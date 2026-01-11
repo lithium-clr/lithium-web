@@ -1,6 +1,5 @@
 using Lithium.Web;
 using Lithium.Web.Collections;
-using Microsoft.AspNetCore.Identity;
 using Lithium.Web.Components;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -10,11 +9,9 @@ using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Razor / Blazor
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// MongoDB
 var connectionString =
     builder.Configuration["Mongo:Uri"] ??
     Environment.GetEnvironmentVariable("MONGO_URI");
@@ -27,13 +24,11 @@ builder.Services.AddScoped<UserCollection>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-// Data Protection - IMPORTANT pour Cloudflare
 var dataProtectionPath = Path.Combine("/home/app/.aspnet/DataProtection-Keys");
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionPath))
     .SetApplicationName("LithiumWeb");
 
-// Auth
 builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddAuthentication(options =>
@@ -64,7 +59,6 @@ builder.Services.AddAuthentication(options =>
         options.ClaimActions.MapJsonKey("urn:discord:avatar:url", "avatar");
     });
 
-// Configuration pour proxy inverse (Cloudflare)
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
@@ -77,10 +71,8 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// IMPORTANT : Forwarded headers AVANT tout le reste
 app.UseForwardedHeaders();
 
-// Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -94,7 +86,6 @@ else
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
-// app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
