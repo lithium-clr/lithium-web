@@ -26,8 +26,8 @@
 @inject IWebHostEnvironment Env
 @inject IJSRuntime JsRuntime
 @layout EmptyLayout
-@rendermode InteractiveServer
 @implements IDisposable
+@rendermode InteractiveServer
 
 <SearchModal @bind-IsOpen="_isSearchModalOpen" AllDocs="_docs"/>
 
@@ -100,6 +100,18 @@
                                     <span>@doc.Title</span>
                                 </NavLink>
                             }
+                        </div>
+                    </div>
+                }
+                @if (Env.IsDevelopment())
+                {
+                    <div class="flex flex-col px-3 py-2 gap-2">
+                        <span class="text-sm text-white">Admin</span>
+                        <div class="flex flex-col">
+                            <NavLink href="/docs/admin" class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-50 flex items-center gap-2 text-sm text-lithium-500! hover:text-white!">
+                                <span>⚙️</span>
+                                <span>Edit Docs</span>
+                            </NavLink>
                         </div>
                     </div>
                 }
