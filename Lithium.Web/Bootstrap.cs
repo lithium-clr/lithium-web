@@ -17,9 +17,9 @@ public static partial class Bootstrap
             builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionPath))
                 .SetApplicationName("LithiumWeb");
-            
+
+            builder.Services.SetupSentry(builder.Environment, builder.Configuration);
             builder.Services.SetupDatabase(builder.Configuration);
-            
             builder.Services.SetupLocalization();
             builder.Services.SetupAuthentication(builder.Environment, builder.Configuration);
             
