@@ -1,6 +1,7 @@
 using System.Security.Claims;
-using Lithium.Web.Collections;
-using Lithium.Web.Models;
+using Lithium.Web.Infrastructure.Data;
+using Lithium.Web.Infrastructure.Data.Collections;
+using Lithium.Web.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Lithium.Web.Controllers;
 
 [Route("auth")]
-public sealed class AuthController(UserCollection userCollection) : Controller
+public sealed class AuthController(UserCollection userCollection) : ControllerBase
 {
     [HttpGet("login")]
     public IActionResult Login(string returnUrl = "/")

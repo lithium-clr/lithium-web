@@ -1,0 +1,172 @@
+﻿@page "/"
+@using Microsoft.Extensions.Localization
+@layout MainLayout
+@rendermode InteractiveServer
+@inject IStringLocalizer<Home> Localizer
+@attribute [Sitemap.Priority(1.0)]
+@attribute [Sitemap.ChangeFrequency(SitemapChangeFrequency.Weekly)]
+@attribute [Sitemap.LastModification(2026, 9, 1)]
+
+<PageTitle>Lithium - C# Hytale Server</PageTitle>
+
+<HeadContent>
+    <meta name="description" content="@Localizer["HeroDescription"]"/>
+    <meta name="keywords" content="Hytale, Server, Lithium, Open Source, C#, .NET, Modding, Multiplayer"/>
+    <meta property="og:title" content="Lithium - C# Hytale Server"/>
+    <meta property="og:description" content="@Localizer["HeroDescription"]"/>
+    <meta property="og:url" content="https://lithium.run/"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://lithium.run/images/og.png"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Lithium - C# Hytale Server"/>
+    <meta name="twitter:description" content="@Localizer["HeroDescription"]"/>
+    <meta name="twitter:image" content="https://lithium.run/images/og.png"/>
+    <link rel="canonical" href="https://lithium.run/"/>
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "SoftwareApplication",
+          "name": "Lithium",
+          "operatingSystem": "Windows, Linux, macOS",
+          "applicationCategory": "GameServer",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "@Localizer["HeroDescription"]",
+      "url": "https://lithium.run",
+      "author": {
+          "@@type": "Organization",
+          "name": "Lithium Project",
+          "url": "https://lithium.run"
+      }
+    }
+    </script>
+</HeadContent>
+
+<style>
+    .hero-bg {
+        background-color: var(--color-lithium-0);
+        background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 42%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 97% 21%, hsla(135, 98%, 42%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 52% 99%, hsla(355, 98%, 42%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 10% 29%, hsla(256, 96%, 41%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.1) 0px, transparent 50%),
+        radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.1) 0px, transparent 50%);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        opacity: .2;
+    }
+</style>
+
+<div class="relative flex flex-col items-center justify-center min-h-screen text-lithium-900 pt-16 overflow-hidden">
+    <div class="hero-bg"></div>
+    <!-- Hero Section -->
+    <section class="z-10 text-center max-w-4xl px-6 py-12" aria-labelledby="hero-title">
+        <h1 id="hero-title"
+            class="text-7xl font-bold mb-4 text-transparent tracking-tight bg-clip-text bg-linear-to-br from-white via-white to-lithium-400">
+            @Localizer["HeroTitle"]
+        </h1>
+        <p class="text-xl mb-6 text-lithium-600 font-light">
+            @Localizer["HeroSubtitle"]
+            <br/>
+            <span class="text-lg text-lithium-500">@Localizer["HeroDescription"]</span>
+        </p>
+
+        <div class="flex flex-row gap-4 justify-center mb-8">
+            <a href="/docs"
+               class="px-8 py-3 bg-lithium-100 text-white! hover:bg-lithium-200 rounded-lg font-semibold transition-colors duration-200 border border-lithium-200">
+                @Localizer["GetStarted"]
+            </a>
+            <a href="https://github.com/lithium-clr" target="_blank" rel="noopener noreferrer"
+               class="px-8 py-3 bg-lithium-50 text-lithium-600! hover:text-white! rounded-lg font-semibold transition-colors duration-200 border border-lithium-200 hover:border-lithium-500">
+                GitHub
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="z-10 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl px-6 w-full" aria-label="Features">
+        <div
+            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-all duration-300 transform hover:-translate-y-1">
+            <div
+                class="flex items-center justify-center h-12 w-12 rounded-full bg-lithium-100 border border-lithium-200 mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-white">@Localizer["PerformanceTitle"]</h3>
+            <p class="text-lithium-600 leading-relaxed">@Localizer["PerformanceDescription"]</p>
+        </div>
+        <div
+            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-all duration-300 transform hover:-translate-y-1">
+            <div
+                class="flex items-center justify-center h-12 w-12 rounded-full bg-lithium-100 border border-lithium-200 mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-white">@Localizer["ModularityTitle"]</h3>
+            <p class="text-lithium-600 leading-relaxed">@Localizer["ModularityDescription"]</p>
+        </div>
+        <div
+            class="p-8 bg-lithium-50/50 backdrop-blur-sm rounded-xl border border-lithium-100 hover:border-lithium-200 transition-all duration-300 transform hover:-translate-y-1">
+            <div
+                class="flex items-center justify-center h-12 w-12 rounded-full bg-lithium-100 border border-lithium-200 mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                     aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-white">@Localizer["OpenSourceTitle"]</h3>
+            <p class="text-lithium-600 leading-relaxed">@Localizer["OpenSourceDescription"]</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+        class="z-10 mt-12 pb-8 w-full max-w-6xl px-6 flex flex-col md:flex-row justify-between items-center text-lithium-500 text-sm border-t border-lithium-100 pt-8">
+        <p>&copy; @DateTime.Now.Year Lithium Project. @Localizer["AllRightsReserved"]</p>
+        <div class="flex items-center gap-4 mt-4 md:mt-0">
+            <span class="flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                v0.1.0-alpha
+            </span>
+            <span class="w-1 h-1 bg-lithium-300 rounded-full"></span>
+            <a href="https://status.lithium.run" target="_blank" rel="noopener noreferrer">
+                <span class="flex items-center gap-2 text-lime-400">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true">
+                        <path
+                            d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>
+                    uptime
+                </span>
+            </a>
+            <span class="w-1 h-1 bg-lithium-300 rounded-full"></span>
+            <a href="https://github.com/lithium-clr/lithium-web/tree/main" target="_blank" rel="noopener noreferrer"
+               class="text-lithium-900! hover:text-white! transition-colors font-mono">
+                git:main
+            </a>
+        </div>
+    </footer>
+</div>

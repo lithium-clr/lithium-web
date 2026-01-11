@@ -1,0 +1,20 @@
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Lithium.Web.Shared.Components.Localization;
+
+[Route("[controller]/[action]")]
+public sealed class LocalizationController : ControllerBase
+{
+    public IActionResult Set(string culture, string redirectUri)
+    {
+        if (string.IsNullOrEmpty(culture)) return LocalRedirect(redirectUri);
+        
+        var requestCulture = new RequestCulture(culture, culture);
+        var cookieName = CookieRequestCultureProvider.DefaultCookieName;
+        var cookieValue = CookieRequestCultureProvider.MakeCookieValue(requestCulture);
+
+        HttpContext.Response.Cookies.Append(cookieName, cookieValue);
+        return LocalRedirect(redirectUri);
+    }
+}

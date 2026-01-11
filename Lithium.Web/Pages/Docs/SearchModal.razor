@@ -1,0 +1,153 @@
+@using Microsoft.AspNetCore.Components.Web
+@using System.Text.RegularExpressions
+@using LucideBlazor
+@inject NavigationManager NavigationManager
+
+<div @onclick="Close"
+     class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200 @(IsOpen ? "scale-100 opacity-100 pointer-events-all": "scale-110 opacity-0 pointer-events-none")">
+    <div @onclick:stopPropagation
+         class="w-full max-w-2xl bg-lithium-100/80 border border-lithium-200 rounded-lg shadow-xl"
+         role="dialog" aria-modal="true">
+
+        <div class="flex p-4 gap-2 border-b border-lithium-200">
+            <SearchIcon ClassName="stroke-lithium-500!"/>
+            <input @bind="_searchQuery" @oninput="UpdateSearchResults" @ref="_searchInput"
+                   class="w-full bg-transparent text-white placeholder-lithium-500 focus:outline-none"
+                   placeholder="Search documentation..."
+                   autocomplete="off"/>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            <ul class="max-h-96 overflow-y-auto p-2">
+                @if (_searchResults.Any())
+                {
+                    @foreach (var group in _searchResults.GroupBy(r => r.Doc.Category))
+                    {
+                        @foreach (var results in group.GroupBy(x => (x.Doc.Icon, x.Doc.Title)))
+                        {
+                            <div class="flex flex-col bg-lithium-200 p-2 gap-1 rounded-md">
+                                <span class="text-xs text-lithium-700">@group.Key</span>
+                            </div>  
+                           @foreach (var result in results)
+                           {
+                               <li class="border-l border-l-lithium-200 ml-3 pl-2">
+                                   <a @onclick="() => NavigateTo(result.Doc.Slug)"
+                                      class="block p-2 text-sm text-white! rounded-md hover:bg-lithium-200 cursor-pointer">
+                                       <div class="flex items-center gap-1 font-semibold">
+                                           <span>@result.Doc.Icon</span>
+                                           <span>@((MarkupString)result.Doc.Title)</span>
+                                       </div>
+                                       @if (!string.IsNullOrEmpty(result.Snippet))
+                                       {
+                                           <p class="text-xm text-lithium-900">
+                                               @((MarkupString)result.Snippet)
+                                           </p>
+                                       }
+                                   </a>
+                               </li>
+                           }
+                        }
+                    }
+                }
+                else
+                {
+                    <li class="p-4 text-sm text-center text-lithium-800">No results found.</li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+@code {
+
+    private class SearchResult
+    {
+        public DocMeta Doc { get; init; } = null!;
+        public string HighlightedTitle { get; init; } = null!;
+        public string? Snippet { get; init; }
+    }
+
+    private string _searchQuery = "";
+    private ElementReference _searchInput;
+    private List<SearchResult> _searchResults = [];
+    private bool _wasOpen;
+
+    [Parameter] public bool IsOpen { get; set; }
+    [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
+    [Parameter] public List<DocMeta> AllDocs { get; set; } = [];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (IsOpen && !_wasOpen)
+            await _searchInput.FocusAsync();
+
+        _wasOpen = IsOpen;
+    }
+
+    private void UpdateSearchResults(ChangeEventArgs e)
+    {
+        _searchQuery = e.Value?.ToString() ?? "";
+
+        if (string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            _searchResults = [];
+            return;
+        }
+
+        var results = new List<SearchResult>();
+
+        foreach (var doc in AllDocs)
+        {
+            var highlightedTitle = Highlight(doc.Title, _searchQuery);
+            var titleMatch = doc.Title.Contains(_searchQuery, StringComparison.OrdinalIgnoreCase);
+
+            if (titleMatch)
+            {
+                results.Add(new SearchResult
+                {
+                    Doc = doc,
+                    HighlightedTitle = highlightedTitle,
+                    Snippet = null
+                });
+            }
+
+            var content = File.ReadAllText(doc.FilePath);
+            var matches = Regex.Matches(content, $".*?{Regex.Escape(_searchQuery)}.*", RegexOptions.IgnoreCase);
+
+            foreach (Match match in matches)
+            {
+                results.Add(new SearchResult
+                {
+                    Doc = doc,
+                    HighlightedTitle = highlightedTitle,
+                    Snippet = Highlight(match.Value.Trim(), _searchQuery)
+                });
+            }
+        }
+
+        _searchResults = results.DistinctBy(r => new { r.Doc.Slug, r.Snippet }).ToList();
+    }
+
+    private static string Highlight(string text, string query)
+    {
+        return Regex.Replace(text, $"({Regex.Escape(query)})",
+            "<mark class='text-yellow-400 underline bg-transparent'>$1</mark>",
+            RegexOptions.IgnoreCase);
+    }
+
+    private Task Close()
+    {
+        _searchQuery = "";
+        _searchResults = [];
+
+        return IsOpenChanged.InvokeAsync(false);
+    }
+
+    private async Task NavigateTo(string slug)
+    {
+        NavigationManager.NavigateTo($"/docs/{slug}");
+        await Close();
+    }
+
+}
