@@ -4,7 +4,7 @@ public static partial class Bootstrap
 {
     private static IServiceCollection SetupLocalization(this IServiceCollection services)
     {
-        return services.AddLocalization(options => options.ResourcesPath = "Resources");
+        return services.AddLocalization(options => options.ResourcesPath = "Shared\\Resources");
     }
 
     private static IApplicationBuilder SetupLanguages(this IApplicationBuilder app)
