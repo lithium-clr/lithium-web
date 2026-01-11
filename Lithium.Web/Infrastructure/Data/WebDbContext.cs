@@ -1,8 +1,8 @@
-using Lithium.Web.Models;
+using Lithium.Web.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.EntityFrameworkCore.Extensions;
 
-namespace Lithium.Web;
+namespace Lithium.Web.Infrastructure.Data;
 
 public sealed class WebDbContext(DbContextOptions<WebDbContext> options) : DbContext(options)
 {

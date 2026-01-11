@@ -1,4 +1,5 @@
-using Lithium.Web.Collections;
+using Lithium.Web.Infrastructure.Data;
+using Lithium.Web.Infrastructure.Data.Collections;
 using MongoDB.Driver;
 
 namespace Lithium.Web;

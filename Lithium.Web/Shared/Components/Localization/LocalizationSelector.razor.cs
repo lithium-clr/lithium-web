@@ -1,9 +1,9 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
 
-namespace Lithium.Web.Shared.Components;
+namespace Lithium.Web.Shared.Components.Localization;
 
-public partial class CultureSelector : ComponentBase
+public partial class LocalizationSelector : ComponentBase
 {
     private bool _isDropdownOpen;
 

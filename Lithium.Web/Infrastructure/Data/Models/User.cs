@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Lithium.Web.Models;
+namespace Lithium.Web.Infrastructure.Data.Models;
 
-public class User
+public sealed class User
 {
     [BsonId]
     [BsonRepresentation(BsonType.String)]
