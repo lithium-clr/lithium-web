@@ -1,0 +1,186 @@
+@using LucideBlazor
+@inject NavigationManager Navigation
+
+<div class="relative">
+    <button @onclick="ToggleDropdown"
+            class="flex items-center justify-center w-10 h-10 bg-lithium-100  hover:bg-lithium-100 border border-white/10 hover:border-white/20 rounded-lg cursor-pointer outline-none transition-all">
+        <LanguagesIcon Name="languages" ClassName="text-white/80! hover:text-white!"/>
+    </button>
+
+    @if (_isDropdownOpen)
+    {
+        <div
+            class="absolute right-0 mt-2 w-40 max-h-96 overflow-y-auto bg-lithium-100 border border-white/10 rounded-lg shadow-lg">
+            <ul class="py-1">
+                <li>
+                    <button @onclick="@(() => ChangeCulture("af-ZA"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Afrikaans
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("ar-SA"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        العربية
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("ca-ES"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Català
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("cs-CZ"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Čeština
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("da-DK"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Dansk
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("de-DE"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Deutsch
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("el-GR"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Ελληνικά
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("en-US"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        English
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("es-ES"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Español
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("fi-FI"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Suomi
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("fr-FR"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Français
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("he-IL"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        עברית
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("hu-HU"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Magyar
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("it-IT"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Italiano
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("ja-JP"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        日本語
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("ko-KR"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        한국어
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("nl-NL"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Nederlands
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("no-NO"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Norsk
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("pl-PL"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Polski
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("pt-PT"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Português
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("ro-RO"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Română
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("ru-RU"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Русский
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("sr-RS"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Српски
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("sv-SE"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Svenska
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("tr-TR"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Türkçe
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("uk-UA"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Українська
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("vi-VN"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        Tiếng Việt
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => ChangeCulture("zh-CN"))"
+                            class="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-lithium-200 hover:text-white cursor-pointer">
+                        中文
+                    </button>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
