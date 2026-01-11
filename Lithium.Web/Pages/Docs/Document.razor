@@ -23,6 +23,8 @@
 @using Markdig.Extensions.GenericAttributes
 @using Markdig.Syntax
 @using Microsoft.AspNetCore.Components.Web
+@using System.ComponentModel.DataAnnotations
+@using PSC.Blazor.Components.MarkdownEditor
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Env
 @inject IJSRuntime JsRuntime
@@ -57,13 +59,18 @@
 </body>
 
 <!-- Mobile Header -->
-<div class="sticky top-0 z-10 flex items-center justify-between px-4 py-3 bg-lithium-0 border-b border-lithium-100 lg:hidden">
+<div
+    class="sticky top-0 z-10 flex items-center justify-between px-4 py-3 bg-lithium-0 border-b border-lithium-100 lg:hidden">
     <button @onclick="ToggleNav" type="button" class="text-white p-2 rounded-md hover:bg-lithium-50">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
     </button>
     <span class="text-white font-semibold truncate">@(_docs.FirstOrDefault(d => d.Slug == Slug)?.Title)</span>
     <button @onclick="ToggleToc" type="button" class="text-white p-2 rounded-md hover:bg-lithium-50 xl:hidden">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+        </svg>
     </button>
 </div>
 
@@ -75,12 +82,13 @@
     }
 
     <!-- Navbar -->
-    <div class="@(_isNavOpen ? "translate-x-0" : "-translate-x-full") lg:translate-x-0 fixed top-0 left-0 z-40 lg:sticky w-72 shrink-0 h-screen overflow-y-auto bg-lithium-0 border-r border-lithium-100 transition-transform duration-300 ease-in-out">
+    <div
+        class="@(_isNavOpen ? "translate-x-0" : "-translate-x-full") lg:translate-x-0 fixed top-0 left-0 z-40 lg:sticky w-72 shrink-0 h-screen overflow-y-auto bg-lithium-0 border-r border-lithium-100 transition-transform duration-300 ease-in-out">
         <div class="p-4">
             <div class="flex text-white my-2">
                 <span>Lithium</span>
             </div>
-            
+
             <div class="relative my-4">
                 <button @onclick="OpenSearchModal"
                         class="w-full bg-lithium-50 border border-lithium-100 rounded-md px-3 py-2 text-left text-lithium-500 text-sm flex items-center justify-between">
@@ -105,19 +113,6 @@
                         </div>
                     </div>
                 }
-                <AuthorizeView Policy="CanManageDocs">
-                    <Authorized>
-                        <div class="flex flex-col px-3 py-2 gap-2">
-                            <span class="text-sm text-white">Admin</span>
-                            <div class="flex flex-col">
-                                <NavLink href="/docs/admin" class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-50 flex items-center gap-2 text-sm text-lithium-500! hover:text-white!">
-                                    <span>⚙️</span>
-                                    <span>Edit Docs</span>
-                                </NavLink>
-                            </div>
-                        </div>
-                    </Authorized>
-                </AuthorizeView>
             </nav>
         </div>
     </div>
@@ -125,20 +120,87 @@
     <!-- Contenu -->
     <main class="flex-1 min-w-0" id="docs-content">
         <div class="w-full px-4 sm:px-8 lg:px-16 xl:px-24 py-16 text-white">
-            <div class="prose">
-                @((MarkupString)_htmlContent)
-            </div>
+            @if (_isEditMode)
+            {
+                <EditForm Model="@_doc" OnValidSubmit="SaveChanges"
+                          class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
+                    <DataAnnotationsValidator/>
+
+                    <div class="space-y-2">
+                        <h2 class="text-xl font-semibold">Metadata</h2>
+                        <p class="text-sm text-lithium-400">Basic information about the document.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-lithium-300">Title</label>
+                            <InputText @bind-Value="_doc.Title"
+                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                            <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-lithium-300">Slug</label>
+                            <InputText @bind-Value="_doc.Slug"
+                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                            <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-lithium-300">Category</label>
+                            <InputText @bind-Value="_doc.Category"
+                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                            <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400"/>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-lithium-300">Icon (Emoji)</label>
+                            <InputText @bind-Value="_doc.Icon"
+                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-lithium-100"></div>
+
+                    <MarkdownEditor Value="@_doc.Content" ValueChanged="OnMarkdownValueChanged"/>
+
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" @onclick="CancelEdit"
+                                class="inline-flex items-center gap-2 bg-lithium-100/60 hover:bg-lithium-100/80 text-white font-semibold py-2 px-4 border border-lithium-200 rounded-lg shadow-sm transition-colors cursor-pointer">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                                class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 border border-indigo-500 rounded-lg shadow-sm transition-colors cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                 fill="currentColor">
+                                <path
+                                    d="M7.5 2.5a.5.5 0 00-1 0v1.562A2.5 2.5 0 004.063 6.5H2.5a.5.5 0 000 1h1.563A2.5 2.5 0 006.5 9.937V11.5a.5.5 0 001 0V9.937a2.5 2.5 0 002.437-2.437H11.5a.5.5 0 000-1H9.937A2.5 2.5 0 007.5 4.062V2.5zM6.5 5A1.5 1.5 0 115 6.5 1.5 1.5 0 016.5 5zM2.5 12a.5.5 0 000 1h1.063a2.5 2.5 0 004.874 0H17.5a.5.5 0 000-1H8.437a2.5 2.5 0 00-4.874 0H2.5z"/>
+                            </svg>
+                            Save Changes
+                        </button>
+                    </div>
+                </EditForm>
+            }
+            else
+            {
+                <div class="prose">
+                    @((MarkupString)_htmlContent)
+                </div>
+            }
         </div>
     </main>
 
     <!-- Table of Contents -->
-    <div class="@(_isTocOpen ? "translate-x-0" : "translate-x-full") xl:translate-x-0 fixed top-0 right-0 z-40 xl:sticky w-72 shrink-0 h-screen overflow-y-auto bg-lithium-0 border-l border-lithium-100 transition-transform duration-300 ease-in-out">
+    <div
+        class="@(_isTocOpen ? "translate-x-0" : "translate-x-full") xl:translate-x-0 fixed top-0 right-0 z-40 xl:sticky w-72 shrink-0 h-screen overflow-y-auto bg-lithium-0 border-l border-lithium-100 transition-transform duration-300 ease-in-out">
         <div class="p-4">
             <div class="flex items-center justify-between xl:block">
-                 <h3 class="text-white text-sm font-semibold mb-4">On this page</h3>
-                 <button @onclick="ToggleToc" type="button" class="text-white p-2 rounded-md hover:bg-lithium-50 xl:hidden">
-                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                 </button>
+                <h3 class="text-white text-sm font-semibold mb-4">On this page</h3>
+                <button @onclick="ToggleToc" type="button"
+                        class="text-white p-2 rounded-md hover:bg-lithium-50 xl:hidden">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
             <ul class="space-y-2 border-l border-lithium-100">
                 @foreach (var heading in _headings)
@@ -156,6 +218,17 @@
                     </li>
                 }
             </ul>
+            <AuthorizeView Policy="CanManageDocs">
+                <Authorized>
+                    <div class="mt-8">
+                        <button @onclick="ToggleEditMode"
+                                class="w-full text-center cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-50 flex items-center gap-2 text-sm text-lithium-500! hover:text-white!">
+                            <span>✏️</span>
+                            <span>Edit Page</span>
+                        </button>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
         </div>
     </div>
 </div>
@@ -252,6 +325,7 @@
 </script>
 
 @code {
+
     private class Heading
     {
         public string Text { get; init; } = null!;
@@ -259,13 +333,17 @@
         public int Level { get; init; }
     }
 
-    private readonly List<DocMeta> _docs = [];
+    private readonly List<DocModel> _docs = [];
     private string _htmlContent = null!;
     private List<Heading> _headings = [];
     private string? _currentSlug;
     private bool _isNavOpen = false;
     private bool _isTocOpen = false;
     private bool _isSearchModalOpen = false;
+    private bool _isEditMode = false;
+    private readonly DocModel _doc = new();
+    private string _docsPath = null!;
+    private string _originalSlug = null!;
 
     [Parameter] public string? Slug { get; set; }
 
@@ -296,8 +374,8 @@
 
     protected override void OnInitialized()
     {
-        var docsPath = Path.Combine(Env.WebRootPath, "docs");
-        var files = Directory.GetFiles(docsPath, "*.md", SearchOption.AllDirectories);
+        _docsPath = Path.Combine(Env.WebRootPath, "docs");
+        var files = Directory.GetFiles(_docsPath, "*.md", SearchOption.AllDirectories);
 
         foreach (var file in files)
         {
@@ -305,13 +383,13 @@
             var meta = ParseYamlFrontMatter(markdown);
             var slug = Path.GetFileNameWithoutExtension(file);
 
-            _docs.Add(new DocMeta
+            _docs.Add(new DocModel
             {
                 Slug = slug,
                 Title = meta.GetValueOrDefault("title", slug),
                 Icon = meta.GetValueOrDefault("icon", "📄"),
                 Category = meta.GetValueOrDefault("category", "General"),
-                FilePath = file
+                Content = Regex.Replace(markdown, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline).Trim()
             });
         }
     }
@@ -335,10 +413,13 @@
 
         if (doc is not null)
         {
-            var markdown = await File.ReadAllTextAsync(doc.FilePath);
+            _doc.Title = doc.Title;
+            _doc.Slug = doc.Slug;
+            _doc.Category = doc.Category;
+            _doc.Icon = doc.Icon;
+            _doc.Content = doc.Content;
 
-            // Delete YAML front matter before rendering
-            markdown = Regex.Replace(markdown, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline);
+            _originalSlug = Slug;
 
             var pipeline = new MarkdownPipelineBuilder()
                 .UseAdvancedExtensions()
@@ -364,7 +445,7 @@
                 .UseGenericAttributes()
                 .Build();
 
-            var document = Markdown.Parse(markdown, pipeline);
+            var document = Markdown.Parse(doc.Content, pipeline);
 
             _headings = document.Descendants<HeadingBlock>()
                 .Select(h => new Heading
@@ -389,13 +470,66 @@
         {
             await JsRuntime.InvokeVoidAsync("lithiumDocs.init", DotNetObjectReference.Create(this));
         }
+
         await JsRuntime.InvokeVoidAsync("lithiumDocs.initScrollSpy");
         await JsRuntime.InvokeVoidAsync("lithiumDocs.renderMarkdownFeatures");
     }
-    
+
     public void Dispose()
     {
         JsRuntime.InvokeVoidAsync("lithiumDocs.dispose");
+    }
+
+    private void ToggleEditMode()
+    {
+        _isEditMode = !_isEditMode;
+    }
+
+    private void CancelEdit()
+    {
+        _isEditMode = false;
+    }
+
+    private Task OnMarkdownValueChanged(string value)
+    {
+        _doc.Content = value;
+        return Task.CompletedTask;
+    }
+
+    private async Task SaveChanges()
+    {
+        var newFilePath = Path.Combine(_docsPath, $"{_doc.Slug}.md");
+
+        if (_originalSlug != _doc.Slug)
+        {
+            if (File.Exists(newFilePath))
+            {
+                await JsRuntime.InvokeVoidAsync("alert", $"A document with the slug '{_doc.Slug}' already exists. Please choose a unique slug.");
+                return;
+            }
+        }
+
+        if (_originalSlug != _doc.Slug)
+        {
+            var originalFilePath = Path.Combine(_docsPath, $"{_originalSlug}.md");
+
+            if (File.Exists(originalFilePath))
+                File.Delete(originalFilePath);
+        }
+
+        var frontMatter = $@"---
+                            title: ""{_doc.Title}""
+                            icon: ""{_doc.Icon}""
+                            category: ""{_doc.Category}""
+                            ---
+                            ";
+        var fullContent = frontMatter + "\n" + _doc.Content;
+
+        await File.WriteAllTextAsync(newFilePath, fullContent);
+
+        _isEditMode = false;
+
+        NavigationManager.NavigateTo($"/docs/{_doc.Slug}", true);
     }
 
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
@@ -426,4 +560,5 @@
 
         return slug;
     }
+
 }
