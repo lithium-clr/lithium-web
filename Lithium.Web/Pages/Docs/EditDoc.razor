@@ -3,31 +3,21 @@
 @using System.IO
 @using System.ComponentModel.DataAnnotations
 @using System.Text.RegularExpressions
+@attribute [Authorize(Policy = "CanManageDocs")]
 @inject IWebHostEnvironment Env
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 @rendermode InteractiveServer
 
-<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
-<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
-
 <div class="w-full px-4 sm:px-8 lg:px-16 xl:px-24 py-16 text-white">
-    @if (!Env.IsDevelopment())
-    {
-        <div class="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded-lg relative" role="alert">
-            <strong class="font-bold">Access Denied!</strong>
-            <span class="block sm:inline">This page is only available in development mode.</span>
-        </div>
-        return;
-    }
-
     <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-white">@(_isCreating ? "Create New Document" : $"Editing: {_doc.Title}")</h1>
+        <h1 class="text-3xl font-bold text-white">@(IsCreating ? "Create New Document" : $"Editing: {_doc.Title}")</h1>
     </div>
 
-    <EditForm Model="@_doc" OnValidSubmit="SaveChanges" class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
-        <DataAnnotationsValidator />
-        
+    <EditForm Model="@_doc" OnValidSubmit="SaveChanges"
+              class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
+        <DataAnnotationsValidator/>
+
         <div class="space-y-2">
             <h2 class="text-xl font-semibold">Metadata</h2>
             <p class="text-sm text-lithium-400">Basic information about the document.</p>
@@ -36,25 +26,29 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block text-sm font-medium text-lithium-300">Title</label>
-                <InputText @bind-Value="_doc.Title" class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400" />
+                <InputText @bind-Value="_doc.Title"
+                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400"/>
             </div>
             <div>
                 <label class="block text-sm font-medium text-lithium-300">Slug</label>
-                <InputText @bind-Value="_doc.Slug" @oninput="AutoSlug" class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400" />
+                <InputText @bind-Value="_doc.Slug" @oninput="AutoSlug"
+                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400"/>
             </div>
             <div>
                 <label class="block text-sm font-medium text-lithium-300">Category</label>
-                <InputText @bind-Value="_doc.Category" class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-                <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400" />
+                <InputText @bind-Value="_doc.Category"
+                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400"/>
             </div>
             <div>
                 <label class="block text-sm font-medium text-lithium-300">Icon (Emoji)</label>
-                <InputText @bind-Value="_doc.Icon" class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                <InputText @bind-Value="_doc.Icon"
+                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
             </div>
         </div>
-        
+
         <div class="border-t border-lithium-100"></div>
 
         <div class="space-y-2">
@@ -63,16 +57,19 @@
         </div>
 
         <div>
-            <InputTextArea id="markdown-editor" @bind-Value="_doc.Content" class="hidden" />
+            <InputTextArea id="markdown-editor" @bind-Value="_doc.Content" class="hidden"/>
         </div>
 
         <div class="flex justify-end space-x-4 pt-4">
-            <button type="button" @onclick="Cancel" class="inline-flex items-center gap-2 bg-lithium-100/60 hover:bg-lithium-100/80 text-white font-semibold py-2 px-4 border border-lithium-200 rounded-lg shadow-sm transition-colors">
+            <button type="button" @onclick="Cancel"
+                    class="inline-flex items-center gap-2 bg-lithium-100/60 hover:bg-lithium-100/80 text-white font-semibold py-2 px-4 border border-lithium-200 rounded-lg shadow-sm transition-colors">
                 Cancel
             </button>
-            <button type="submit" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 border border-indigo-500 rounded-lg shadow-sm transition-colors">
+            <button type="submit"
+                    class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 border border-indigo-500 rounded-lg shadow-sm transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M7.5 2.5a.5.5 0 00-1 0v1.562A2.5 2.5 0 004.063 6.5H2.5a.5.5 0 000 1h1.563A2.5 2.5 0 006.5 9.937V11.5a.5.5 0 001 0V9.937a2.5 2.5 0 002.437-2.437H11.5a.5.5 0 000-1H9.937A2.5 2.5 0 007.5 4.062V2.5zM6.5 5A1.5 1.5 0 115 6.5 1.5 1.5 0 016.5 5zM2.5 12a.5.5 0 000 1h1.063a2.5 2.5 0 004.874 0H17.5a.5.5 0 000-1H8.437a2.5 2.5 0 00-4.874 0H2.5z" />
+                    <path
+                        d="M7.5 2.5a.5.5 0 00-1 0v1.562A2.5 2.5 0 004.063 6.5H2.5a.5.5 0 000 1h1.563A2.5 2.5 0 006.5 9.937V11.5a.5.5 0 001 0V9.937a2.5 2.5 0 002.437-2.437H11.5a.5.5 0 000-1H9.937A2.5 2.5 0 007.5 4.062V2.5zM6.5 5A1.5 1.5 0 115 6.5 1.5 1.5 0 016.5 5zM2.5 12a.5.5 0 000 1h1.063a2.5 2.5 0 004.874 0H17.5a.5.5 0 000-1H8.437a2.5 2.5 0 00-4.874 0H2.5z"/>
                 </svg>
                 Save Changes
             </button>
@@ -85,41 +82,51 @@
         background-color: #1a202c; /* bg-lithium-800 */
         border-color: #2d3748; /* border-lithium-100 */
     }
+
     .CodeMirror {
         background-color: #1a202c;
         color: #e2e8f0; /* text-gray-200 */
         border-color: #2d3748 !important;
     }
+
     .editor-toolbar {
         border-color: #2d3748 !important;
     }
+
     .editor-toolbar a {
         color: #a0aec0 !important; /* text-gray-400 */
     }
+
     .editor-toolbar a.active, .editor-toolbar a:hover {
         background: #2d3748;
         border-color: #4a5568;
         color: white !important;
     }
+
     .editor-preview, .editor-preview-side {
         background-color: #171923; /* bg-lithium-900 */
         color: white;
     }
+
     .cm-s-easymde .cm-header {
         color: #9f7aea; /* text-purple-400 */
     }
+
     .cm-s-easymde .cm-quote {
         color: #63b3ed; /* text-blue-400 */
     }
+
     .cm-s-easymde .cm-link {
         color: #4fd1c5; /* text-teal-400 */
     }
+
     .cm-s-easymde .cm-string {
         color: #f6ad55; /* text-orange-300 */
     }
 </style>
 
 @code {
+
     public class DocModel
     {
         [Required(ErrorMessage = "Title is required.")]
@@ -136,42 +143,41 @@
         public string Content { get; set; } = "";
     }
 
-    [Parameter]
-    public string Slug { get; set; }
+    [Parameter] public string Slug { get; set; } = null!;
 
-    private DocModel _doc = new();
-    private string _docsPath;
-    private string _originalSlug;
-    private bool _isCreating => string.IsNullOrEmpty(Slug);
-    private DotNetObjectReference<EditDoc> _dotNetHelper;
+    private readonly DocModel _doc = new();
+    private string _docsPath = null!;
+    private string _originalSlug = null!;
+    private DotNetObjectReference<EditDoc>? _dotNetHelper;
+
+    private bool IsCreating => string.IsNullOrEmpty(Slug);
 
     protected override void OnInitialized()
     {
         _dotNetHelper = DotNetObjectReference.Create(this);
         _docsPath = Path.Combine(Env.WebRootPath, "docs");
-        if (!_isCreating)
-        {
-            _originalSlug = Slug;
-            var filePath = Path.Combine(_docsPath, $"{Slug}.md");
-            if (File.Exists(filePath))
-            {
-                var fileContent = File.ReadAllText(filePath);
-                var meta = ParseYamlFrontMatter(fileContent);
-                _doc.Title = meta.GetValueOrDefault("title", Slug);
-                _doc.Slug = Slug;
-                _doc.Category = meta.GetValueOrDefault("category", "General");
-                _doc.Icon = meta.GetValueOrDefault("icon", "📄");
-                _doc.Content = Regex.Replace(fileContent, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline).Trim();
-            }
-        }
+
+        if (IsCreating) return;
+        _originalSlug = Slug;
+
+        var filePath = Path.Combine(_docsPath, $"{Slug}.md");
+
+        if (!File.Exists(filePath)) return;
+
+        var fileContent = File.ReadAllText(filePath);
+        var meta = ParseYamlFrontMatter(fileContent);
+
+        _doc.Title = meta.GetValueOrDefault("title", Slug);
+        _doc.Slug = Slug;
+        _doc.Category = meta.GetValueOrDefault("category", "General");
+        _doc.Icon = meta.GetValueOrDefault("icon", "📄");
+        _doc.Content = Regex.Replace(fileContent, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline).Trim();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("initEditor", _dotNetHelper, _doc.Content);
-        }
+            await JsRuntime.InvokeVoidAsync("initEditor", _dotNetHelper, _doc.Content);
     }
 
     [JSInvokable]
@@ -180,7 +186,7 @@
         _doc.Content = content;
         StateHasChanged();
     }
-    
+
     private void AutoSlug(ChangeEventArgs e)
     {
         var title = e.Value.ToString();
@@ -189,14 +195,14 @@
 
     private static string GenerateSlug(string text)
     {
-        if (string.IsNullOrWhiteSpace(text))
-            return "";
+        if (string.IsNullOrWhiteSpace(text)) return "";
 
         var slug = text.ToLowerInvariant();
         slug = Regex.Replace(slug, @"\s+", "-"); // Replace spaces with -
         slug = Regex.Replace(slug, @"[^a-z0-9-]", ""); // Remove invalid chars
         slug = Regex.Replace(slug, @"-+", "-"); // Replace multiple - with single -
         slug = slug.Trim('-');
+
         return slug;
     }
 
@@ -204,16 +210,16 @@
     {
         var newFilePath = Path.Combine(_docsPath, $"{_doc.Slug}.md");
 
-        if (_isCreating || _originalSlug != _doc.Slug)
+        if (IsCreating || _originalSlug != _doc.Slug)
         {
             if (File.Exists(newFilePath))
             {
-                await JSRuntime.InvokeVoidAsync("alert", $"A document with the slug '{_doc.Slug}' already exists. Please choose a unique slug.");
+                await JsRuntime.InvokeVoidAsync("alert", $"A document with the slug '{_doc.Slug}' already exists. Please choose a unique slug.");
                 return;
             }
         }
 
-        if (!_isCreating && _originalSlug != _doc.Slug)
+        if (!IsCreating && _originalSlug != _doc.Slug)
         {
             var originalFilePath = Path.Combine(_docsPath, $"{_originalSlug}.md");
             if (File.Exists(originalFilePath))
@@ -223,14 +229,14 @@
         }
 
         var frontMatter = $@"---
-title: ""{_doc.Title}""
-icon: ""{_doc.Icon}""
-category: ""{_doc.Category}""
----
-
-";
+                            title: ""{_doc.Title}""
+                            icon: ""{_doc.Icon}""
+                            category: ""{_doc.Category}""
+                            ---
+                            ";
         var fullContent = frontMatter + _doc.Content;
-        File.WriteAllText(newFilePath, fullContent);
+        
+        await File.WriteAllTextAsync(newFilePath, fullContent);
         NavigationManager.NavigateTo("/docs/admin");
     }
 
@@ -242,44 +248,68 @@ category: ""{_doc.Category}""
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
     {
         var dict = new Dictionary<string, string>();
+        
         var match = Regex.Match(markdown, @"^---\s*(.+?)\s*---", RegexOptions.Singleline);
         if (!match.Success) return dict;
 
         var yaml = match.Groups[1].Value;
+        
         foreach (var line in yaml.Split('\n'))
         {
             var parts = line.Split(':', 2);
-            if (parts.Length == 2)
-            {
+            
+            if (parts.Length is 2)
                 dict[parts[0].Trim()] = parts[1].Trim().Trim('"');
-            }
         }
+
         return dict;
     }
-    
+
     public void Dispose()
     {
         _dotNetHelper?.Dispose();
     }
+
 }
+
 <script>
     window.initEditor = (dotNetHelper, initialValue) => {
-        if (window.easyMDE) {
-            window.easyMDE.toTextArea();
-            window.easyMDE = null;
-        }
-        
-        window.easyMDE = new EasyMDE({
-            element: document.getElementById('markdown-editor'),
-            initialValue: initialValue,
-            spellChecker: false,
-            sideBySideFullscreen: false,
-            minHeight: "300px",
-            toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "preview", "side-by-side", "fullscreen", "|", "guide"]
-        });
+        const init = () => {
+            if (window.easyMDE) {
+                window.easyMDE.toTextArea();
+                window.easyMDE = null;
+            }
 
-        window.easyMDE.codemirror.on("change", () => {
-            dotNetHelper.invokeMethodAsync('UpdateContent', window.easyMDE.value());
-        });
+            window.easyMDE = new EasyMDE({
+                element: document.getElementById('markdown-editor'),
+                initialValue: initialValue,
+                spellChecker: false,
+                sideBySideFullscreen: false,
+                minHeight: "300px",
+                toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "preview", "side-by-side", "fullscreen", "|", "guide"]
+            });
+
+            window.easyMDE.codemirror.on("change", () => {
+                dotNetHelper.invokeMethodAsync('UpdateContent', window.easyMDE.value());
+            });
+        };
+
+        if (typeof EasyMDE !== 'undefined') {
+            init();
+        } else {
+            // Load CSS
+            if (!document.querySelector('link[href="https://unpkg.com/easymde/dist/easymde.min.css"]')) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://unpkg.com/easymde/dist/easymde.min.css';
+                document.head.appendChild(link);
+            }
+
+            // Load JS
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/easymde/dist/easymde.min.js';
+            script.onload = init; // Initialize after script loads
+            document.head.appendChild(script);
+        }
     };
 </script>
