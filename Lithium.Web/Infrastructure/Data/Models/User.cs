@@ -11,4 +11,7 @@ public sealed class User
 
     [BsonElement("discord")]
     public required DiscordUser Discord { get; init; }
+
+    [BsonElement("roles")]
+    public List<string> Roles { get; set; } = [];
 }
