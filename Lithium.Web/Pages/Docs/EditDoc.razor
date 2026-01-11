@@ -57,8 +57,8 @@
             <p class="text-sm text-lithium-400">The main body of the document in Markdown format.</p>
         </div>
 
-        <MarkdownEditor @bind-Value="@_doc.Content" 
-                        ValueHTMLChanged="@OnMarkdownValueChanged" />
+        <MarkdownEditor @bind-Value="@_doc.Content"
+                        ValueChanged="OnMarkdownValueChanged"/>
 
         <div class="flex justify-end space-x-4 pt-4">
             <button type="button" @onclick="Cancel"
@@ -172,19 +172,12 @@
         _doc.Category = meta.GetValueOrDefault("category", "General");
         _doc.Icon = meta.GetValueOrDefault("icon", "📄");
         _doc.Content = Regex.Replace(fileContent, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline).Trim();
-    }
+    } 
 
     private Task OnMarkdownValueChanged(string value)
     {
         _doc.Content = value;
         return Task.CompletedTask;
-    }
-
-    [JSInvokable]
-    public void UpdateContent(string content)
-    {
-        _doc.Content = content;
-        StateHasChanged();
     }
 
     private void AutoSlug(ChangeEventArgs e)
@@ -222,10 +215,9 @@
         if (!IsCreating && _originalSlug != _doc.Slug)
         {
             var originalFilePath = Path.Combine(_docsPath, $"{_originalSlug}.md");
+
             if (File.Exists(originalFilePath))
-            {
                 File.Delete(originalFilePath);
-            }
         }
 
         var frontMatter = $@"---
@@ -235,7 +227,7 @@
                             ---
                             ";
         var fullContent = frontMatter + _doc.Content;
-
+        
         await File.WriteAllTextAsync(newFilePath, fullContent);
         NavigationManager.NavigateTo("/docs/admin");
     }
