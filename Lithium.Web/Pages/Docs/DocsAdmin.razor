@@ -1,21 +1,14 @@
 @page "/docs/admin"
 @using System.IO
 @using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Policy = "CanManageDocs")]
 @inject IWebHostEnvironment Env
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 @rendermode InteractiveServer
 
 <div class="w-full px-4 sm:px-8 lg:px-16 xl:px-24 py-16 text-white">
-    @if (!Env.IsDevelopment())
-    {
-        <div class="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded-lg relative" role="alert">
-            <strong class="font-bold">Access Denied!</strong>
-            <span class="block sm:inline">This page is only available in development mode.</span>
-        </div>
-        return;
-    }
-
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-white">Documentation Admin</h1>
         <button @onclick="CreateNewDoc"
@@ -126,7 +119,7 @@
     private void LoadDocs()
     {
         _docs.Clear();
-        
+
         var files = Directory.GetFiles(_docsPath, "*.md", SearchOption.AllDirectories);
 
         foreach (var file in files)
@@ -150,16 +143,16 @@
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
     {
         var dict = new Dictionary<string, string>();
-        
+
         var match = Regex.Match(markdown, @"^---\s*(.+?)\s*---", RegexOptions.Singleline);
         if (!match.Success) return dict;
 
         var yaml = match.Groups[1].Value;
-        
+
         foreach (var line in yaml.Split('\n'))
         {
             var parts = line.Split(':', 2);
-            
+
             if (parts.Length is 2)
                 dict[parts[0].Trim()] = parts[1].Trim().Trim('"');
         }
@@ -180,9 +173,10 @@
     private async Task ConfirmDelete(string slug)
     {
         var docTitle = _docs.FirstOrDefault(d => d.Slug == slug)?.Title ?? slug;
-        
         var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the document '{docTitle}'?");
-        if (confirmed) DeleteDoc(slug);
+
+        if (confirmed)
+            DeleteDoc(slug);
     }
 
     private void DeleteDoc(string slug)
