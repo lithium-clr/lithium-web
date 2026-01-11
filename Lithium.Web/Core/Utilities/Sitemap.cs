@@ -9,13 +9,13 @@ public static class Sitemap
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class ChangeFreqAttribute(SitemapChangeFreq changeFreq) : Attribute
+    public class ChangeFrequencyAttribute(SitemapChangeFrequency changeFreq) : Attribute
     {
-        public SitemapChangeFreq ChangeFreq { get; } = changeFreq;
+        public SitemapChangeFrequency ChangeFrequency { get; } = changeFreq;
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class LastModAttribute(int year, int month, int day) : Attribute
+    public class LastModificationAttribute(int year, int month, int day) : Attribute
     {
         public int Year => year;
         public int Month => month;
@@ -23,15 +23,4 @@ public static class Sitemap
 
         public override string ToString() => $"{Year}-{Month:00}-{Day:00}";
     }
-}
-
-public enum SitemapChangeFreq
-{
-    Always,
-    Hourly,
-    Daily,
-    Weekly,
-    Monthly,
-    Yearly,
-    Never
 }

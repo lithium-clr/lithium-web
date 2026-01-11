@@ -41,10 +41,10 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
             var priorityAttr = page.GetCustomAttribute<Sitemap.PriorityAttribute>();
             var priority = priorityAttr?.Priority ?? 0.5; // Default priority
 
-            var changeFreqAttr = page.GetCustomAttribute<Sitemap.ChangeFreqAttribute>();
-            var changeFreq = changeFreqAttr?.ChangeFreq.ToString().ToLowerInvariant();
+            var changeFreqAttr = page.GetCustomAttribute<Sitemap.ChangeFrequencyAttribute>();
+            var changeFreq = changeFreqAttr?.ChangeFrequency.ToString().ToLowerInvariant();
 
-            var lastModAttr = page.GetCustomAttribute<Sitemap.LastModAttribute>();
+            var lastModAttr = page.GetCustomAttribute<Sitemap.LastModificationAttribute>();
             var lastMod = lastModAttr?.ToString();
 
             foreach (var route in routes)
