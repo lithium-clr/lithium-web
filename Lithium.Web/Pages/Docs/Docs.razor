@@ -1,5 +1,6 @@
 @page "/docs"
 @page "/docs/{Slug}"
+@using System.Security.Claims
 @using System.Text.RegularExpressions
 @using Markdig
 @using Markdig.Extensions.AutoIdentifiers
@@ -26,8 +27,8 @@
 @inject IWebHostEnvironment Env
 @inject IJSRuntime JsRuntime
 @layout EmptyLayout
-@implements IDisposable
 @rendermode InteractiveServer
+@implements IDisposable
 
 <SearchModal @bind-IsOpen="_isSearchModalOpen" AllDocs="_docs"/>
 
@@ -79,6 +80,7 @@
             <div class="flex text-white my-2">
                 <span>Lithium</span>
             </div>
+            
             <div class="relative my-4">
                 <button @onclick="OpenSearchModal"
                         class="w-full bg-lithium-50 border border-lithium-100 rounded-md px-3 py-2 text-left text-lithium-500 text-sm flex items-center justify-between">
@@ -103,18 +105,19 @@
                         </div>
                     </div>
                 }
-                @if (Env.IsDevelopment())
-                {
-                    <div class="flex flex-col px-3 py-2 gap-2">
-                        <span class="text-sm text-white">Admin</span>
-                        <div class="flex flex-col">
-                            <NavLink href="/docs/admin" class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-50 flex items-center gap-2 text-sm text-lithium-500! hover:text-white!">
-                                <span>⚙️</span>
-                                <span>Edit Docs</span>
-                            </NavLink>
+                <AuthorizeView Policy="CanManageDocs">
+                    <Authorized>
+                        <div class="flex flex-col px-3 py-2 gap-2">
+                            <span class="text-sm text-white">Admin</span>
+                            <div class="flex flex-col">
+                                <NavLink href="/docs/admin" class="cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-50 flex items-center gap-2 text-sm text-lithium-500! hover:text-white!">
+                                    <span>⚙️</span>
+                                    <span>Edit Docs</span>
+                                </NavLink>
+                            </div>
                         </div>
-                    </div>
-                }
+                    </Authorized>
+                </AuthorizeView>
             </nav>
         </div>
     </div>
