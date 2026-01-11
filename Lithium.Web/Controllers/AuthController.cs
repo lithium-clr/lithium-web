@@ -26,7 +26,11 @@ public sealed class AuthController(UserCollection userCollection) : ControllerBa
         if (!result.Succeeded)
             return Redirect("/");
 
-        var discordId = result.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var discordIdStr = result.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (!ulong.TryParse(discordIdStr, out var discordId) || discordId is 0)
+            return Redirect("/");
+
         var username = result.Principal.FindFirst(ClaimTypes.Name)?.Value;
         var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
 
@@ -36,13 +40,13 @@ public sealed class AuthController(UserCollection userCollection) : ControllerBa
         // Construct the full avatar URL if the hash exists
         string? avatarUrl = null;
 
-        if (!string.IsNullOrEmpty(avatarHash) && !string.IsNullOrEmpty(discordId))
+        if (!string.IsNullOrEmpty(avatarHash))
         {
             var extension = avatarHash.StartsWith("a_") ? "gif" : "png";
             avatarUrl = $"https://cdn.discordapp.com/avatars/{discordId}/{avatarHash}.{extension}";
         }
 
-        if (string.IsNullOrEmpty(discordId) || string.IsNullOrEmpty(username))
+        if (string.IsNullOrEmpty(username))
             return Redirect("/");
 
         var user = await userCollection.FirstAsync(u => u.DiscordId == discordId);
