@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Lithium.Web.Shared.Components.Localization;
 
 [Route("[controller]/[action]")]
-public sealed class CultureController : Controller
+public sealed class LocalizationController : ControllerBase
 {
     public IActionResult Set(string culture, string redirectUri)
     {

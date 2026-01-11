@@ -18,7 +18,7 @@ public partial class LocalizationSelector : ComponentBase
                 .GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
             var cultureEscaped = Uri.EscapeDataString(value.Name);
             var uriEscaped = Uri.EscapeDataString(uri);
-            var fullUri = $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}";
+            var fullUri = $"Localization/Set?culture={cultureEscaped}&redirectUri={uriEscaped}";
 
             Navigation.NavigateTo(fullUri, forceLoad: true);
         }
@@ -41,7 +41,7 @@ public partial class LocalizationSelector : ComponentBase
         var cultureEscaped = Uri.EscapeDataString(culture);
         var uriEscaped = Uri.EscapeDataString(uri);
 
-        var fullUri = $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}";
+        var fullUri = $"Localization/Set?culture={cultureEscaped}&redirectUri={uriEscaped}";
         Navigation.NavigateTo(fullUri, forceLoad: true);
     }
 }
