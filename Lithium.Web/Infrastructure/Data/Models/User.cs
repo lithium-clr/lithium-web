@@ -10,15 +10,15 @@ public sealed class User
     [BsonRepresentation(BsonType.String)]
     public Guid Id { get; init; } = Guid.NewGuid();
 
-    [BsonElement("username"), StringLength(32)]
+    [BsonElement("username"), StringLength(64)]
     public required string Username { get; set; }
 
-    [BsonElement("email")]
+    [BsonElement("email"), StringLength(64)]
     public string? Email { get; set; }
 
-    [BsonElement("discord_id")]
-    public required string DiscordId { get; init; }
+    [BsonElement("discord_id"), BsonRepresentation(BsonType.Int64)]
+    public required ulong DiscordId { get; init; }
 
-    [BsonElement("avatar_url")]
+    [BsonElement("avatar_url"), StringLength(128)]
     public string? AvatarUrl { get; set; }
 }

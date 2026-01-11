@@ -11,7 +11,7 @@ public static partial class Bootstrap
     {
         var supportedCultures = new[]
         {
-            "fr-FR",
+            "en-US",
             "af-ZA",
             "ar-SA",
             "ca-ES",
@@ -20,7 +20,7 @@ public static partial class Bootstrap
             "cs-CZ",
             "da-DK",
             "nl-NL",
-            "en-US",
+            "fr-FR",
             "fi-FI",
             "de-DE",
             "el-GR",
