@@ -13,7 +13,7 @@ public sealed class User
     [BsonElement("username"), StringLength(64)]
     public required string Username { get; set; }
 
-    [BsonElement("email"), StringLength(64)]
+    [BsonElement("email"), StringLength(320)]
     public string? Email { get; set; }
 
     [BsonElement("discord_id"), BsonRepresentation(BsonType.Int64)]
