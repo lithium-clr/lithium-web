@@ -10,7 +10,7 @@ public sealed class DiscordUser
     public required ulong Id { get; init; }
     
     [BsonElement("username"), StringLength(32)]
-    public required string Username { get; init; }
+    public required string Username { get; set; }
 
     [BsonElement("email"), StringLength(320)]
     public string? Email { get; set; }
