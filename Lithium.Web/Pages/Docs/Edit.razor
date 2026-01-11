@@ -1,0 +1,234 @@
+@page "/docs/edit"
+@page "/docs/edit/{Slug}"
+@using System.IO
+@using System.ComponentModel.DataAnnotations
+@using System.Text.RegularExpressions
+@using Markdig
+@using PSC.Blazor.Components.MarkdownEditor
+@attribute [Authorize(Policy = "CanManageDocs")]
+@inject IWebHostEnvironment Env
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+@rendermode InteractiveServer
+
+<div class="w-full px-4 sm:px-8 lg:px-16 xl:px-24 py-16 text-white">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-white">@(IsCreating ? "Create New Document" : $"Editing: {_doc.Title}")</h1>
+    </div>
+
+    <div class="grid grid-cols-1 @(string.IsNullOrEmpty(Slug) ? "" : "lg:grid-cols-2") gap-8">
+        <EditForm Model="@_doc" OnValidSubmit="SaveChanges"
+                  class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
+            <DataAnnotationsValidator/>
+
+            <div class="space-y-2">
+                <h2 class="text-xl font-semibold">Metadata</h2>
+                <p class="text-sm text-lithium-400">Basic information about the document.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-lithium-300">Title</label>
+                    <InputText @bind-Value="_doc.Title" @oninput="AutoSlug"
+                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                    <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-lithium-300">Slug</label>
+                    <InputText @bind-Value="_doc.Slug"
+                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                    <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-lithium-300">Category</label>
+                    <InputText @bind-Value="_doc.Category"
+                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                    <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400"/>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-lithium-300">Icon (Emoji)</label>
+                    <InputText @bind-Value="_doc.Icon"
+                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                </div>
+            </div>
+
+            <div class="border-t border-lithium-100"></div>
+
+            <MarkdownEditor Value="@_doc.Content" ValueChanged="OnMarkdownValueChanged"/>
+
+            <div class="flex justify-end space-x-4">
+                <button type="button" @onclick="Cancel"
+                        class="inline-flex items-center gap-2 bg-lithium-100/60 hover:bg-lithium-100/80 text-white font-semibold py-2 px-4 border border-lithium-200 rounded-lg shadow-sm transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 border border-indigo-500 rounded-lg shadow-sm transition-colors cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path
+                            d="M7.5 2.5a.5.5 0 00-1 0v1.562A2.5 2.5 0 004.063 6.5H2.5a.5.5 0 000 1h1.563A2.5 2.5 0 006.5 9.937V11.5a.5.5 0 001 0V9.937a2.5 2.5 0 002.437-2.437H11.5a.5.5 0 000-1H9.937A2.5 2.5 0 007.5 4.062V2.5zM6.5 5A1.5 1.5 0 115 6.5 1.5 1.5 0 016.5 5zM2.5 12a.5.5 0 000 1h1.063a2.5 2.5 0 004.874 0H17.5a.5.5 0 000-1H8.437a2.5 2.5 0 00-4.874 0H2.5z"/>
+                    </svg>
+                    Save Changes
+                </button>
+            </div>
+        </EditForm>
+
+        @if (!string.IsNullOrEmpty(Slug))
+        {
+            <div class="bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8 prose prose-invert max-w-none">
+                @((MarkupString)_previewHtml)
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+
+    public class DocModel
+    {
+        [Required(ErrorMessage = "Title is required.")]
+        public string Title { get; set; } = null!;
+
+        [Required(ErrorMessage = "Slug is required.")]
+        [RegularExpression(@"^[a-z0-9]+(?:-[a-z0-9]+)*$", ErrorMessage = "Slug must be in kebab-case (e.g., 'my-first-doc').")]
+        public string Slug { get; set; } = null!;
+
+        [Required(ErrorMessage = "Category is required.")]
+        public string Category { get; set; } = "General";
+
+        public string Icon { get; set; } = "📄";
+        public string Content { get; set; } = "";
+    }
+
+    [Parameter] public string Slug { get; set; } = null!;
+
+    private readonly DocModel _doc = new();
+    private string _docsPath = null!;
+    private string _originalSlug = null!;
+    private string _previewHtml = "";
+    private DotNetObjectReference<Edit>? _dotNetHelper;
+
+    private bool IsCreating => string.IsNullOrEmpty(Slug);
+
+    protected override void OnInitialized()
+    {
+        _dotNetHelper = DotNetObjectReference.Create(this);
+        _docsPath = Path.Combine(Env.WebRootPath, "docs");
+
+        if (IsCreating) return;
+        _originalSlug = Slug;
+
+        var filePath = Path.Combine(_docsPath, $"{Slug}.md");
+
+        if (!File.Exists(filePath)) return;
+
+        var fileContent = File.ReadAllText(filePath);
+        var meta = ParseYamlFrontMatter(fileContent);
+
+        _doc.Title = meta.GetValueOrDefault("title", Slug);
+        _doc.Slug = Slug;
+        _doc.Category = meta.GetValueOrDefault("category", "General");
+        _doc.Icon = meta.GetValueOrDefault("icon", "📄");
+        _doc.Content = Regex.Replace(fileContent, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline).Trim();
+        
+        UpdatePreview(_doc.Content);
+    }
+
+    private Task OnMarkdownValueChanged(string value)
+    {
+        _doc.Content = value;
+        UpdatePreview(value);
+        return Task.CompletedTask;
+    }
+    
+    private void UpdatePreview(string markdown)
+    {
+        _previewHtml = Markdig.Markdown.ToHtml(markdown ?? "");
+        StateHasChanged();
+    }
+
+    private void AutoSlug(ChangeEventArgs e)
+    {
+        var title = e.Value.ToString();
+        if (string.IsNullOrWhiteSpace(_doc.Slug))
+        {
+            _doc.Slug = GenerateSlug(title);
+        }
+    }
+
+    private static string GenerateSlug(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return "";
+
+        var slug = text.ToLowerInvariant();
+        slug = Regex.Replace(slug, @"\s+", "-"); // Replace spaces with -
+        slug = Regex.Replace(slug, @"[^a-z0-9-]", ""); // Remove invalid chars
+        slug = Regex.Replace(slug, @"-+", "-"); // Replace multiple - with single -
+        slug = slug.Trim('-');
+
+        return slug;
+    }
+
+    private async Task SaveChanges()
+    {
+        var newFilePath = Path.Combine(_docsPath, $"{_doc.Slug}.md");
+
+        if (IsCreating || _originalSlug != _doc.Slug)
+        {
+            if (File.Exists(newFilePath))
+            {
+                await JsRuntime.InvokeVoidAsync("alert", $"A document with the slug '{_doc.Slug}' already exists. Please choose a unique slug.");
+                return;
+            }
+        }
+
+        if (!IsCreating && _originalSlug != _doc.Slug)
+        {
+            var originalFilePath = Path.Combine(_docsPath, $"{_originalSlug}.md");
+
+            if (File.Exists(originalFilePath))
+                File.Delete(originalFilePath);
+        }
+
+        var frontMatter = $@"---
+                            title: ""{_doc.Title}""
+                            icon: ""{_doc.Icon}""
+                            category: ""{_doc.Category}""
+                            ---
+                            ";
+        var fullContent = frontMatter + "\n" + _doc.Content;
+
+        await File.WriteAllTextAsync(newFilePath, fullContent);
+        NavigationManager.NavigateTo("/docs/admin");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/docs/admin");
+    }
+
+    private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
+    {
+        var dict = new Dictionary<string, string>();
+
+        var match = Regex.Match(markdown, @"^---\s*(.+?)\s*---", RegexOptions.Singleline);
+        if (!match.Success) return dict;
+
+        var yaml = match.Groups[1].Value;
+
+        foreach (var line in yaml.Split('\n'))
+        {
+            var parts = line.Split(':', 2);
+
+            if (parts.Length is 2)
+                dict[parts[0].Trim()] = parts[1].Trim().Trim('"');
+        }
+
+        return dict;
+    }
+
+    public void Dispose()
+    {
+        _dotNetHelper?.Dispose();
+    }
+
+}
