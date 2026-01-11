@@ -49,16 +49,19 @@ public sealed class AuthController(UserCollection userCollection) : ControllerBa
         if (string.IsNullOrEmpty(username))
             return Redirect("/");
 
-        var user = await userCollection.FirstAsync(u => u.DiscordId == discordId);
+        var user = await userCollection.FirstAsync(u => u.Discord.Id == discordId);
 
         if (user is null)
         {
             user = new User
             {
-                DiscordId = discordId,
-                Username = username,
-                Email = email,
-                AvatarUrl = avatarUrl
+                Discord = new DiscordUser
+                {
+                    Id = discordId,
+                    Username = username,
+                    Email = email,
+                    AvatarUrl = avatarUrl
+                }
             };
 
             await userCollection.InsertAsync(user);
@@ -66,11 +69,11 @@ public sealed class AuthController(UserCollection userCollection) : ControllerBa
         else
         {
             // Update user info if changed
-            if (user.Username != username || user.AvatarUrl != avatarUrl || user.Email != email)
+            if (user.Discord.Username != username || user.Discord.AvatarUrl != avatarUrl || user.Discord.Email != email)
             {
-                user.Username = username;
-                user.Email = email;
-                user.AvatarUrl = avatarUrl;
+                user.Discord.Username = username;
+                user.Discord.Email = email;
+                user.Discord.AvatarUrl = avatarUrl;
 
                 await userCollection.UpdateAsync(user);
             }
@@ -78,13 +81,13 @@ public sealed class AuthController(UserCollection userCollection) : ControllerBa
 
         var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
         identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-        identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+        identity.AddClaim(new Claim(ClaimTypes.Name, user.Discord.Username));
 
-        if (!string.IsNullOrEmpty(user.Email))
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+        if (!string.IsNullOrEmpty(user.Discord.Email))
+            identity.AddClaim(new Claim(ClaimTypes.Email, user.Discord.Email));
 
-        if (!string.IsNullOrEmpty(user.AvatarUrl))
-            identity.AddClaim(new Claim("AvatarUrl", user.AvatarUrl));
+        if (!string.IsNullOrEmpty(user.Discord.AvatarUrl))
+            identity.AddClaim(new Claim("AvatarUrl", user.Discord.AvatarUrl));
 
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
         await HttpContext.SignOutAsync("External");
