@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Lithium.Web.Controllers;
 
 [Route("auth")]
-public sealed class AuthController(UserCollection userCollection) : Controller
+public sealed class AuthController(UserCollection userCollection) : ControllerBase
 {
     [HttpGet("login")]
     public IActionResult Login(string returnUrl = "/")

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lithium.Web.Controllers;
 
-public sealed class SeoController(IWebHostEnvironment env) : Controller
+public sealed class SeoController(IWebHostEnvironment env) : ControllerBase
 {
     [Route("/robots.txt")]
     public ContentResult RobotsTxt()
