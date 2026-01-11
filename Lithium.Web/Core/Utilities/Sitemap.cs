@@ -1,4 +1,4 @@
-namespace Lithium.Web;
+namespace Lithium.Web.Core.Utilities;
 
 public static class Sitemap
 {
@@ -12,8 +12,8 @@ public static class Sitemap
     public class ChangeFreqAttribute(SitemapChangeFreq changeFreq) : Attribute
     {
         public SitemapChangeFreq ChangeFreq { get; } = changeFreq;
-    }   
-    
+    }
+
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class LastModAttribute(int year, int month, int day) : Attribute
     {

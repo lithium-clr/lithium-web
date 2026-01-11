@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
+using Lithium.Web.Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lithium.Web.Controllers;
@@ -36,7 +37,7 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
         foreach (var page in pages)
         {
             var routes = page.GetCustomAttributes<Microsoft.AspNetCore.Components.RouteAttribute>().ToList();
-            
+
             var priorityAttr = page.GetCustomAttribute<Sitemap.PriorityAttribute>();
             var priority = priorityAttr?.Priority ?? 0.5; // Default priority
 
@@ -53,7 +54,8 @@ public sealed class SeoController(IWebHostEnvironment env) : Controller
 
                 var url = new XElement(xmlns + "url",
                     new XElement(xmlns + "loc", $"{webSiteUrl}{pageUrl}"),
-                    new XElement(xmlns + "priority", priority.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))
+                    new XElement(xmlns + "priority",
+                        priority.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture))
                 );
 
                 if (!string.IsNullOrEmpty(changeFreq))
