@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Lithium.Web.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -9,6 +11,8 @@ public static partial class Bootstrap
         IConfiguration config)
     {
         services.AddCascadingAuthenticationState();
+        
+        services.AddScoped<IClaimsTransformation, CustomClaimsTransformer>();
 
         services.AddAuthentication(options =>
             {
@@ -16,7 +20,10 @@ public static partial class Bootstrap
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = "Discord";
             })
-            .AddCookie()
+            .AddCookie(options =>
+            {
+                // Claims transformer will run after the cookie is authenticated.
+            })
             .AddCookie("External")
             .AddDiscord(options =>
             {
@@ -37,6 +44,12 @@ public static partial class Bootstrap
                 // Map claims to ensure we get the avatar
                 options.ClaimActions.MapJsonKey("urn:discord:avatar:url", "avatar");
             });
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("CanManageDocs", policy =>
+                policy.RequireClaim(ClaimTypes.Role, "docs:admin"));
+        });
 
         return services;
     }
