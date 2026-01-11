@@ -1,5 +1,6 @@
 @using Lithium.Web.Pages
 @using Lithium.Web.Shared.Components
+@using Lithium.Web.Shared.Components.Localization
 @using Microsoft.Extensions.Localization
 
 <nav class="fixed top-0 left-0 right-0 z-50 bg-lithium-0/80 backdrop-blur-md border-b border-lithium-100"
@@ -37,7 +38,7 @@
                 </svg>
             </a>
             <div class="flex items-center gap-2 ml-2">
-                <CultureSelector/>
+                <LocalizationSelector/>
                 <AuthorizeView>
                     <Authorized>
                         <div class="relative group">
