@@ -1,29 +1,9 @@
 @page "/docs"
 @page "/docs/{Slug}"
-@using System.Security.Claims
 @using System.Text.RegularExpressions
 @using Markdig
-@using Markdig.Extensions.AutoIdentifiers
-@using Markdig.Extensions.Alerts
-@using Markdig.Extensions.Abbreviations
-@using Markdig.Extensions.Citations
-@using Markdig.Extensions.CustomContainers
-@using Markdig.Extensions.DefinitionLists
-@using Markdig.Extensions.EmphasisExtras
-@using Markdig.Extensions.Figures
-@using Markdig.Extensions.Footers
-@using Markdig.Extensions.Footnotes
-@using Markdig.Extensions.Mathematics
-@using Markdig.Extensions.MediaLinks
-@using Markdig.Extensions.ListExtras
-@using Markdig.Extensions.TaskLists
-@using Markdig.Extensions.Diagrams
-@using Markdig.Extensions.AutoLinks
-@using Markdig.Extensions.Emoji
-@using Markdig.Extensions.GenericAttributes
 @using Markdig.Syntax
-@using Microsoft.AspNetCore.Components.Web
-@using System.ComponentModel.DataAnnotations
+@using LucideBlazor
 @using PSC.Blazor.Components.MarkdownEditor
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Env
@@ -74,7 +54,7 @@
     </button>
 </div>
 
-<div class="relative lg:flex">
+<div class="overflow-y-hidden relative lg:flex lg:h-screen">
     <!-- Backdrop -->
     @if (_isNavOpen || _isTocOpen)
     {
@@ -118,72 +98,91 @@
     </div>
 
     <!-- Contenu -->
-    <main class="flex-1 min-w-0" id="docs-content">
-        <div class="w-full px-4 sm:px-8 lg:px-16 xl:px-24 py-16 text-white">
-            @if (_isEditMode)
-            {
-                <EditForm Model="@_doc" OnValidSubmit="SaveChanges"
-                          class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
-                    <DataAnnotationsValidator/>
+    <main class="relative flex-1 min-w-0 flex flex-col">
+        <div class="absolute top-6 w-full mx-6 flex-1 z-20 bg-lithium-0/80 rounded-xl backdrop-blur-sm border border-lithium-100">
+            <div class="w-full px-4 sm:px-8 py-2 flex justify-end items-center gap-4">
+                <AuthorizeView Policy="CanManageDocs">
+                    <Authorized>
+                        @if (_isEditMode)
+                        {
+                            <button type="button" @onclick="CancelEdit"
+                                    class="inline-flex items-center gap-2 bg-lithium-100/60 hover:bg-lithium-100/80 text-white font-semibold py-2 px-4 border border-lithium-200 rounded-lg shadow-sm transition-colors cursor-pointer">
+                                Cancel
+                            </button>
+                            <button type="submit" form="doc-edit-form"
+                                    class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 border border-indigo-500 rounded-lg shadow-sm transition-colors cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                     fill="currentColor">
+                                    <path
+                                        d="M7.5 2.5a.5.5 0 00-1 0v1.562A2.5 2.5 0 004.063 6.5H2.5a.5.5 0 000 1h1.563A2.5 2.5 0 006.5 9.937V11.5a.5.5 0 001 0V9.937a2.5 2.5 0 002.437-2.437H11.5a.5.5 0 000-1H9.937A2.5 2.5 0 007.5 4.062V2.5zM6.5 5A1.5 1.5 0 115 6.5 1.5 1.5 0 016.5 5zM2.5 12a.5.5 0 000 1h1.063a2.5 2.5 0 004.874 0H17.5a.5.5 0 000-1H8.437a2.5 2.5 0 00-4.874 0H2.5z"/>
+                                </svg>
+                                Save Changes
+                            </button>
+                        }
+                        else
+                        {
+                            <button @onclick="ToggleEditMode"
+                                    class="inline-flex items-center gap-2 bg-lithium-100/60 hover:bg-lithium-100/80 text-white py-2 px-4 border border-lithium-200 rounded-lg shadow-sm transition-colors cursor-pointer">
+                                <SquarePenIcon Size="20"></SquarePenIcon>
+                                <span>Edit Page</span>
+                            </button>
+                        }
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto" id="docs-content">
+            <div class="w-full px-4 sm:px-8 lg:px-16 xl:px-24 pt-8 pb-16 text-white">
+                @if (_isEditMode)
+                {
+                    <EditForm Model="@_doc" OnValidSubmit="SaveChanges" id="doc-edit-form"
+                              class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
+                        <DataAnnotationsValidator/>
 
-                    <div class="space-y-2">
-                        <h2 class="text-xl font-semibold">Metadata</h2>
-                        <p class="text-sm text-lithium-400">Basic information about the document.</p>
+                        <div class="space-y-2">
+                            <h2 class="text-xl font-semibold">Metadata</h2>
+                            <p class="text-sm text-lithium-400">Basic information about the document.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-lithium-300">Title</label>
+                                <InputText @bind-Value="_doc.Title"
+                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400"/>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-lithium-300">Slug</label>
+                                <InputText @bind-Value="_doc.Slug"
+                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400"/>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-lithium-300">Category</label>
+                                <InputText @bind-Value="_doc.Category"
+                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400"/>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-lithium-300">Icon (Emoji)</label>
+                                <InputText @bind-Value="_doc.Icon"
+                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-lithium-100"></div>
+
+                        <MarkdownEditor MinHeight="400" MaxHeight="1080" Value="@_doc.Content" ValueChanged="OnMarkdownValueChanged"/>
+                    </EditForm>
+                }
+                else
+                {
+                    <div class="prose">
+                        @((MarkupString)_htmlContent)
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-lithium-300">Title</label>
-                            <InputText @bind-Value="_doc.Title"
-                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
-                            <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400"/>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-lithium-300">Slug</label>
-                            <InputText @bind-Value="_doc.Slug"
-                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
-                            <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400"/>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-lithium-300">Category</label>
-                            <InputText @bind-Value="_doc.Category"
-                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
-                            <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400"/>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-lithium-300">Icon (Emoji)</label>
-                            <InputText @bind-Value="_doc.Icon"
-                                       class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
-                        </div>
-                    </div>
-
-                    <div class="border-t border-lithium-100"></div>
-
-                    <MarkdownEditor Value="@_doc.Content" ValueChanged="OnMarkdownValueChanged"/>
-
-                    <div class="flex justify-end space-x-4">
-                        <button type="button" @onclick="CancelEdit"
-                                class="inline-flex items-center gap-2 bg-lithium-100/60 hover:bg-lithium-100/80 text-white font-semibold py-2 px-4 border border-lithium-200 rounded-lg shadow-sm transition-colors cursor-pointer">
-                            Cancel
-                        </button>
-                        <button type="submit"
-                                class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 border border-indigo-500 rounded-lg shadow-sm transition-colors cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                 fill="currentColor">
-                                <path
-                                    d="M7.5 2.5a.5.5 0 00-1 0v1.562A2.5 2.5 0 004.063 6.5H2.5a.5.5 0 000 1h1.563A2.5 2.5 0 006.5 9.937V11.5a.5.5 0 001 0V9.937a2.5 2.5 0 002.437-2.437H11.5a.5.5 0 000-1H9.937A2.5 2.5 0 007.5 4.062V2.5zM6.5 5A1.5 1.5 0 115 6.5 1.5 1.5 0 016.5 5zM2.5 12a.5.5 0 000 1h1.063a2.5 2.5 0 004.874 0H17.5a.5.5 0 000-1H8.437a2.5 2.5 0 00-4.874 0H2.5z"/>
-                            </svg>
-                            Save Changes
-                        </button>
-                    </div>
-                </EditForm>
-            }
-            else
-            {
-                <div class="prose">
-                    @((MarkupString)_htmlContent)
-                </div>
-            }
+                }
+            </div>
         </div>
     </main>
 
@@ -218,17 +217,7 @@
                     </li>
                 }
             </ul>
-            <AuthorizeView Policy="CanManageDocs">
-                <Authorized>
-                    <div class="mt-8">
-                        <button @onclick="ToggleEditMode"
-                                class="w-full text-center cursor-pointer px-3 py-2 rounded-md hover:bg-lithium-50 flex items-center gap-2 text-sm text-lithium-500! hover:text-white!">
-                            <span>✏️</span>
-                            <span>Edit Page</span>
-                        </button>
-                    </div>
-                </Authorized>
-            </AuthorizeView>
+
         </div>
     </div>
 </div>
@@ -342,6 +331,7 @@
     private bool _isSearchModalOpen = false;
     private bool _isEditMode = false;
     private readonly DocModel _doc = new();
+    private DocModel _originalDoc = new();
     private string _docsPath = null!;
     private string _originalSlug = null!;
 
@@ -421,47 +411,52 @@
 
             _originalSlug = Slug;
 
-            var pipeline = new MarkdownPipelineBuilder()
-                .UseAdvancedExtensions()
-                .UseAbbreviations()
-                .UseAutoIdentifiers()
-                .UseCitations()
-                .UseCustomContainers()
-                .UseDefinitionLists()
-                .UseEmphasisExtras()
-                .UseFigures()
-                .UseFooters()
-                .UseFootnotes()
-                .UseGridTables()
-                .UseMathematics()
-                .UseMediaLinks()
-                .UsePipeTables()
-                .UseListExtras()
-                .UseTaskLists()
-                .UseDiagrams()
-                .UseAutoLinks()
-                .UseEmojiAndSmiley()
-                .UseAlertBlocks()
-                .UseGenericAttributes()
-                .Build();
-
-            var document = Markdown.Parse(doc.Content, pipeline);
-
-            _headings = document.Descendants<HeadingBlock>()
-                .Select(h => new Heading
-                {
-                    Text = h.Inline.FirstChild.ToString(),
-                    Slug = GenerateSlug(h.Inline.FirstChild.ToString() ?? ""),
-                    Level = h.Level
-                })
-                .ToList();
-
-            _htmlContent = document.ToHtml(pipeline);
+            RenderMarkdown();
         }
         else
         {
             _htmlContent = "<p>Page not found.</p>";
         }
+    }
+
+    private void RenderMarkdown()
+    {
+        var pipeline = new MarkdownPipelineBuilder()
+            .UseAdvancedExtensions()
+            .UseAbbreviations()
+            .UseAutoIdentifiers()
+            .UseCitations()
+            .UseCustomContainers()
+            .UseDefinitionLists()
+            .UseEmphasisExtras()
+            .UseFigures()
+            .UseFooters()
+            .UseFootnotes()
+            .UseGridTables()
+            .UseMathematics()
+            .UseMediaLinks()
+            .UsePipeTables()
+            .UseListExtras()
+            .UseTaskLists()
+            .UseDiagrams()
+            .UseAutoLinks()
+            .UseEmojiAndSmiley()
+            .UseAlertBlocks()
+            .UseGenericAttributes()
+            .Build();
+
+        var document = Markdown.Parse(_doc.Content, pipeline);
+
+        _headings = document.Descendants<HeadingBlock>()
+            .Select(h => new Heading
+            {
+                Text = h.Inline.FirstChild.ToString(),
+                Slug = GenerateSlug(h.Inline.FirstChild.ToString() ?? ""),
+                Level = h.Level
+            })
+            .ToList();
+
+        _htmlContent = document.ToHtml(pipeline);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -482,11 +477,31 @@
 
     private void ToggleEditMode()
     {
+        if (!_isEditMode)
+        {
+            _originalDoc = new DocModel
+            {
+                Title = _doc.Title,
+                Slug = _doc.Slug,
+                Category = _doc.Category,
+                Icon = _doc.Icon,
+                Content = _doc.Content
+            };
+        }
+        
         _isEditMode = !_isEditMode;
     }
 
     private void CancelEdit()
     {
+        _doc.Title = _originalDoc.Title;
+        _doc.Slug = _originalDoc.Slug;
+        _doc.Category = _originalDoc.Category;
+        _doc.Icon = _originalDoc.Icon;
+        _doc.Content = _originalDoc.Content;
+        
+        RenderMarkdown();
+
         _isEditMode = false;
     }
 

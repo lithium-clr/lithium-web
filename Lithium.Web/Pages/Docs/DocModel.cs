@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Lithium.Web.Pages.Docs;
 
-public class DocModel
+public sealed record DocModel
 {
     [Required(ErrorMessage = "Title is required.")]
     public string Title { get; set; } = null!;
