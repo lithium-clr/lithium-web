@@ -3,6 +3,7 @@
 @using System.IO
 @using System.ComponentModel.DataAnnotations
 @using System.Text.RegularExpressions
+@using PSC.Blazor.Components.MarkdownEditor
 @attribute [Authorize(Policy = "CanManageDocs")]
 @inject IWebHostEnvironment Env
 @inject NavigationManager NavigationManager
@@ -56,9 +57,8 @@
             <p class="text-sm text-lithium-400">The main body of the document in Markdown format.</p>
         </div>
 
-        <div>
-            <InputTextArea id="markdown-editor" @bind-Value="_doc.Content" class="hidden"/>
-        </div>
+        <MarkdownEditor @bind-Value="@_doc.Content" 
+                        ValueHTMLChanged="@OnMarkdownValueChanged" />
 
         <div class="flex justify-end space-x-4 pt-4">
             <button type="button" @onclick="Cancel"
@@ -174,10 +174,10 @@
         _doc.Content = Regex.Replace(fileContent, @"^---\s*(.+?)\s*---\s*", "", RegexOptions.Singleline).Trim();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private Task OnMarkdownValueChanged(string value)
     {
-        if (firstRender)
-            await JsRuntime.InvokeVoidAsync("initEditor", _dotNetHelper, _doc.Content);
+        _doc.Content = value;
+        return Task.CompletedTask;
     }
 
     [JSInvokable]
@@ -235,7 +235,7 @@
                             ---
                             ";
         var fullContent = frontMatter + _doc.Content;
-        
+
         await File.WriteAllTextAsync(newFilePath, fullContent);
         NavigationManager.NavigateTo("/docs/admin");
     }
@@ -248,16 +248,16 @@
     private static Dictionary<string, string> ParseYamlFrontMatter(string markdown)
     {
         var dict = new Dictionary<string, string>();
-        
+
         var match = Regex.Match(markdown, @"^---\s*(.+?)\s*---", RegexOptions.Singleline);
         if (!match.Success) return dict;
 
         var yaml = match.Groups[1].Value;
-        
+
         foreach (var line in yaml.Split('\n'))
         {
             var parts = line.Split(':', 2);
-            
+
             if (parts.Length is 2)
                 dict[parts[0].Trim()] = parts[1].Trim().Trim('"');
         }
@@ -271,45 +271,3 @@
     }
 
 }
-
-<script>
-    window.initEditor = (dotNetHelper, initialValue) => {
-        const init = () => {
-            if (window.easyMDE) {
-                window.easyMDE.toTextArea();
-                window.easyMDE = null;
-            }
-
-            window.easyMDE = new EasyMDE({
-                element: document.getElementById('markdown-editor'),
-                initialValue: initialValue,
-                spellChecker: false,
-                sideBySideFullscreen: false,
-                minHeight: "300px",
-                toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "|", "preview", "side-by-side", "fullscreen", "|", "guide"]
-            });
-
-            window.easyMDE.codemirror.on("change", () => {
-                dotNetHelper.invokeMethodAsync('UpdateContent', window.easyMDE.value());
-            });
-        };
-
-        if (typeof EasyMDE !== 'undefined') {
-            init();
-        } else {
-            // Load CSS
-            if (!document.querySelector('link[href="https://unpkg.com/easymde/dist/easymde.min.css"]')) {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = 'https://unpkg.com/easymde/dist/easymde.min.css';
-                document.head.appendChild(link);
-            }
-
-            // Load JS
-            const script = document.createElement('script');
-            script.src = 'https://unpkg.com/easymde/dist/easymde.min.js';
-            script.onload = init; // Initialize after script loads
-            document.head.appendChild(script);
-        }
-    };
-</script>
