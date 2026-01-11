@@ -1,27 +1,69 @@
-﻿<div id="blazor-error-ui" data-nosnippet class="hidden fixed inset-0 z-1000 bg-black/80 backdrop-blur-sm">
-    <div class="h-full w-full flex items-center justify-center p-4">
-        <div class="bg-lithium-50 border border-red-500/20 rounded-xl p-8 max-w-md w-full shadow-[0_0_40px_-10px_rgba(239,68,68,0.15)] flex flex-col items-center text-center relative overflow-hidden">
-            <div class="absolute top-0 inset-x-0 h-1 bg-linear-to-r from-transparent via-red-500/50 to-transparent"></div>
+﻿<ErrorBoundary @ref="_errorBoundary">
+    <ChildContent>
+        @ChildContent
+    </ChildContent>
+    <ErrorContent Context="exception">
+        <div class="fixed inset-0 z-1000 bg-black/80 backdrop-blur-sm">
+            <div class="h-full w-full flex items-center justify-center p-4">
+                <div
+                    class="bg-lithium-50 border border-red-500/20 rounded-xl p-8 max-w-md w-full shadow-[0_0_40px_-10px_rgba(239,68,68,0.15)] flex flex-col items-center text-center relative overflow-hidden max-h-[90vh] overflow-y-auto">
+                    <div
+                        class="absolute top-0 inset-x-0 h-1 bg-linear-to-r from-transparent via-red-500/50 to-transparent"></div>
 
-            <div class="flex justify-center items-center w-14 h-14 mb-5 rounded-full bg-red-500/10 border border-red-500/20">
-                <span class="material-symbols-outlined text-red-400 text-3xl">warning</span>
-            </div>
+                    <div
+                        class="flex justify-center items-center w-14 h-14 mb-5 rounded-full bg-red-500/10 border border-red-500/20 shrink-0">
+                        <span class="material-symbols-outlined text-red-400 text-3xl">warning</span>
+                    </div>
 
-            <h3 class="text-white font-satoshi text-xl font-semibold mb-2">An unhandled error has occurred.</h3>
+                    <h3 class="text-white font-satoshi text-xl font-semibold mb-2">An error has occurred.</h3>
 
-            <p class="text-lithium-800 font-inter mb-8 text-sm leading-relaxed">
-                Something went wrong while processing your request. <br/>
-                Please reload the page to continue.
-            </p>
-            
-            <div class="flex gap-3 items-center w-full">
-                <a href="." class="reload cursor-pointer flex-1 bg-lithium-100/50 hover:bg-lithium-100 text-lithium-500! hover:text-white! px-4 py-2.5 rounded-lg font-medium transition-colors select-none text-center border border-lithium-200/50 text-sm">
-                    Reload Page
-                </a>
-                <span class="dismiss cursor-pointer flex-1 bg-lithium-100/50 hover:bg-lithium-100 text-lithium-500 hover:text-white px-4 py-2.5 rounded-lg font-medium transition-colors select-none text-center border border-lithium-200/50 text-sm">
-                    Dismiss
-                </span>
+                    <p class="text-lithium-800 font-inter mb-8 text-sm leading-relaxed">
+                        Something went wrong while processing your request: @exception.Message <br/>
+                        Please reload the page to continue.
+                    </p>
+
+                    <div class="flex gap-3 items-center w-full mb-4">
+                        <a href="."
+                           class="reload cursor-pointer flex-1 bg-lithium-100/50 hover:bg-lithium-100 text-lithium-500! hover:text-white! px-4 py-2.5 rounded-lg font-medium transition-colors select-none text-center border border-lithium-200/50 text-sm">
+                            Reload Page
+                        </a>
+                        <button @onclick="Recover"
+                                class="dismiss cursor-pointer flex-1 bg-lithium-100/50 hover:bg-lithium-100 text-lithium-500 hover:text-white px-4 py-2.5 rounded-lg font-medium transition-colors select-none text-center border border-lithium-200/50 text-sm">
+                            Dismiss
+                        </button>
+                    </div>
+
+                    <!-- Error Details Section -->
+                    <div class="w-full border-t border-lithium-200/20 pt-4 mt-2">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-lithium-500 font-semibold uppercase tracking-wider">Error Stacktrace</span>
+                            <button
+                                onclick="navigator.clipboard.writeText(document.getElementById('error-stack').innerText)"
+                                class="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                            </button>
+                        </div>
+                        <div
+                            class="bg-lithium-100/30 rounded-lg p-3 border border-lithium-200/30 overflow-x-auto text-left max-h-40 overflow-y-auto custom-scrollbar">
+                            <pre id="error-stack"
+                                 class="text-[10px] text-red-300/80 font-mono whitespace-pre-wrap break-all">@exception.ToString()</pre>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private ErrorBoundary? _errorBoundary;
+
+    private void Recover()
+    {
+        _errorBoundary?.Recover();
+    }
+
+}
