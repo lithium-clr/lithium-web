@@ -1,4 +1,6 @@
-﻿<ErrorBoundary @ref="_errorBoundary">
+﻿@using Sentry
+
+<ErrorBoundary @ref="_errorBoundary">
     <ChildContent>
         @ChildContent
     </ChildContent>
@@ -15,10 +17,10 @@
                         <span class="material-symbols-outlined text-red-400 text-3xl">warning</span>
                     </div>
 
-                    <h3 class="text-white font-satoshi text-xl font-semibold mb-2">An error has occurred.</h3>
+                    <h3 class="text-white font-satoshi text-xl font-semibold mb-2">An unhandled error has occurred.</h3>
 
                     <p class="text-lithium-800 font-inter mb-8 text-sm leading-relaxed">
-                        Something went wrong while processing your request: @exception.Message <br/>
+                        Something went wrong while processing your request. <br/>
                         Please reload the page to continue.
                     </p>
 
@@ -32,6 +34,24 @@
                             Dismiss
                         </button>
                     </div>
+
+                    @if (SentryEventId != SentryId.Empty)
+                    {
+                        <div class="w-full border-t border-lithium-200/20 pt-4 mt-2">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs text-lithium-500 font-semibold uppercase tracking-wider">Sentry Event ID</span>
+                                <button
+                                    onclick="navigator.clipboard.writeText('@SentryEventId')"
+                                    class="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">content_copy</span> Copy
+                                </button>
+                            </div>
+                            <div
+                                class="bg-lithium-100/30 rounded-lg p-3 border border-lithium-200/30 overflow-x-auto text-left">
+                                <pre class="text-xs text-red-300/80 font-mono">@SentryEventId</pre>
+                            </div>
+                        </div>
+                    }
 
                     <!-- Error Details Section -->
                     <div class="w-full border-t border-lithium-200/20 pt-4 mt-2">
@@ -58,6 +78,7 @@
 @code {
     
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [CascadingParameter] private SentryId SentryEventId { get; set; }
 
     private ErrorBoundary? _errorBoundary;
 

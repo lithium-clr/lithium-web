@@ -1,5 +1,7 @@
 ﻿@page "/Error"
 @using System.Diagnostics
+@using Sentry
+@inject IHub Hub
 
 <PageTitle>Error - Lithium</PageTitle>
 
@@ -14,6 +16,13 @@
 {
     <p>
         <strong>Request ID:</strong> <code>@RequestId</code>
+    </p>
+}
+
+@if (ShowSentryEventId)
+{
+    <p>
+        <strong>Sentry Event ID:</strong> <code>@SentryEventId</code>
     </p>
 }
 
@@ -33,11 +42,19 @@
 @code{
     
     [CascadingParameter] private HttpContext? HttpContext { get; set; }
+    [CascadingParameter] public MainLayout? Layout { get; set; }
 
     private string? RequestId { get; set; }
     private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-    protected override void OnInitialized() =>
-        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+    private SentryId SentryEventId { get; set; }
+    private bool ShowSentryEventId => SentryEventId != SentryId.Empty;
 
+    protected override void OnInitialized()
+    {
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+        SentryEventId = Hub.LastEventId;
+
+        Layout?.SetSentryEventId(SentryEventId);
+    }
 }
