@@ -69,7 +69,8 @@
     <div class="hero-bg"></div>
     <!-- Hero Section -->
     <section class="z-10 text-center max-w-4xl px-6 py-12" aria-labelledby="hero-title">
-        <h1  id="hero-title" class="text-7xl font-bold mb-4 text-transparent tracking-tight bg-clip-text bg-linear-to-br from-white via-white to-lithium-400">
+        <h1 id="hero-title"
+            class="text-7xl font-bold mb-4 text-transparent tracking-tight bg-clip-text bg-linear-to-br from-white via-white to-lithium-400">
             @Localizer["HeroTitle"]
         </h1>
         <p class="text-xl mb-6 text-lithium-600 font-light">
@@ -168,21 +169,4 @@
             </a>
         </div>
     </footer>
-
 </div>
-
-@code {
-
-    [Inject] public NavigationManager NavigationManager { get; set; } = null!;
-
-    private void Login()
-    {
-        NavigationManager.NavigateTo($"auth/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", forceLoad: true);
-    }
-
-    private void Logout()
-    {
-        NavigationManager.NavigateTo("auth/logout", forceLoad: true);
-    }
-
-}

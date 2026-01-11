@@ -1,4 +1,4 @@
-namespace Lithium.Web.Components.Docs;
+namespace Lithium.Web.Pages.Docs;
 
 public class DocMeta
 {
