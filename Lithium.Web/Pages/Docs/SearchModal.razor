@@ -36,7 +36,7 @@
                                       class="block p-2 text-sm text-white! rounded-md hover:bg-lithium-200 cursor-pointer">
                                        <div class="flex items-center gap-1 font-semibold">
                                            <span>@result.Doc.Icon</span>
-                                           <span>@((MarkupString)result.Doc.Title)</span>
+                                           <span>@((MarkupString)result.HighlightedTitle)</span>
                                        </div>
                                        @if (!string.IsNullOrEmpty(result.Snippet))
                                        {
@@ -63,7 +63,7 @@
 
     private class SearchResult
     {
-        public DocMeta Doc { get; init; } = null!;
+        public DocModel Doc { get; init; } = null!;
         public string HighlightedTitle { get; init; } = null!;
         public string? Snippet { get; init; }
     }
@@ -75,7 +75,7 @@
 
     [Parameter] public bool IsOpen { get; set; }
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
-    [Parameter] public List<DocMeta> AllDocs { get; set; } = [];
+    [Parameter] public List<DocModel> AllDocs { get; set; } = [];
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -111,9 +111,8 @@
                     Snippet = null
                 });
             }
-
-            var content = File.ReadAllText(doc.FilePath);
-            var matches = Regex.Matches(content, $".*?{Regex.Escape(_searchQuery)}.*", RegexOptions.IgnoreCase);
+            
+            var matches = Regex.Matches(doc.Content, $".*?{Regex.Escape(_searchQuery)}.*", RegexOptions.IgnoreCase);
 
             foreach (Match match in matches)
             {

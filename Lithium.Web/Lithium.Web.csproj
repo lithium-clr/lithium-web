@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="PSC.Blazor.Components.MarkdownEditor" Version="8.0.8" />
         <PackageReference Include="Sentry" Version="6.0.0" />
         <PackageReference Include="Sentry.Extensions.Logging" Version="6.0.0" />
         <PackageReference Include="AspNet.Security.OAuth.Discord" Version="9.0.0"/>

@@ -30,10 +30,14 @@
     * {
         @apply font-inter select-none;
     }
+
+    button {
+        @apply cursor-pointer;
+    }
 }
 
 @utility alert {
-    @apply px-4 bg-lithium-400/20 rounded-lg border border-lithium-400 text-lithium-800;
+    @apply p-4 bg-lithium-400/20 rounded-lg border border-lithium-400 text-lithium-800;
 }
 
 @utility prose {
@@ -54,11 +58,11 @@
     }
 
     p {
-        @apply my-4 leading-relaxed;
+        @apply text-lithium-800 my-4 leading-relaxed;
     }
 
     a {
-        @apply text-blue-400! hover:text-blue-300! transition-colors;
+        @apply text-lithium-900! hover:text-white! transition-colors;
     }
 
     a[href^="http"]::after {
@@ -75,21 +79,29 @@
             }
         }
     }
-  
+
     .note {
-        @apply alert bg-lithium-400/20 border-lithium-400 text-lithium-800;
+        p {
+            @apply alert bg-lithium-400/20 border-lithium-400 text-lithium-800!;
+        }
     }
-    
+
     .tip {
-        @apply alert bg-blue-900/20 border-blue-400 text-blue-300;
+        p {
+            @apply alert bg-blue-900/20 border-blue-400 text-blue-300!;
+        }
     }
 
     .warning {
-        @apply alert bg-yellow-900/20 border-yellow-500 text-yellow-300;
+        p {
+            @apply alert bg-yellow-900/20 border-yellow-500 text-yellow-300!;
+        }
     }
 
     .danger {
-        @apply alert bg-red-900/20 border-red-500 text-red-300;
+        p {
+            @apply alert bg-red-900/20 border-red-500 text-red-300!;
+        }
     }
 
     ul:not([class*="list-"]), ol:not([class*="list-"]) {
@@ -97,7 +109,7 @@
     }
 
     ul {
-        @apply list-disc;
+        @apply list-disc text-white;
     }
 
     ol {
@@ -184,7 +196,7 @@
     }
 
     mark {
-        @apply bg-yellow-400 text-black px-1 rounded;
+        @apply bg-yellow-400 text-black p-1 rounded;
     }
 
     /* Figures */
@@ -221,6 +233,10 @@
     dd {
         @apply pl-5 mb-2;
     }
+    
+    iframe {
+        @apply w-auto! h-auto! aspect-video!;
+    }
 
     /* Embedded Media */
     .media-container {
@@ -232,15 +248,5 @@
 
     .media-container iframe {
         @apply absolute top-0 left-0 w-full h-full;
-    }
-
-    /* Mermaid Diagrams */
-    .mermaid {
-        @apply my-6 flex justify-center;
-    }
-
-    /* KaTeX Formulas */
-    .katex-display {
-        @apply my-6 overflow-x-auto;
     }
 }

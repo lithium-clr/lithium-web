@@ -1,5 +1,5 @@
-﻿@using Lithium.Web.Pages
-@using Microsoft.Extensions.Localization
+﻿@using Microsoft.Extensions.Localization
+@using Sentry
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Home> Localizer
@@ -11,13 +11,25 @@
     <main class="flex-1 h-full overflow-y-auto relative">
         @* <div class="absolute inset-0 bg-linear-to-br from-lithium-50 to-lithium-100 pointer-events-none"></div> *@
         <NavBar @rendermode="InteractiveServer"/>
-        <ErrorModal>
-            @Body
-        </ErrorModal>
+        <div class="mt-16">
+            <ErrorModal>
+                <CascadingValue Value="_sentryEventId">
+                    @Body
+                </CascadingValue>
+            </ErrorModal>
+        </div>
     </main>
 </div>
 
 @code {
+    
+    private SentryId _sentryEventId;
+
+    public void SetSentryEventId(SentryId eventId)
+    {
+        _sentryEventId = eventId;
+        StateHasChanged();
+    }
 
     private void Login()
     {

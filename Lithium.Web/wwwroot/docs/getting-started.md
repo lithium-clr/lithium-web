@@ -1,7 +1,7 @@
 ---
-title: Getting Started
-category: General
-icon: 🚀
+title: "Getting Started"
+icon: "🚀"
+category: "General"
 ---
 
 # Getting Started
@@ -89,46 +89,6 @@ This is a warning alert.
 This is a danger alert.
 :::
 
-## Diagrams (Mermaid)
-
-Create diagrams using Mermaid syntax.
-
-### Flowchart
-
-```mermaid
-graph TD;
-    A[Start] --> B{Is it working?};
-    B -- Yes --> C[Great!];
-    B -- No --> D[Fix it!];
-    D --> B;
-```
-
-### Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    participant Alice
-    participant Bob
-    Alice->>John: Hello John, how are you?
-    loop Healthcheck
-        John->>John: Fight against hypochondria
-    end
-    Note right of John: Rational thoughts<br/>prevail...
-    John-->>Alice: Great!
-    John->>Bob: How about you?
-    Bob-->>John: Jolly good!
-```
-
-^^ This is a footer
-^^ multi-line
-
-## Mathematical Formulas (KaTeX)
-
-You can write mathematical formulas using LaTeX syntax.
-
-- Inline formula: $E = mc^2$
-- Display formula: $$ \int_a^b f(x) \, dx = F(b) - F(a) $$
-
 ## Custom Containers
 
 Use custom containers to draw attention to important information.
@@ -152,7 +112,7 @@ This is a warning. Use it to indicate something that requires caution.
 
 ## Embedded Media
 
-[//]: # (![youtube]&#40;https://www.youtube.com/watch?v=dQw4w9WgXcQ&#41;)
+![youtube](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
 ## Figures & Images
 
