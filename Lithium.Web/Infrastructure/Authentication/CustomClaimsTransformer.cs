@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Lithium.Web.Infrastructure.Data.Collections;
+using Lithium.Web.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 
 namespace Lithium.Web.Infrastructure.Authentication;
@@ -19,10 +20,19 @@ public sealed class CustomClaimsTransformer(UserCollection users) : IClaimsTrans
         var idStr = principal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(idStr)) return principal;
 
-        var id = Guid.Parse(idStr);
-
-        var user = await users.FirstAsync(u => u.Id == id);
-        if (user is null) return principal;
+        User? user;
+        
+        if (Guid.TryParse(idStr, out var guidId))
+        {
+            user = await users.FirstAsync(u => u.Id == guidId);
+            if (user is null) return principal;
+        }
+        else if (ulong.TryParse(idStr, out var ulongId))
+        {
+            user = await users.FirstAsync(u => u.Discord.Id == ulongId);
+            if (user is null) return principal;
+        }
+        else return principal;
 
         // Add roles as claims
         foreach (var role in user.Roles)
