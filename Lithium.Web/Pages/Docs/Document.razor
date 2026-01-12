@@ -82,10 +82,11 @@
 
     <!-- Contenu -->
     <main class="relative flex-1 min-w-0 flex flex-col">
-        <div class="absolute top-6 w-full mx-6 flex-1 z-20 bg-lithium-0/80 rounded-xl backdrop-blur-sm border border-lithium-100">
-            <div class="w-full px-4 sm:px-8 py-2 flex justify-end items-center gap-4">
-                <AuthorizeView Policy="CanManageDocs">
-                    <Authorized>
+        <AuthorizeView Policy="CanManageDocs">
+            <Authorized>
+                <div
+                    class="absolute top-6 w-full mx-6 flex-1 z-20 bg-lithium-0/80 rounded-xl backdrop-blur-sm border border-lithium-100">
+                    <div class="w-full px-4 sm:px-8 py-2 flex justify-end items-center gap-4">
                         @if (_isEditMode)
                         {
                             <button type="button" @onclick="CancelEdit"
@@ -110,53 +111,64 @@
                                 <span>Edit Page</span>
                             </button>
                         }
-                    </Authorized>
-                </AuthorizeView>
-            </div>
-        </div>
-        
+                    </div>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
         <div class="flex-1 overflow-y-auto" id="docs-content">
             <div class="w-full px-4 sm:px-8 lg:px-16 xl:px-24 pt-8 pb-16 text-white">
                 @if (_isEditMode)
                 {
-                    <EditForm Model="@_doc" OnValidSubmit="SaveChanges" id="doc-edit-form"
-                              class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
+                    <EditForm Model="@_doc" OnValidSubmit="SaveChanges" id="doc-edit-form" class="space-y-8">
                         <DataAnnotationsValidator/>
 
-                        <div class="space-y-2">
-                            <h2 class="text-xl font-semibold">Metadata</h2>
-                            <p class="text-sm text-lithium-400">Basic information about the document.</p>
+                        <div class="space-y-8 bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8">
+                            <div class="space-y-2">
+                                <h2 class="text-xl font-semibold">Metadata</h2>
+                                <p class="text-sm text-lithium-400">Basic information about the document.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-lithium-300">Title</label>
+                                    <InputText @bind-Value="_doc.Title"
+                                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                    <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-lithium-300">Slug</label>
+                                    <InputText @bind-Value="_doc.Slug"
+                                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                    <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-lithium-300">Category</label>
+                                    <InputText @bind-Value="_doc.Category"
+                                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                    <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400"/>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-lithium-300">Icon (Emoji)</label>
+                                    <InputText @bind-Value="_doc.Icon"
+                                               class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-lithium-300">Title</label>
-                                <InputText @bind-Value="_doc.Title"
-                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
-                                <ValidationMessage For="@(() => _doc.Title)" class="mt-1 text-sm text-red-400"/>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div
+                                class="bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8 editor-panel">
+                                <MarkdownEditor LineNumbers="false" Toolbar="null" MinHeight="400" MaxHeight="1080"
+                                                Value="@_doc.Content" ValueChanged="OnMarkdownValueChanged"/>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-lithium-300">Slug</label>
-                                <InputText @bind-Value="_doc.Slug"
-                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
-                                <ValidationMessage For="@(() => _doc.Slug)" class="mt-1 text-sm text-red-400"/>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-lithium-300">Category</label>
-                                <InputText @bind-Value="_doc.Category"
-                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
-                                <ValidationMessage For="@(() => _doc.Category)" class="mt-1 text-sm text-red-400"/>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-lithium-300">Icon (Emoji)</label>
-                                <InputText @bind-Value="_doc.Icon"
-                                           class="mt-1 block w-full bg-lithium-50 border-lithium-100 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+                            <div
+                                class="bg-lithium-0/50 border border-lithium-100 rounded-lg shadow-lg p-8 overflow-y-auto">
+                                <div class="prose w-full max-w-none">
+                                    @((MarkupString)_htmlContent)
+                                </div>
                             </div>
                         </div>
-
-                        <div class="border-t border-lithium-100"></div>
-
-                        <MarkdownEditor MinHeight="400" MaxHeight="1080" Value="@_doc.Content" ValueChanged="OnMarkdownValueChanged"/>
                     </EditForm>
                 }
                 else
@@ -212,6 +224,52 @@
 
     .prose pre {
         position: relative;
+    }
+
+    /* Match editor styles with prose */
+    .editor-panel .cm-editor {
+        font-size: 1rem;
+        font-family: inherit;
+        line-height: 1.75;
+    }
+
+    .editor-panel .cm-header-1 {
+        font-size: 2.25em;
+        font-weight: 800;
+    }
+
+    .editor-panel .cm-header-2 {
+        font-size: 1.5em;
+        font-weight: 700;
+    }
+
+    .editor-panel .cm-header-3 {
+        font-size: 1.25em;
+        font-weight: 600;
+    }
+
+    .editor-panel .cm-header-4 {
+        font-size: 1.125em;
+        font-weight: 600;
+    }
+
+    .editor-panel .cm-header-5 {
+        font-size: 1.125em;
+        font-weight: 600;
+    }
+
+    .editor-panel .cm-header-6 {
+        font-size: 1.125em;
+        font-weight: 600;
+    }
+
+    .editor-panel .cm-comment,
+    .editor-panel .cm-quote {
+        font-style: italic;
+    }
+
+    .editor-panel .cm-strong {
+        font-weight: 700;
     }
 </style>
 
@@ -295,10 +353,10 @@
     private string _htmlContent = null!;
     private List<Heading> _headings = [];
     private string? _currentSlug;
-    private bool _isNavOpen = false;
-    private bool _isTocOpen = false;
-    private bool _isSearchModalOpen = false;
-    private bool _isEditMode = false;
+    private bool _isNavOpen;
+    private bool _isTocOpen;
+    private bool _isSearchModalOpen;
+    private bool _isEditMode;
     private readonly DocModel _doc = new();
     private DocModel _originalDoc = new();
     private string _docsPath = null!;
@@ -334,6 +392,7 @@
     protected override void OnInitialized()
     {
         _docsPath = Path.Combine(Env.WebRootPath, "docs");
+
         var files = Directory.GetFiles(_docsPath, "*.md", SearchOption.AllDirectories);
 
         foreach (var file in files)
@@ -353,9 +412,11 @@
         }
     }
 
-    protected override async Task OnParametersSetAsync()
+    protected override Task OnParametersSetAsync()
     {
-        if (Slug == _currentSlug) return;
+        if (Slug == _currentSlug)
+            return Task.CompletedTask;
+
         _currentSlug = Slug;
 
         if (string.IsNullOrEmpty(Slug))
@@ -365,7 +426,7 @@
             if (firstDoc is not null)
                 NavigationManager.NavigateTo($"/docs/{firstDoc.Slug}");
 
-            return;
+            return Task.CompletedTask;
         }
 
         var doc = _docs.FirstOrDefault(d => d.Slug == Slug);
@@ -377,7 +438,6 @@
             _doc.Category = doc.Category;
             _doc.Icon = doc.Icon;
             _doc.Content = doc.Content;
-
             _originalSlug = Slug;
 
             RenderMarkdown();
@@ -386,6 +446,8 @@
         {
             _htmlContent = "<p>Page not found.</p>";
         }
+
+        return Task.CompletedTask;
     }
 
     private void RenderMarkdown()
@@ -454,7 +516,7 @@
                 Content = _doc.Content
             };
         }
-        
+
         _isEditMode = !_isEditMode;
     }
 
@@ -465,7 +527,7 @@
         _doc.Category = _originalDoc.Category;
         _doc.Icon = _originalDoc.Icon;
         _doc.Content = _originalDoc.Content;
-        
+
         RenderMarkdown();
 
         _isEditMode = false;
@@ -474,6 +536,7 @@
     private Task OnMarkdownValueChanged(string value)
     {
         _doc.Content = value;
+        RenderMarkdown();
         return Task.CompletedTask;
     }
 
