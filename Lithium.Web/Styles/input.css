@@ -30,6 +30,14 @@
     * {
         @apply font-inter select-none;
     }
+    
+    a {
+        @apply text-lithium-500! hover:text-white! transition-colors cursor-pointer;
+    }
+    
+    button {
+        @apply cursor-pointer;
+    }
 }
 
 @utility alert {
