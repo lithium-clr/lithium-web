@@ -791,6 +791,9 @@
   .h-\[630px\] {
     height: 630px;
   }
+  .h-\[calc\(100\%-4rem\)\] {
+    height: calc(100% - 4rem);
+  }
   .h-full {
     height: 100%;
   }
@@ -1050,6 +1053,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-hidden\! {
+    overflow: hidden !important;
   }
   .overflow-x-auto {
     overflow-x: auto;

@@ -8,10 +8,10 @@
     <div
         class="absolute inset-0 bg-[radial-gradient(circle_at_1rem_1rem,#222229_1px,transparent_0)] bg-size-[2rem_2rem] pointer-events-none"></div>
 
-    <main class="flex-1 h-full overflow-y-auto relative">
+    <main class="flex-1 h-full overflow-hidden relative">
         @* <div class="absolute inset-0 bg-linear-to-br from-lithium-50 to-lithium-100 pointer-events-none"></div> *@
         <NavBar @rendermode="InteractiveServer"/>
-        <div class="mt-16">
+        <div class="mt-16 h-[calc(100%-4rem)] overflow-y-auto">
             <ErrorModal>
                 <CascadingValue Value="_sentryEventId">
                     @Body
