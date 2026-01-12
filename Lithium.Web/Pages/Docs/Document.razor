@@ -3,8 +3,8 @@
 @using System.Text.RegularExpressions
 @using Markdig
 @using Markdig.Syntax
-@using LucideBlazor
 @using PSC.Blazor.Components.MarkdownEditor
+@using LucideBlazor
 @inject NavigationManager NavigationManager
 @inject IWebHostEnvironment Env
 @inject IJSRuntime JsRuntime
@@ -33,13 +33,13 @@
     {
         <div class="absolute lg:static lg:flex lg:justify-end lg:w-96 lg:py-8 lg:bg-lithium-0 lg:border-r lg:border-lithium-100/50">
             <aside
-                class="@(_isNavOpen ? "translate-x-0" : "-translate-x-full") fixed inset-y-0 left-0 z-50 w-72 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col shrink-0 bg-lithium-0 border-r border-lithium-100/50 lg:border-none">
+                class="@(_isNavOpen ? "translate-x-0" : "-translate-x-full") fixed inset-y-0 left-0 w-72 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col shrink-0 bg-lithium-0 border-r border-lithium-100/50 lg:border-none">
 
                 <!-- Logo -->
                 <div class="flex items-center h-16 px-4 shrink-0">
                     <div class="flex items-center gap-1">
                         <a href="/"
-                           class="flex items-center text-lg tracking-tight text-lithium-800! hover:text-white! transition-colors">
+                           class="flex items-center tracking-tight text-lithium-800! hover:text-white! transition-colors">
                             <span class="font-bold">Lithium</span>
                         </a>
                         <span>/</span>
@@ -442,10 +442,6 @@
         }
 
         .editor-toolbar {
-            @* border-left: 1px solid var(--color-lithium-100) !important; *@
-            @* border-right: 1px solid var(--color-lithium-100) !important; *@
-            @* border-top: 1px solid var(--color-lithium-100) !important; *@
-
             border: none;
             border-bottom: 1px solid var(--color-lithium-50) !important;
 
