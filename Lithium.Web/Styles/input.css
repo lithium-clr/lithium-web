@@ -233,6 +233,10 @@
     dd {
         @apply pl-5 mb-2;
     }
+    
+    iframe {
+        @apply w-auto! h-auto! aspect-video!;
+    }
 
     /* Embedded Media */
     .media-container {

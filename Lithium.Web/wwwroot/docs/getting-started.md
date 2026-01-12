@@ -1,7 +1,7 @@
 ---
-title: Getting Started
-category: General
-icon: 🚀
+title: "Getting Started"
+icon: "🚀"
+category: "General"
 ---
 
 # Getting Started

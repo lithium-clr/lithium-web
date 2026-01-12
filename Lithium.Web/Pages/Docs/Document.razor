@@ -31,9 +31,9 @@
     <!-- Left Sidebar (Navigation) -->
     @if (!_isEditMode)
     {
-        <div class="flex justify-end w-96 py-8 bg-lithium-0 border-r border-lithium-100/50">
+        <div class="absolute lg:static lg:flex lg:justify-end lg:w-96 lg:py-8 lg:bg-lithium-0 lg:border-r lg:border-lithium-100/50">
             <aside
-                class="@(_isNavOpen ? "translate-x-0" : "-translate-x-full") fixed inset-y-0 left-0 z-50 w-72 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col shrink-0">
+                class="@(_isNavOpen ? "translate-x-0" : "-translate-x-full") fixed inset-y-0 left-0 z-50 w-72 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col shrink-0 bg-lithium-0 border-r border-lithium-100/50 lg:border-none">
 
                 <!-- Logo -->
                 <div class="flex items-center h-16 px-4 shrink-0">
@@ -109,7 +109,7 @@
         <!-- Scrollable Content -->
         <main class="flex-1 overflow-y-auto scroll-smooth" id="docs-content">
             <div
-                class="@(_isEditMode ? "max-w-full px-4 py-4 h-full" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8")">
+                class="@(_isEditMode ? "max-w-full px-4 py-4 h-full" : "mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8")">
 
                 @if (_isEditMode)
                 {
@@ -119,21 +119,21 @@
 
                         <!-- Editor Toolbar -->
                         <div
-                            class="flex items-center justify-between px-4 py-3 bg-lithium-50/50 border border-lithium-100/50 rounded-xl backdrop-blur-sm shrink-0">
-                            <div class="flex items-center gap-4">
-                                <div class="flex items-center gap-2">
+                            class="flex items-center justify-between px-4 py-3 bg-lithium-50/50 border border-lithium-100/50 rounded-xl backdrop-blur-sm shrink-0 gap-2">
+                            <div class="flex items-center gap-2 sm:gap-4 overflow-hidden">
+                                <div class="hidden sm:flex items-center gap-2 overflow-hidden">
                                     <span
-                                        class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Editing:</span>
-                                    <span class="text-sm font-medium text-white!">@_doc.Title</span>
+                                        class="text-xs font-bold text-lithium-500 uppercase tracking-wider whitespace-nowrap">Editing:</span>
+                                    <span class="text-sm font-medium text-white! truncate">@_doc.Title</span>
                                 </div>
-                                <div class="h-4 w-px bg-lithium-200"></div>
+                                <div class="hidden sm:block h-4 w-px bg-lithium-200 shrink-0"></div>
                                 <button type="button" @onclick="() => _isMetadataModalOpen = true"
-                                        class="flex items-center gap-2 px-3 py-2 text-xs font-medium text-lithium-600 hover:text-white! bg-lithium-50 border border-lithium-100 hover:border-lithium-200 rounded-md transition-colors">
+                                        class="flex items-center gap-2 px-3 py-2 text-xs font-medium text-lithium-600 hover:text-white! bg-lithium-50 border border-lithium-100 hover:border-lithium-200 rounded-md transition-colors whitespace-nowrap">
                                     <SettingsIcon Size="12"/>
-                                    Metadata
+                                    <span>Metadata</span>
                                 </button>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 shrink-0">
                                 <button type="button" @onclick="CancelEdit"
                                         class="px-3 py-2 text-xs font-medium text-lithium-600 hover:text-white! transition-colors">
                                     Cancel
@@ -141,7 +141,8 @@
                                 <button type="submit"
                                         class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-lithium-900! bg-lithium-100! hover:bg-lithium-200! rounded-md transition-colors">
                                     <SaveIcon Size="12"/>
-                                    Save Changes
+                                    <span class="hidden sm:inline">Save Changes</span>
+                                    <span class="sm:hidden">Save</span>
                                 </button>
                             </div>
                         </div>
@@ -176,7 +177,7 @@
                                                        class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600"
                                                        placeholder="page-slug"/>
                                         </div>
-                                        <div class="grid grid-cols-2 gap-4">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div class="space-y-1.5">
                                                 <label
                                                     class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Icon</label>
@@ -205,7 +206,7 @@
                         }
 
                         <!-- Split View Editor -->
-                        <div class="flex-1 grid grid-cols-2 gap-4 min-h-0">
+                        <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-0">
                             <!-- Markdown Input -->
                             <div
                                 class="flex flex-col h-full bg-lithium-0 border border-lithium-100/50 rounded-xl overflow-hidden shadow-sm">
@@ -222,7 +223,7 @@
 
                             <!-- Live Preview -->
                             <div
-                                class="flex flex-col h-full bg-lithium-0 border border-lithium-100/50 rounded-xl overflow-hidden shadow-sm">
+                                class="hidden lg:flex flex-col h-full bg-lithium-0 border border-lithium-100/50 rounded-xl overflow-hidden shadow-sm">
                                 <div
                                     class="bg-lithium-50/50 px-4 py-2 border-b border-lithium-100/50 text-xs font-bold text-lithium-500 uppercase tracking-wider flex justify-between items-center">
                                     <span>Preview</span>
@@ -289,7 +290,7 @@
     </div>
 
     <!-- Right Sidebar (Table of Contents) -->
-    <div class="flex justify-start w-96 py-8 bg-lithium-0">
+    <div class="hidden xl:flex xl:justify-start xl:w-96 xl:py-8 xl:bg-lithium-0">
         <aside class="hidden xl:block w-72 ml-4 shrink-0">
             <div class="fixed">
                 <h4 class="py-6 text-xs font-bold text-white! uppercase tracking-wider">On this
