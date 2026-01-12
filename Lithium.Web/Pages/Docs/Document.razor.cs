@@ -80,6 +80,13 @@ public partial class Document : ComponentBase
                 Content = MyRegex1().Replace(markdown, "").Trim()
             });
         }
+
+        if (!string.IsNullOrEmpty(Slug)) return;
+        
+        var firstDoc = _docs.FirstOrDefault();
+
+        if (firstDoc is not null)
+            NavigationManager.NavigateTo($"/docs/{firstDoc.Slug}");
     }
 
     protected override Task OnParametersSetAsync()
