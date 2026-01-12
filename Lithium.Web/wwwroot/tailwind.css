@@ -297,15 +297,16 @@
       margin-block: calc(var(--spacing) * 4);
       --tw-leading: var(--leading-relaxed);
       line-height: var(--leading-relaxed);
+      color: var(--color-lithium-800);
     }
     a {
-      color: var(--color-blue-400) !important;
+      color: var(--color-lithium-900) !important;
       transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
       transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
       transition-duration: var(--tw-duration, var(--default-transition-duration));
       &:hover {
         @media (hover: hover) {
-          color: var(--color-blue-300) !important;
+          color: var(--color-white) !important;
         }
       }
     }
@@ -328,73 +329,83 @@
       }
     }
     .note {
-      border-radius: var(--radius-lg);
-      border-style: var(--tw-border-style);
-      border-width: 1px;
-      padding-inline: calc(var(--spacing) * 4);
-      border-color: var(--color-lithium-400);
-      background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
-      color: var(--color-lithium-800);
+      p {
+        border-radius: var(--radius-lg);
+        border-style: var(--tw-border-style);
+        border-width: 1px;
+        padding: calc(var(--spacing) * 4);
+        color: var(--color-lithium-800);
+        border-color: var(--color-lithium-400);
+        background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
+        color: var(--color-lithium-800) !important;
+      }
     }
     .tip {
-      border-radius: var(--radius-lg);
-      border-style: var(--tw-border-style);
-      border-width: 1px;
-      border-color: var(--color-lithium-400);
-      background-color: color-mix(in srgb, #54545d 20%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
+      p {
+        border-radius: var(--radius-lg);
+        border-style: var(--tw-border-style);
+        border-width: 1px;
+        border-color: var(--color-lithium-400);
+        background-color: color-mix(in srgb, #54545d 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
+        }
+        padding: calc(var(--spacing) * 4);
+        color: var(--color-lithium-800);
+        border-color: var(--color-blue-400);
+        background-color: color-mix(in srgb, oklch(37.9% 0.146 265.522) 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-blue-900) 20%, transparent);
+        }
+        color: var(--color-blue-300) !important;
       }
-      padding-inline: calc(var(--spacing) * 4);
-      color: var(--color-lithium-800);
-      border-color: var(--color-blue-400);
-      background-color: color-mix(in srgb, oklch(37.9% 0.146 265.522) 20%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-blue-900) 20%, transparent);
-      }
-      color: var(--color-blue-300);
     }
     .warning {
-      border-radius: var(--radius-lg);
-      border-style: var(--tw-border-style);
-      border-width: 1px;
-      border-color: var(--color-lithium-400);
-      background-color: color-mix(in srgb, #54545d 20%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
+      p {
+        border-radius: var(--radius-lg);
+        border-style: var(--tw-border-style);
+        border-width: 1px;
+        border-color: var(--color-lithium-400);
+        background-color: color-mix(in srgb, #54545d 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
+        }
+        padding: calc(var(--spacing) * 4);
+        color: var(--color-lithium-800);
+        border-color: var(--color-yellow-500);
+        background-color: color-mix(in srgb, oklch(42.1% 0.095 57.708) 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-yellow-900) 20%, transparent);
+        }
+        color: var(--color-yellow-300) !important;
       }
-      padding-inline: calc(var(--spacing) * 4);
-      color: var(--color-lithium-800);
-      border-color: var(--color-yellow-500);
-      background-color: color-mix(in srgb, oklch(42.1% 0.095 57.708) 20%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-yellow-900) 20%, transparent);
-      }
-      color: var(--color-yellow-300);
     }
     .danger {
-      border-radius: var(--radius-lg);
-      border-style: var(--tw-border-style);
-      border-width: 1px;
-      border-color: var(--color-lithium-400);
-      background-color: color-mix(in srgb, #54545d 20%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
+      p {
+        border-radius: var(--radius-lg);
+        border-style: var(--tw-border-style);
+        border-width: 1px;
+        border-color: var(--color-lithium-400);
+        background-color: color-mix(in srgb, #54545d 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
+        }
+        padding: calc(var(--spacing) * 4);
+        color: var(--color-lithium-800);
+        border-color: var(--color-red-500);
+        background-color: color-mix(in srgb, oklch(39.6% 0.141 25.723) 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-red-900) 20%, transparent);
+        }
+        color: var(--color-red-300) !important;
       }
-      padding-inline: calc(var(--spacing) * 4);
-      color: var(--color-lithium-800);
-      border-color: var(--color-red-500);
-      background-color: color-mix(in srgb, oklch(39.6% 0.141 25.723) 20%, transparent);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--color-red-900) 20%, transparent);
-      }
-      color: var(--color-red-300);
     }
     ul:not([class*="list-"]), ol:not([class*="list-"]) {
       padding-left: calc(var(--spacing) * 5);
     }
     ul {
       list-style-type: disc;
+      color: var(--color-white);
     }
     ol {
       list-style-type: decimal;
@@ -533,7 +544,7 @@
     mark {
       border-radius: 0.25rem;
       background-color: var(--color-yellow-400);
-      padding-inline: calc(var(--spacing) * 1);
+      padding: calc(var(--spacing) * 1);
       color: var(--color-black);
     }
     figure {
@@ -587,15 +598,6 @@
       height: 100%;
       width: 100%;
     }
-    .mermaid {
-      margin-block: calc(var(--spacing) * 6);
-      display: flex;
-      justify-content: center;
-    }
-    .katex-display {
-      margin-block: calc(var(--spacing) * 6);
-      overflow-x: auto;
-    }
   }
   .absolute {
     position: absolute;
@@ -626,6 +628,9 @@
   }
   .top-6 {
     top: calc(var(--spacing) * 6);
+  }
+  .top-12 {
+    top: calc(var(--spacing) * 12);
   }
   .top-\[-10\%\] {
     top: -10%;
@@ -668,9 +673,6 @@
   }
   .z-1000 {
     z-index: 1000;
-  }
-  .z-\[60\] {
-    z-index: 60;
   }
   .mx-2 {
     margin-inline: calc(var(--spacing) * 2);
@@ -1076,7 +1078,7 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-lithium-400) 20%, transparent);
     }
-    padding-inline: calc(var(--spacing) * 4);
+    padding: calc(var(--spacing) * 4);
     color: var(--color-lithium-800);
   }
   .rounded {
@@ -1129,9 +1131,6 @@
   }
   .border-lithium-200 {
     border-color: var(--color-lithium-200);
-  }
-  .border-lithium-200\! {
-    border-color: var(--color-lithium-200) !important;
   }
   .border-lithium-200\/20 {
     border-color: color-mix(in srgb, #33333b 20%, transparent);
@@ -1198,9 +1197,6 @@
   }
   .bg-lithium-0 {
     background-color: var(--color-lithium-0);
-  }
-  .bg-lithium-0\! {
-    background-color: var(--color-lithium-0) !important;
   }
   .bg-lithium-0\/80 {
     background-color: color-mix(in srgb, #0a0a0e 80%, transparent);
@@ -1578,6 +1574,9 @@
   .text-lithium-800 {
     color: var(--color-lithium-800);
   }
+  .text-lithium-800\! {
+    color: var(--color-lithium-800) !important;
+  }
   .text-lithium-900 {
     color: var(--color-lithium-900);
   }
@@ -1650,9 +1649,6 @@
   }
   .opacity-30 {
     opacity: 30%;
-  }
-  .opacity-50 {
-    opacity: 50%;
   }
   .opacity-100 {
     opacity: 100%;
@@ -1779,11 +1775,23 @@
       }
     }
   }
+  .group-hover\:text-white\! {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-white) !important;
+      }
+    }
+  }
   .group-hover\:opacity-100 {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         opacity: 100%;
       }
+    }
+  }
+  .group-aria-\[current\=page\]\:text-white\! {
+    &:is(:where(.group)[aria-current="page"] *) {
+      color: var(--color-white) !important;
     }
   }
   .selection\:bg-lithium-100 {
@@ -1863,16 +1871,6 @@
       }
     }
   }
-  .hover\:bg-lithium-50\/50 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in srgb, #121218 50%, transparent);
-        @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-lithium-50) 50%, transparent);
-        }
-      }
-    }
-  }
   .hover\:bg-lithium-100 {
     &:hover {
       @media (hover: hover) {
@@ -1884,6 +1882,16 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-lithium-100) !important;
+      }
+    }
+  }
+  .hover\:bg-lithium-100\/60 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, #222229 60%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-lithium-100) 60%, transparent);
+        }
       }
     }
   }
@@ -1946,13 +1954,6 @@
       }
     }
   }
-  .hover\:opacity-80 {
-    &:hover {
-      @media (hover: hover) {
-        opacity: 80%;
-      }
-    }
-  }
   .focus\:border-lithium-300 {
     &:focus {
       border-color: var(--color-lithium-300);
@@ -1962,6 +1963,11 @@
     &:focus {
       --tw-outline-style: none;
       outline-style: none;
+    }
+  }
+  .aria-\[current\=page\]\:bg-lithium-100 {
+    &[aria-current="page"] {
+      background-color: var(--color-lithium-100);
     }
   }
   .sm\:inline-flex {
@@ -2047,18 +2053,6 @@
     font-family: var(--font-inter);
     -webkit-user-select: none;
     user-select: none;
-  }
-  a {
-    cursor: pointer;
-    color: var(--color-lithium-500) !important;
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-white) !important;
-      }
-    }
   }
   button {
     cursor: pointer;

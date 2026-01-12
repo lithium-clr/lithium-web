@@ -38,7 +38,7 @@
             <div class="flex items-center h-16 px-4 shrink-0">
                 <div class="flex items-center gap-1">
                     <a href="/"
-                       class="flex items-center text-lg tracking-tight text-white!">
+                       class="flex items-center text-lg tracking-tight text-lithium-800! hover:text-white! transition-colors">
                         <span class="font-bold">Lithium</span>
                     </a>
                         <span>/</span>
@@ -74,14 +74,11 @@
                             <div class="space-y-0.5">
                                 @foreach (var doc in group)
                                 {
-                                    var isActive = doc.Slug == Slug;
-                                    var className = $"{(isActive ? "bg-lithium-100" : "hover:bg-lithium-50/50")} group flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-all duration-200";
-
                                     <NavLink href="@("/docs/" + doc.Slug)" @onclick="CloseSidebars"
-                                             class="@className">
+                                             class="group flex items-center gap-3 px-3 py-2 bg-lithium-0 hover:bg-lithium-100/60 aria-[current=page]:bg-lithium-100 text-sm rounded-md">
                                         <span class="transition-opacity">@doc.Icon</span>
                                         <span
-                                            class="@(isActive ? "text-white!" : "text-lithium-400 hover:text-white!")">@doc.Title</span>
+                                            class="text-lithium-400 group-hover:text-white! group-aria-[current=page]:text-white! transition-all">@doc.Title</span>
                                     </NavLink>
                                 }
                             </div>
@@ -242,10 +239,10 @@
                         <!-- Article Content -->
                         <article class="flex-1 min-w-0 max-w-3xl">
                             <!-- Breadcrumbs & Edit Actions -->
-                            <div class="flex items-center justify-between mb-8 pb-8 border-b border-lithium-100/50">
+                            <div class="sticky top-0 bg-lithium-0 flex items-center justify-between p-8 border-b border-lithium-100/50">
                                 <nav class="flex" aria-label="Breadcrumb">
                                     <ol class="flex items-center space-x-2 text-sm text-lithium-500">
-                                        <li><a href="/docs" class="hover:text-white! transition-colors">Docs</a></li>
+                                        <li><a href="/docs" class="text-lithium-500! hover:text-white! transition-colors">Docs</a></li>
                                         <li>
                                             <ChevronRightIcon Size="14" class="text-lithium-600"/>
                                         </li>
@@ -256,7 +253,7 @@
                                 <AuthorizeView Policy="CanManageDocs">
                                     <Authorized>
                                         <button @onclick="ToggleEditMode"
-                                                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-lithium-400 bg-lithium-50/50 border border-lithium-100/50 rounded-md hover:text-white! hover:border-lithium-100 transition-all">
+                                                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-white bg-lithium-50/50 border border-lithium-100/50 rounded-md hover:text-white! hover:border-lithium-100 transition-all">
                                             <PencilIcon Size="12"/>
                                             Edit Page
                                         </button>
@@ -264,19 +261,7 @@
                                 </AuthorizeView>
                             </div>
 
-                            <div class="prose prose-invert max-w-none 
-                                        prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-white!
-                                        prose-h1:text-4xl prose-h1:mb-8
-                                        prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-2 prose-h2:border-b prose-h2:border-lithium-100/30
-                                        prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
-                                        prose-p:text-lithium-300 prose-p:leading-7 prose-p:mb-6
-                                        prose-a:text-white! prose-a:no-underline hover:prose-a:underline hover:prose-a:decoration-lithium-500 prose-a:font-medium
-                                        prose-strong:text-white! prose-strong:font-semibold
-                                        prose-code:text-lithium-200 prose-code:bg-lithium-100/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none prose-code:font-mono prose-code:text-sm
-                                        prose-pre:bg-lithium-50/50 prose-pre:border prose-pre:border-lithium-100/50 prose-pre:rounded-xl prose-pre:shadow-sm
-                                        prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-lithium-100/50
-                                        prose-ul:text-lithium-300 prose-li:marker:text-lithium-500
-                                        prose-blockquote:border-l-lithium-500 prose-blockquote:bg-lithium-50/30 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:text-lithium-300 prose-blockquote:not-italic">
+                            <div class="prose">
                                 @((MarkupString)_htmlContent)
                             </div>
 
@@ -287,8 +272,8 @@
                                     <span>Last updated on @DateTime.Now.ToString("MMMM dd, yyyy")</span>
                                 </div>
                                 <div class="flex gap-6">
-                                    <a href="#" class="hover:text-white! transition-colors">Privacy Policy</a>
-                                    <a href="#" class="hover:text-white! transition-colors">Terms of Service</a>
+                                    <a href="#" class="text-lithium-900! hover:text-white! transition-colors">Privacy Policy</a>
+                                    <a href="#" class="text-lithium-900! hover:text-white! transition-colors">Terms of Service</a>
                                 </div>
                             </div>
                         </article>
@@ -305,9 +290,9 @@
 
                                         <li>
                                             <a href="@slugUri"
-                                               class="toc-link block py-1.5 text-sm text-lithium-500 hover:text-white! transition-colors border-l-2 border-transparent pl-4 -ml-px truncate"
+                                               class="toc-link block py-1 text-sm text-lithium-500! hover:text-white! transition-colors border-l-2 border-transparent pl-4 -ml-px truncate"
                                                data-target="@heading.Slug"
-                                               style="padding-left: @(heading.Level == 1 ? "1rem" : $"{heading.Level * 0.5 + 0.5}rem")">
+                                               style="padding-left: @(heading.Level)rem">
                                                 @heading.Text
                                             </a>
                                         </li>
@@ -321,7 +306,7 @@
                                     <ul class="space-y-3 text-sm">
                                         <li>
                                             <a href="#"
-                                               class="flex items-center gap-2 text-lithium-400 hover:text-white! transition-colors group">
+                                               class="flex items-center gap-2 text-lithium-900! hover:text-white! transition-colors group">
                                                 <div
                                                     class="p-1 rounded-md bg-lithium-50/50 group-hover:bg-lithium-50 transition-colors">
                                                     <GithubIcon Size="14"/>
@@ -331,7 +316,7 @@
                                         </li>
                                         <li>
                                             <a href="#"
-                                               class="flex items-center gap-2 text-lithium-400 hover:text-white! transition-colors group">
+                                               class="flex items-center gap-2 text-lithium-900! hover:text-white! transition-colors group">
                                                 <div
                                                     class="p-1 rounded-md bg-lithium-50/50 group-hover:bg-lithium-50 transition-colors">
                                                     <MessageCircleIcon Size="14"/>
@@ -366,9 +351,10 @@
                     @foreach (var heading in _headings)
                     {
                         var slugUri = $"/docs/{Slug}/#{heading.Slug}";
+                        
                         <li>
                             <a href="@slugUri" @onclick="CloseSidebars"
-                               class="block text-sm text-lithium-400 hover:text-white! transition-colors"
+                               class="block text-sm text-lithium-500! hover:text-white! transition-colors"
                                style="padding-left: @((heading.Level - 1) * 1)rem">
                                 @heading.Text
                             </a>
