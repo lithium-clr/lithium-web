@@ -33,11 +33,13 @@
     {
         <aside
             class="@(_isNavOpen ? "translate-x-0" : "-translate-x-full") fixed inset-y-0 left-0 z-50 w-72 bg-lithium-0 border-r border-lithium-100/50 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 flex flex-col shrink-0">
-            
+
             <!-- Logo -->
             <div class="flex items-center h-16 px-6 shrink-0">
-                <a href="/" class="flex items-center gap-2 font-bold text-xl tracking-tight text-white! hover:opacity-80 transition-opacity">
-                    <div class="w-8 h-8 rounded-lg bg-lithium-100 flex items-center justify-center text-white shadow-sm border border-lithium-200/20">
+                <a href="/"
+                   class="flex items-center gap-2 font-bold text-xl tracking-tight text-white! hover:opacity-80 transition-opacity">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-lithium-100 flex items-center justify-center text-white shadow-sm border border-lithium-200/20">
                         <span class="font-mono text-lg">Li</span>
                     </div>
                     <span>Docs</span>
@@ -50,12 +52,14 @@
                 <button @onclick="OpenSearchModal"
                         class="w-full flex items-center justify-between px-3 py-2.5 text-sm text-lithium-400 bg-lithium-50/50 border border-lithium-100/50 rounded-lg hover:border-lithium-100 hover:bg-lithium-50 hover:text-white! transition-all group shadow-sm">
                     <div class="flex items-center gap-2.5">
-                        <SearchIcon Size="15" class="group-hover:text-white transition-colors" />
+                        <SearchIcon Size="15" class="group-hover:text-white transition-colors"/>
                         <span>Search...</span>
                     </div>
                     <div class="flex items-center gap-1">
-                        <kbd class="hidden sm:inline-flex items-center h-5 px-1.5 text-[10px] font-medium text-lithium-500 bg-lithium-100/50 rounded border border-lithium-200/20 font-mono">CTRL</kbd>
-                        <kbd class="hidden sm:inline-flex items-center h-5 px-1.5 text-[10px] font-medium text-lithium-500 bg-lithium-100/50 rounded border border-lithium-200/20 font-mono">K</kbd>
+                        <kbd
+                            class="hidden sm:inline-flex items-center h-5 px-1.5 text-[10px] font-medium text-lithium-500 bg-lithium-100/50 rounded border border-lithium-200/20 font-mono">CTRL</kbd>
+                        <kbd
+                            class="hidden sm:inline-flex items-center h-5 px-1.5 text-[10px] font-medium text-lithium-500 bg-lithium-100/50 rounded border border-lithium-200/20 font-mono">K</kbd>
                     </div>
                 </button>
 
@@ -72,10 +76,11 @@
                                 {
                                     var isActive = doc.Slug == Slug;
                                     var className = $"{(isActive ? "bg-lithium-100 text-white! font-medium" : "text-lithium-400 hover:text-white! hover:bg-lithium-50/50")} group flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-all duration-200";
-                                    
+
                                     <NavLink href="@("/docs/" + doc.Slug)" @onclick="CloseSidebars"
                                              class="@className">
-                                        <span class="@(isActive ? "opacity-100" : "opacity-50 group-hover:opacity-100") transition-opacity">@doc.Icon</span>
+                                        <span
+                                            class="@(isActive ? "opacity-100" : "opacity-50 group-hover:opacity-100") transition-opacity">@doc.Icon</span>
                                         <span>@doc.Title</span>
                                     </NavLink>
                                 }
@@ -89,43 +94,55 @@
 
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        
+
         <!-- Mobile Header -->
-        <header class="flex items-center justify-between h-16 px-4 border-b border-lithium-100/50 bg-lithium-0/80 backdrop-blur-md lg:hidden shrink-0 z-30 sticky top-0">
+        <header
+            class="flex items-center justify-between h-16 px-4 border-b border-lithium-100/50 bg-lithium-0/80 backdrop-blur-md lg:hidden shrink-0 z-30 sticky top-0">
             <button @onclick="ToggleNav" class="p-2 -ml-2 text-lithium-400 hover:text-white! rounded-md">
-                <MenuIcon Size="20" />
+                <MenuIcon Size="20"/>
             </button>
             <span class="font-semibold text-white! truncate">@(_docs.FirstOrDefault(d => d.Slug == Slug)?.Title)</span>
             <button @onclick="ToggleToc" class="p-2 -mr-2 text-lithium-400 hover:text-white! rounded-md">
-                <ListIcon Size="20" />
+                <ListIcon Size="20"/>
             </button>
         </header>
 
         <!-- Scrollable Content -->
         <main class="flex-1 overflow-y-auto scroll-smooth" id="docs-content">
-            <div class="@(_isEditMode ? "max-w-full px-4 py-4 h-full" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12")">
-                
+            <div
+                class="@(_isEditMode ? "max-w-full px-4 py-4 h-full" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12")">
+
                 @if (_isEditMode)
                 {
-                    <EditForm Model="@_doc" OnValidSubmit="SaveChanges" id="doc-edit-form" class="flex flex-col h-full gap-4">
+                    <EditForm Model="@_doc" OnValidSubmit="SaveChanges" id="doc-edit-form"
+                              class="flex flex-col h-full gap-4">
                         <DataAnnotationsValidator/>
-                        
+
                         <!-- Editor Toolbar -->
-                        <div class="flex items-center justify-between px-4 py-3 bg-lithium-50/50 border border-lithium-100/50 rounded-xl backdrop-blur-sm shrink-0">
+                        <div
+                            class="flex items-center justify-between px-4 py-3 bg-lithium-50/50 border border-lithium-100/50 rounded-xl backdrop-blur-sm shrink-0">
                             <div class="flex items-center gap-4">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Editing:</span>
+                                    <span
+                                        class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Editing:</span>
                                     <span class="text-sm font-medium text-white!">@_doc.Title</span>
                                 </div>
                                 <div class="h-4 w-px bg-lithium-200"></div>
-                                <button type="button" @onclick="() => _isMetadataModalOpen = true" class="flex items-center gap-2 px-3 py-2 text-xs font-medium text-lithium-600 hover:text-white! bg-lithium-50 border border-lithium-100 hover:border-lithium-200 rounded-md transition-colors">
-                                    <SettingsIcon Size="12" /> Metadata
+                                <button type="button" @onclick="() => _isMetadataModalOpen = true"
+                                        class="flex items-center gap-2 px-3 py-2 text-xs font-medium text-lithium-600 hover:text-white! bg-lithium-50 border border-lithium-100 hover:border-lithium-200 rounded-md transition-colors">
+                                    <SettingsIcon Size="12"/>
+                                    Metadata
                                 </button>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button type="button" @onclick="CancelEdit" class="px-3 py-2 text-xs font-medium text-lithium-600 hover:text-white! transition-colors">Cancel</button>
-                                <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-lithium-900! bg-lithium-100! hover:bg-lithium-200! rounded-md transition-colors">
-                                    <SaveIcon Size="12" /> Save Changes
+                                <button type="button" @onclick="CancelEdit"
+                                        class="px-3 py-2 text-xs font-medium text-lithium-600 hover:text-white! transition-colors">
+                                    Cancel
+                                </button>
+                                <button type="submit"
+                                        class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-lithium-900! bg-lithium-100! hover:bg-lithium-200! rounded-md transition-colors">
+                                    <SaveIcon Size="12"/>
+                                    Save Changes
                                 </button>
                             </div>
                         </div>
@@ -133,36 +150,54 @@
                         <!-- Metadata Modal -->
                         @if (_isMetadataModalOpen)
                         {
-                            <div class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" @onclick="() => _isMetadataModalOpen = false">
-                                <div class="w-full max-w-lg bg-lithium-0 border border-lithium-100/50 rounded-xl shadow-2xl overflow-hidden" @onclick:stopPropagation>
-                                    <div class="px-6 py-4 border-b border-lithium-100/50 flex items-center justify-between">
+                            <div
+                                class="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                                @onclick="() => _isMetadataModalOpen = false">
+                                <div
+                                    class="w-full max-w-lg bg-lithium-0 border border-lithium-100/50 rounded-xl shadow-2xl overflow-hidden"
+                                    @onclick:stopPropagation>
+                                    <div
+                                        class="px-6 py-4 border-b border-lithium-100/50 flex items-center justify-between">
                                         <h3 class="font-bold text-white">Page Metadata</h3>
-                                        <button @onclick="() => _isMetadataModalOpen = false" class="text-lithium-400 hover:text-white!">
-                                            <XIcon Size="16" />
+                                        <button @onclick="() => _isMetadataModalOpen = false"
+                                                class="text-lithium-400 hover:text-white!">
+                                            <XIcon Size="16"/>
                                         </button>
                                     </div>
                                     <div class="p-6 space-y-4">
                                         <div class="space-y-1.5">
                                             <label class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Title</label>
-                                            <InputText @bind-Value="_doc.Title" class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600" placeholder="Page Title" />
+                                            <InputText @bind-Value="_doc.Title"
+                                                       class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600"
+                                                       placeholder="Page Title"/>
                                         </div>
                                         <div class="space-y-1.5">
                                             <label class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Slug</label>
-                                            <InputText @bind-Value="_doc.Slug" class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600" placeholder="page-slug" />
+                                            <InputText @bind-Value="_doc.Slug"
+                                                       class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600"
+                                                       placeholder="page-slug"/>
                                         </div>
                                         <div class="grid grid-cols-2 gap-4">
                                             <div class="space-y-1.5">
-                                                <label class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Icon</label>
-                                                <InputText @bind-Value="_doc.Icon" class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600" placeholder="Icon" />
+                                                <label
+                                                    class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Icon</label>
+                                                <InputText @bind-Value="_doc.Icon"
+                                                           class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600"
+                                                           placeholder="Icon"/>
                                             </div>
                                             <div class="space-y-1.5">
-                                                <label class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Category</label>
-                                                <InputText @bind-Value="_doc.Category" class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600" placeholder="Category" />
+                                                <label
+                                                    class="text-xs font-bold text-lithium-500 uppercase tracking-wider">Category</label>
+                                                <InputText @bind-Value="_doc.Category"
+                                                           class="w-full bg-lithium-50/50 border border-lithium-100/50 rounded-lg px-3 py-2 text-sm text-white! focus:border-lithium-300 outline-none transition-all placeholder-lithium-600"
+                                                           placeholder="Category"/>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="px-6 py-4 bg-lithium-50/30 border-t border-lithium-100/50 flex justify-end">
-                                        <button type="button" @onclick="() => _isMetadataModalOpen = false" class="px-4 py-2 text-xs font-bold text-lithium-900! hover:text-white! hover:bg-lithium-100! border border-lithium-100 hover:border-lithium-200 rounded-md transition-colors">
+                                    <div
+                                        class="px-6 py-4 bg-lithium-50/30 border-t border-lithium-100/50 flex justify-end">
+                                        <button type="button" @onclick="() => _isMetadataModalOpen = false"
+                                                class="px-4 py-2 text-xs font-bold text-lithium-900! hover:text-white! hover:bg-lithium-100! border border-lithium-100 hover:border-lithium-200 rounded-md transition-colors">
                                             Done
                                         </button>
                                     </div>
@@ -173,8 +208,10 @@
                         <!-- Split View Editor -->
                         <div class="flex-1 grid grid-cols-2 gap-4 min-h-0">
                             <!-- Markdown Input -->
-                            <div class="flex flex-col h-full bg-lithium-0 border border-lithium-100/50 rounded-xl overflow-hidden shadow-sm">
-                                <div class="bg-lithium-50/50 px-4 py-2 border-b border-lithium-100/50 text-xs font-bold text-lithium-500 uppercase tracking-wider flex justify-between items-center">
+                            <div
+                                class="flex flex-col h-full bg-lithium-0 border border-lithium-100/50 rounded-xl overflow-hidden shadow-sm">
+                                <div
+                                    class="bg-lithium-50/50 px-4 py-2 border-b border-lithium-100/50 text-xs font-bold text-lithium-500 uppercase tracking-wider flex justify-between items-center">
                                     <span>Markdown</span>
                                     <span class="text-[10px] text-lithium-600 font-mono">MARKDOWN</span>
                                 </div>
@@ -183,10 +220,12 @@
                                                     Value="@_doc.Content" ValueChanged="OnMarkdownValueChanged"/>
                                 </div>
                             </div>
-                            
+
                             <!-- Live Preview -->
-                            <div class="flex flex-col h-full bg-lithium-0 border border-lithium-100/50 rounded-xl overflow-hidden shadow-sm">
-                                <div class="bg-lithium-50/50 px-4 py-2 border-b border-lithium-100/50 text-xs font-bold text-lithium-500 uppercase tracking-wider flex justify-between items-center">
+                            <div
+                                class="flex flex-col h-full bg-lithium-0 border border-lithium-100/50 rounded-xl overflow-hidden shadow-sm">
+                                <div
+                                    class="bg-lithium-50/50 px-4 py-2 border-b border-lithium-100/50 text-xs font-bold text-lithium-500 uppercase tracking-wider flex justify-between items-center">
                                     <span>Preview</span>
                                     <span class="text-[10px] text-lithium-600 font-mono">HTML</span>
                                 </div>
@@ -207,15 +246,19 @@
                                 <nav class="flex" aria-label="Breadcrumb">
                                     <ol class="flex items-center space-x-2 text-sm text-lithium-500">
                                         <li><a href="/docs" class="hover:text-white! transition-colors">Docs</a></li>
-                                        <li><ChevronRightIcon Size="14" class="text-lithium-600" /></li>
+                                        <li>
+                                            <ChevronRightIcon Size="14" class="text-lithium-600"/>
+                                        </li>
                                         <li class="text-white! font-medium">@(_docs.FirstOrDefault(d => d.Slug == Slug)?.Title)</li>
                                     </ol>
                                 </nav>
 
                                 <AuthorizeView Policy="CanManageDocs">
                                     <Authorized>
-                                        <button @onclick="ToggleEditMode" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-lithium-400 bg-lithium-50/50 border border-lithium-100/50 rounded-md hover:text-white! hover:border-lithium-100 transition-all">
-                                            <PencilIcon Size="12" /> Edit Page
+                                        <button @onclick="ToggleEditMode"
+                                                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-lithium-400 bg-lithium-50/50 border border-lithium-100/50 rounded-md hover:text-white! hover:border-lithium-100 transition-all">
+                                            <PencilIcon Size="12"/>
+                                            Edit Page
                                         </button>
                                     </Authorized>
                                 </AuthorizeView>
@@ -236,9 +279,10 @@
                                         prose-blockquote:border-l-lithium-500 prose-blockquote:bg-lithium-50/30 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:text-lithium-300 prose-blockquote:not-italic">
                                 @((MarkupString)_htmlContent)
                             </div>
-                            
+
                             <!-- Page Footer -->
-                            <div class="mt-20 pt-8 border-t border-lithium-100/50 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-lithium-500">
+                            <div
+                                class="mt-20 pt-8 border-t border-lithium-100/50 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-lithium-500">
                                 <div class="flex items-center gap-2">
                                     <span>Last updated on @DateTime.Now.ToString("MMMM dd, yyyy")</span>
                                 </div>
@@ -252,14 +296,15 @@
                         <!-- Right Sidebar (Table of Contents) -->
                         <aside class="hidden xl:block w-72 shrink-0">
                             <div class="sticky top-6">
-                                <h4 class="mb-4 text-xs font-bold text-white! uppercase tracking-wider">On this page</h4>
+                                <h4 class="mb-4 text-xs font-bold text-white! uppercase tracking-wider">On this
+                                    page</h4>
                                 <ul class="space-y-1">
                                     @foreach (var heading in _headings)
                                     {
                                         var slugUri = $"/docs/{Slug}/#{heading.Slug}";
-                                        
+
                                         <li>
-                                            <a href="@slugUri" 
+                                            <a href="@slugUri"
                                                class="toc-link block py-1.5 text-sm text-lithium-500 hover:text-white! transition-colors border-l-2 border-transparent pl-4 -ml-px truncate"
                                                data-target="@heading.Slug"
                                                style="padding-left: @(heading.Level == 1 ? "1rem" : $"{heading.Level * 0.5 + 0.5}rem")">
@@ -268,23 +313,28 @@
                                         </li>
                                     }
                                 </ul>
-                                
+
                                 <!-- Quick Links -->
                                 <div class="pt-6 mt-6 border-t border-lithium-100/50">
-                                    <h4 class="mb-4 text-xs font-bold text-white! uppercase tracking-wider">Community</h4>
+                                    <h4 class="mb-4 text-xs font-bold text-white! uppercase tracking-wider">
+                                        Community</h4>
                                     <ul class="space-y-3 text-sm">
                                         <li>
-                                            <a href="#" class="flex items-center gap-2 text-lithium-400 hover:text-white! transition-colors group">
-                                                <div class="p-1 rounded-md bg-lithium-50/50 group-hover:bg-lithium-50 transition-colors">
-                                                    <GithubIcon Size="14" />
+                                            <a href="#"
+                                               class="flex items-center gap-2 text-lithium-400 hover:text-white! transition-colors group">
+                                                <div
+                                                    class="p-1 rounded-md bg-lithium-50/50 group-hover:bg-lithium-50 transition-colors">
+                                                    <GithubIcon Size="14"/>
                                                 </div>
                                                 <span>Edit on GitHub</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#" class="flex items-center gap-2 text-lithium-400 hover:text-white! transition-colors group">
-                                                <div class="p-1 rounded-md bg-lithium-50/50 group-hover:bg-lithium-50 transition-colors">
-                                                    <MessageCircleIcon Size="14" />
+                                            <a href="#"
+                                               class="flex items-center gap-2 text-lithium-400 hover:text-white! transition-colors group">
+                                                <div
+                                                    class="p-1 rounded-md bg-lithium-50/50 group-hover:bg-lithium-50 transition-colors">
+                                                    <MessageCircleIcon Size="14"/>
                                                 </div>
                                                 <span>Join Discord</span>
                                             </a>
@@ -298,17 +348,18 @@
             </div>
         </main>
     </div>
-    
+
     <!-- Mobile TOC Drawer -->
     @if (_isTocOpen)
     {
         <div class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm xl:hidden" @onclick="CloseSidebars"></div>
-        <div class="fixed inset-y-0 right-0 z-50 w-72 bg-lithium-0 border-l border-lithium-100/50 shadow-2xl transform transition-transform duration-300 ease-in-out xl:hidden overflow-y-auto">
+        <div
+            class="fixed inset-y-0 right-0 z-50 w-72 bg-lithium-0 border-l border-lithium-100/50 shadow-2xl transform transition-transform duration-300 ease-in-out xl:hidden overflow-y-auto">
             <div class="p-6">
                 <div class="flex items-center justify-between mb-8">
                     <h3 class="font-bold text-white!">On this page</h3>
                     <button @onclick="CloseSidebars" class="text-lithium-400 hover:text-white!">
-                        <XIcon Size="20" />
+                        <XIcon Size="20"/>
                     </button>
                 </div>
                 <ul class="space-y-3">
@@ -335,55 +386,132 @@
         width: 6px;
         height: 6px;
     }
+
     ::-webkit-scrollbar-track {
         background: transparent;
     }
+
     ::-webkit-scrollbar-thumb {
         background: #27272a;
         border-radius: 3px;
     }
+
     ::-webkit-scrollbar-thumb:hover {
         background: #3f3f46;
     }
-    
+
     .scrollbar-hide::-webkit-scrollbar {
         display: none;
     }
+
     .scrollbar-hide {
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-    
+
     .EasyMDEContainer {
         height: 100%;
-        
+        border: none !important;
+
         .CodeMirror {
-            background: var(--color-lithium-50);
+            background: transparent !important;
             height: 100%;
+            border: none !important;
+            color: white !important;
+            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            padding: 0.5rem 0;
+        }
+
+        .CodeMirror-size {
         }
         
-        * {
-            color: white;
+        .CodeMirror-gutters {
+            background: transparent !important;
+            border-right: 1px solid var(--color-lithium-100) !important;
+            color: var(--color-lithium-500) !important;
+            display: none;
         }
 
-        span {
-            font-size: 32px;
+        .CodeMirror-linenumber {
+            color: var(--color-lithium-500) !important;
+            display: none !important;
         }
-    }
 
-    /* Editor Customization */
-    .editor-wrapper .cm-editor {
-        height: 100%;
-        background-color: transparent;
-    }
-    .editor-wrapper .cm-scroller {
-        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.875rem;
-        line-height: 1.6;
-    }
-    .editor-wrapper .cm-gutters {
-        background-color: transparent;
-        border-right: 1px solid #27272a;
+        .CodeMirror-cursor {
+            border-left: 2px solid white !important;
+        }
+
+        .CodeMirror-selected {
+            background: var(--color-lithium-100) !important;
+        }
+
+        .editor-toolbar {
+            @* border-left: 1px solid var(--color-lithium-100) !important; *@
+            @* border-right: 1px solid var(--color-lithium-100) !important; *@
+            @* border-top: 1px solid var(--color-lithium-100) !important; *@
+
+            border: none;
+            border-bottom: 1px solid var(--color-lithium-50) !important;
+
+            i.separator {
+                display: none;
+            }
+
+            button {
+                &:hover {
+                    background: var(--color-lithium-100) !important;
+                    border: solid 1px var(--color-lithium-200);
+
+                    i {
+                        color: white !important;
+                    }
+                }
+
+                i {
+                    color: var(--color-lithium-500) !important;
+                }
+            }
+        }
+
+        .cm-header {
+            color: white !important;
+            font-weight: bold;
+            font-size: 32px !important;
+            font-family: Satoshi;
+        }
+
+        .cm-quote {
+            color: var(--color-lithium-400) !important;
+            font-style: italic;
+        }
+
+        .cm-link {
+            color: var(--color-lithium-300) !important;
+        }
+
+        .cm-url {
+            color: var(--color-lithium-400) !important;
+        }
+
+        /* Editor Customization */
+
+        .editor-wrapper .cm-editor {
+            height: 100%;
+            background-color: transparent;
+        }
+
+        .editor-wrapper .cm-scroller {
+            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .editor-wrapper .cm-gutters {
+            background-color: transparent;
+            border-right: 1px solid #27272a;
+        }
     }
 </style>
 
@@ -415,18 +543,18 @@
 
             const onScroll = () => {
                 let activeId = null;
-                
+
                 // Find the first heading that is in the viewport
                 for (let i = 0; i < headings.length; i++) {
                     const heading = headings[i];
                     const rect = heading.getBoundingClientRect();
-                    
+
                     // If heading is near the top (with some offset)
                     if (rect.top >= 0 && rect.top <= 200) {
-                         activeId = heading.id;
-                         break;
+                        activeId = heading.id;
+                        break;
                     }
-                    
+
                     // If we scrolled past this heading, it might be the active one
                     if (rect.top < 0) {
                         activeId = heading.id;
@@ -435,7 +563,7 @@
 
                 // If we are at the very top, activate the first one
                 if (!activeId && headings.length > 0 && scrollContainer.scrollTop < 50) {
-                     activeId = headings[0].id;
+                    activeId = headings[0].id;
                 }
 
                 tocLinks.forEach(link => {
