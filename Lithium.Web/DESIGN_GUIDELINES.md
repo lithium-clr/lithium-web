@@ -21,10 +21,13 @@
 ## Layouts
 ### Documentation Layout
 - **Structure**: 3-Column Layout (Flexbox).
-  - **Left Sidebar**: Fixed width (`w-72`). Navigation.
+  - **Left Sidebar**: Fixed width (`w-72`). Navigation. Hidden on mobile/tablet, accessible via drawer.
   - **Center**: Flexible (`flex-1`). Content is centered within this area (`max-w-3xl`).
-  - **Right Sidebar**: Fixed width (`w-72`). Table of Contents.
-- **Responsiveness**: Sidebars collapse on smaller screens.
+  - **Right Sidebar**: Fixed width (`w-72`). Table of Contents. Hidden on mobile/tablet/small desktop, accessible via drawer on mobile.
+- **Responsiveness**:
+  - **Mobile (< 1024px)**: Sidebars hidden. Header with Menu and TOC buttons visible.
+  - **Tablet/Small Desktop (1024px - 1280px)**: Left sidebar visible (static), Right sidebar hidden.
+  - **Desktop (> 1280px)**: Both sidebars visible.
 
 ## Components
 ### Navigation
