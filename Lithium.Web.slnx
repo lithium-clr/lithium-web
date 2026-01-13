@@ -1,5 +1,9 @@
 <Solution>
-  <Project Path="Lithium.Web/Lithium.Web.csproj" />
-  <Project Path="Lucide/LucideBlazor.Generator/LucideBlazor.Generator.csproj" />
-  <Project Path="Lucide/LucideBlazor/LucideBlazor.csproj" />
+  <Folder Name="/Src/">
+    <Project Path="src/Lithium.Web/Lithium.Web.csproj" />
+    <Project Path="src/Lucide/LucideBlazor.Generator/LucideBlazor.Generator.csproj" />
+    <Project Path="src/Lucide/LucideBlazor/LucideBlazor.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+  </Folder>
 </Solution>
