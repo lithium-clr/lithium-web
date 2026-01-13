@@ -5,10 +5,10 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/Lithium.Web/Lithium.Web.csproj", "src/Lithium.Web/"]
-COPY ["src/Lucide/LucideBlazor/LucideBlazor.csproj", "src/Lucide/LucideBlazor/"]
-COPY ["src/Lucide/LucideBlazor.Generator/LucideBlazor.Generator.csproj", "src/Lucide/LucideBlazor.Generator/"]
-RUN dotnet restore "src/Lithium.Web/Lithium.Web.csproj"
+COPY ["src/Lithium.Web/Lithium.Web.csproj", "Lithium.Web/"]
+COPY ["src/Lucide/LucideBlazor/LucideBlazor.csproj", "Lucide/LucideBlazor/"]
+COPY ["src/Lucide/LucideBlazor.Generator/LucideBlazor.Generator.csproj", "Lucide/LucideBlazor.Generator/"]
+RUN dotnet restore "Lithium.Web/Lithium.Web.csproj"
 COPY . .
 WORKDIR "/src/Lithium.Web"
 RUN dotnet build "./Lithium.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
