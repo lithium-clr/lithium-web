@@ -10,7 +10,7 @@ COPY ["src/Lucide/LucideBlazor/LucideBlazor.csproj", "src/Lucide/LucideBlazor/"]
 COPY ["src/Lucide/LucideBlazor.Generator/LucideBlazor.Generator.csproj", "src/Lucide/LucideBlazor.Generator/"]
 RUN dotnet restore "src/Lithium.Web/Lithium.Web.csproj"
 COPY . .
-WORKDIR "/src/Lithium.Web"
+WORKDIR "/src/src/Lithium.Web"
 RUN dotnet build "./Lithium.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
