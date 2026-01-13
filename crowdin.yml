@@ -1,5 +1,5 @@
 files:
-  - source: /Lithium.Web/Resources/**/*.resx
+  - source: /src/Lithium.Web/Resources/**/*.resx
     ignore:
       - '**/*.*.resx'
-    translation: /Lithium.Web/Resources/**/%file_name%.%two_letters_code%.%file_extension%
+    translation: /src/Lithium.Web/Resources/**/%file_name%.%two_letters_code%.%file_extension%
